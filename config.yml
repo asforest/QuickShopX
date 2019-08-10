@@ -1,0 +1,9 @@
+version: 1
+interactionInterval: 9000
+hologramItemShow: true
+# never, doubleclick, always
+formOperate: "doubleclick"
+packetSendPerSecondMax: 60
+interactionWithResidencePlugin: true
+createShopInResidenceOnly: true
+opIgnoreResidence: false

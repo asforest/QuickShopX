@@ -1,0 +1,10 @@
+name: QuickShop2
+main: cn.innc11.QuickShop2.Main
+version: "1.0"
+author: innc11
+api: ["1.0.0"]
+prefix: "QuickShop2"
+load: POSTWORLD
+depend: ["EconomyAPI"]
+softdepend: ["Residence"]
+loadbefore: ["Residence"]
