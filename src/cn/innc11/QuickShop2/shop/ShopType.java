@@ -1,6 +1,6 @@
 package cn.innc11.QuickShop2.shop;
 
-import cn.innc11.QuickShop2.Main;
+import cn.innc11.QuickShop2.QuickShop2Plugin;
 import cn.innc11.QuickShop2.config.LangConfig.Lang;
 
 public enum ShopType 
@@ -12,6 +12,6 @@ public enum ShopType
 	@Override
 	public String toString() 
 	{
-		return Main.instance.langConfig.get(Lang.valueOf(this.name()));
+		return QuickShop2Plugin.instance.langConfig.get(Lang.valueOf(this.name()));
 	}
 }

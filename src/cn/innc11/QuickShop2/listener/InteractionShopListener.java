@@ -6,7 +6,7 @@ import java.util.HashMap;
 import com.bekvon.bukkit.residence.Residence;
 import com.bekvon.bukkit.residence.protection.ClaimedResidence;
 
-import cn.innc11.QuickShop2.Main;
+import cn.innc11.QuickShop2.QuickShop2Plugin;
 import cn.innc11.QuickShop2.Pair;
 import cn.innc11.QuickShop2.config.LangConfig.Lang;
 import cn.innc11.QuickShop2.form.ShopMasterPanel;
@@ -48,9 +48,9 @@ public class InteractionShopListener implements Listener, ShopInteractionTimer
 			{
 				shop.updateSignText();
 				
-				Main.instance.hologramListener.addShopItemEntity(Arrays.asList(player), shop.data);
+				QuickShop2Plugin.instance.hologramListener.addShopItemEntity(Arrays.asList(player), shop.data);
 				
-				switch (Main.instance.pluginConfig.formOperate) 
+				switch (QuickShop2Plugin.instance.pluginConfig.formOperate)
 				{
 					case DOUBLE_CLICK:
 					{
@@ -71,12 +71,12 @@ public class InteractionShopListener implements Listener, ShopInteractionTimer
 						Item shopItem = Item.get(shop.data.itemID, shop.data.itemMetadata);
 						
 						// show this shop detail information
-						player.sendMessage(L.get(Lang.IM_SHOP_INFO_SHOW, "{OWNER}", shop.data.owner, "{GOODS}", Main.instance.itemNameConfig.getItemName(shopItem), "{PRICE}", String.format("%.2f", shop.data.price), "{SHOP_TYPE}", shop.data.type.toString(), "{SIGN_STOCK_TEXT}", Main.instance.signTextConfig.getStockText(shop)));
+						player.sendMessage(L.get(Lang.IM_SHOP_INFO_SHOW, "{OWNER}", shop.data.serverShop? L.get(Lang.SERVER_SHOP_NICKNAME):shop.data.owner, "{GOODS}", QuickShop2Plugin.instance.itemNameConfig.getItemName(shopItem), "{PRICE}", String.format("%.2f", shop.data.price), "{SHOP_TYPE}", shop.data.type.toString(), "{SIGN_STOCK_TEXT}", QuickShop2Plugin.instance.signTextConfig.getStockText(shop)));
 						
 						if(!player.getName().equals(shop.data.owner))
 							player.sendMessage(L.get(Lang.IM_ENTER_TRANSACTIONS_COUNT));
 						
-						interactingShopHashMap.put(player.getName(), new Pair<Long, Shop>(System.currentTimeMillis()+ Main.instance.pluginConfig.interactionInterval, shop));
+						interactingShopHashMap.put(player.getName(), new Pair<Long, Shop>(System.currentTimeMillis()+ QuickShop2Plugin.instance.pluginConfig.interactionInterval, shop));
 						break;
 					}
 					
@@ -87,7 +87,7 @@ public class InteractionShopListener implements Listener, ShopInteractionTimer
 						else
 							player.showFormWindow(new TradingPanel(shop, player.getName()));
 						
-						interactingShopHashMap.put(player.getName(), new Pair<Long, Shop>(System.currentTimeMillis()+ Main.instance.pluginConfig.interactionInterval, shop));
+						interactingShopHashMap.put(player.getName(), new Pair<Long, Shop>(System.currentTimeMillis()+ QuickShop2Plugin.instance.pluginConfig.interactionInterval, shop));
 						
 						break;
 				}
@@ -125,7 +125,7 @@ public class InteractionShopListener implements Listener, ShopInteractionTimer
 			// not is owner
 			if(!interactingShopHashMap.get(playerName).value.data.owner.equals(playerName))
 			{
-				if(!Main.isInteger(e.getMessage()))
+				if(!QuickShop2Plugin.isInteger(e.getMessage()))
 				{
 					// not a number
 					e.getPlayer().sendMessage(L.get(Lang.IM_NO_ENTER_NUMBER));
@@ -190,11 +190,11 @@ public class InteractionShopListener implements Listener, ShopInteractionTimer
 			{
 				boolean allow = true;
 				
-				if(Main.instance.residencePluginLoaded && Main.instance.pluginConfig.interactionWithResidencePlugin)
+				if(QuickShop2Plugin.instance.residencePluginLoaded && QuickShop2Plugin.instance.pluginConfig.interactionWithResidencePlugin)
 				{
 					ClaimedResidence res = Residence.getResidenceManager().getByLoc(e.getBlock());
 					
-					if(res!=null && !Main.instance.pluginConfig.opIgnoreResidence)
+					if(res!=null && !QuickShop2Plugin.instance.pluginConfig.opIgnoreResidenceBuildPermission)
 					{
 						if(!player.getName().equals(shop.data.owner)/* && !player.isOp()*/)
 						{
@@ -215,14 +215,38 @@ public class InteractionShopListener implements Listener, ShopInteractionTimer
 				
 				if(allow)
 				{
-					Main.instance.hologramListener.removeItemEntity(Server.getInstance().getOnlinePlayers().values(), shop.data);
-					
-					Main.instance.shopConfig.removeShop(shop.data);
-					
+					if(QuickShop2Plugin.instance.pluginConfig.snakeModeDestroyShop && !player.isSneaking())
+					{
+						player.sendMessage(L.get(Lang.IM_SNAKE_MODE_DESTROY_SHOP));
+
+						e.setCancelled();
+
+						return;
+					}
+
+					QuickShop2Plugin.instance.hologramListener.removeItemEntity(Server.getInstance().getOnlinePlayers().values(), shop.data);
+
+					QuickShop2Plugin.instance.shopConfig.removeShop(shop.data);
+
 					e.setDrops(new Item[0]);
-					
+
 					player.sendMessage(L.get(Lang.IM_SUCCEESSFULLY_REMOVED_SHOP));
-					
+/*
+					if(QuickShop2Plugin.instance.pluginConfig.snakeModeDestroyShop && player.isSneaking())
+					{
+						QuickShop2Plugin.instance.hologramListener.removeItemEntity(Server.getInstance().getOnlinePlayers().values(), shop.data);
+
+						QuickShop2Plugin.instance.shopConfig.removeShop(shop.data);
+
+						e.setDrops(new Item[0]);
+
+						player.sendMessage(L.get(Lang.IM_SUCCEESSFULLY_REMOVED_SHOP));
+					} else {
+						player.sendMessage(L.get(Lang.IM_SNAKE_MODE_DESTROY_SHOP));
+
+						e.setCancelled();
+					}
+*/
 				} else {
 					
 					player.sendMessage(L.get(Lang.IM_NO_RESIDENCE_PERMISSION, "{PERMISSION}", "build"));

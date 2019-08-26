@@ -16,9 +16,9 @@ import cn.innc11.QuickShop2.listener.ShopProtectListener;
 import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.utils.TextFormat;
 
-public class Main extends PluginBase 
+public class QuickShop2Plugin extends PluginBase
 {
-	public static Main instance;
+	public static QuickShop2Plugin instance;
 	
 	public boolean residencePluginLoaded = false;
 	

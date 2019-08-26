@@ -2,10 +2,11 @@ package cn.innc11.QuickShop2.config;
 
 import java.util.HashMap;
 
-import cn.innc11.QuickShop2.Main;
+import cn.innc11.QuickShop2.QuickShop2Plugin;
 import cn.innc11.QuickShop2.shop.Shop;
 import cn.innc11.QuickShop2.shop.ShopData;
 import cn.innc11.QuickShop2.shop.ShopType;
+import cn.nukkit.item.Item;
 import cn.nukkit.scheduler.PluginTask;
 
 public class ShopConfig extends MyConfig
@@ -24,14 +25,14 @@ public class ShopConfig extends MyConfig
         level: "world",
         itemId: 123,
         itemMeta: 1,
-        unlimited: false
+        serverShop: false
     }"
      */
 	
 	private boolean modified = false;
 	private boolean saving = false;
 	
-	private PluginTask<Main> saveTask;
+	private PluginTask<QuickShop2Plugin> saveTask;
 	
 	
 	public Shop addShop(ShopData shop)
@@ -62,7 +63,7 @@ public class ShopConfig extends MyConfig
 		{
 			modified = true;
 			saving = true;
-			Main.instance.getServer().getScheduler().scheduleTask(Main.instance, saveTask, true);
+			QuickShop2Plugin.instance.getServer().getScheduler().scheduleTask(QuickShop2Plugin.instance, saveTask, true);
 		} else {
 			modified = true;
 		}
@@ -90,12 +91,12 @@ public class ShopConfig extends MyConfig
 			shopData.world = config.getString(key+".world");
 			shopData.itemID = config.getInt(key+".itemID");
 			shopData.itemMetadata = config.getInt(key+".itemMeta");
-			shopData.unlimited = config.getBoolean(key+".unlimited");
+			shopData.serverShop = config.getBoolean(key+".serverShop");
 			
 			shopDataHashMap.put(key, shopData);
 		}
 		
-		Main.instance.getLogger().info("Loaded "+config.getKeys(false).size()+" Shops");
+		QuickShop2Plugin.instance.getLogger().info("Loaded "+config.getKeys(false).size()+" Shops");
 	}
 	
 	private void SAVE()
@@ -117,7 +118,8 @@ public class ShopConfig extends MyConfig
 			config.set(key+".world", shopData.world);
 			config.set(key+".itemID", shopData.itemID);
 			config.set(key+".itemMeta", shopData.itemMetadata);
-			config.set(key+".unlimited", shopData.unlimited);
+			config.set(key+".serverShop", shopData.serverShop);
+			config.set(key+".common", QuickShop2Plugin.instance.itemNameConfig.getItemName(Item.get(shopData.itemID, shopData.itemMetadata)));
 		}
 		
 		config.save();
@@ -129,7 +131,7 @@ public class ShopConfig extends MyConfig
 		
 		reload();
 		
-		saveTask = new PluginTask<Main>(Main.instance) 
+		saveTask = new PluginTask<QuickShop2Plugin>(QuickShop2Plugin.instance)
 		{
 			@Override
 			public void onRun(int currentTicks) 

@@ -1,8 +1,9 @@
 package cn.innc11.QuickShop2.config;
 
-import cn.innc11.QuickShop2.Main;
+import cn.innc11.QuickShop2.QuickShop2Plugin;
 import cn.innc11.QuickShop2.shop.Shop;
 import cn.innc11.QuickShop2.shop.ShopType;
+import cn.innc11.QuickShop2.utils.L;
 import cn.nukkit.utils.TextFormat;
 
 public class SignTextConfig extends MyConfig
@@ -66,12 +67,12 @@ public class SignTextConfig extends MyConfig
 	
 	private String variableReplace(String str, Shop shop)
 	{
-		ItemNameConfig inc = Main.instance.itemNameConfig;
+		ItemNameConfig inc = QuickShop2Plugin.instance.itemNameConfig;
 		
 		str = str.replaceAll("\\$\\{ITEM_NAME\\}", inc.getItemName(shop.getItem()));
-		str = str.replaceAll("\\$\\{PRICE\\}", String.format("%.2f", shop.data.price));
-		str = str.replaceAll("\\$\\{STOCK\\}", shop.data.unlimited ? "" : getStockText(shop));
-		str = str.replaceAll("\\$\\{OWNER\\}", shop.data.owner);
+		str = str.replaceAll("\\$\\{PRICE\\}", shop.getStringPrice());
+		str = str.replaceAll("\\$\\{STOCK\\}", shop.data.serverShop ? "" : getStockText(shop));
+		str = str.replaceAll("\\$\\{OWNER\\}", shop.data.serverShop? L.get(LangConfig.Lang.SERVER_SHOP_NICKNAME):shop.data.owner);
 		str = str.replaceAll("\\$\\{DAMAGE\\}", String.valueOf(shop.data.itemMetadata));
 		
 		return str;

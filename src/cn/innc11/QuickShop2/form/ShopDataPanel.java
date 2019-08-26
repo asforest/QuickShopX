@@ -2,7 +2,7 @@ package cn.innc11.QuickShop2.form;
 
 import java.util.Arrays;
 
-import cn.innc11.QuickShop2.Main;
+import cn.innc11.QuickShop2.QuickShop2Plugin;
 import cn.innc11.QuickShop2.config.LangConfig.Lang;
 import cn.innc11.QuickShop2.shop.Shop;
 import cn.innc11.QuickShop2.shop.ShopType;
@@ -27,10 +27,10 @@ public class ShopDataPanel extends FormWindowCustom implements FormRespone
 		this.shopKey = shop.getShopKey();
 		this.playerName = playerName;
 		
-		Player player = Main.instance.getServer().getPlayerExact(playerName);
+		Player player = QuickShop2Plugin.instance.getServer().getPlayerExact(playerName);
 		
 //		addElement(new ElementInput("价格", "", shop.getFormatPrice()));
-		addElement(new ElementInput(L.get(Lang.FORM_SHOPDATA__UNIT_PRICE), "", shop.getFormatPrice()));
+		addElement(new ElementInput(L.get(Lang.FORM_SHOPDATA__UNIT_PRICE), "", shop.getStringPrice()));
 		
 //		addElement(new ElementInput("店长", "", shop.data.owner));
 		addElement(new ElementInput(L.get(Lang.FORM_SHOPDATA__SHOP_OWNER), "", shop.data.owner));
@@ -39,8 +39,8 @@ public class ShopDataPanel extends FormWindowCustom implements FormRespone
 		addElement(new ElementDropdown(L.get(Lang.FORM_SHOPDATA__SHOP_TYPE), Arrays.asList(L.get(Lang.BUY), L.get(Lang.SELL)), shop.data.type==ShopType.BUY ? 0 :1));
 	
 		if(player.isOp())
-			addElement(new ElementToggle(L.get(Lang.FORM_SHOPDATA__UNLIMITED_SHOP), shop.data.unlimited));
-	//		addElement(new ElementToggle("无限商店", shop.data.unlimited));
+			addElement(new ElementToggle(L.get(Lang.FORM_SHOPDATA__SERVER_SHOP), shop.data.serverShop));
+	//		addElement(new ElementToggle("服务器商店", shop.data.serverShop));
 
 	}
 
@@ -48,7 +48,10 @@ public class ShopDataPanel extends FormWindowCustom implements FormRespone
 	public void onFormResponse(PlayerFormRespondedEvent e) 
 	{
 		Shop shop = Shop.getShopInstance(shopKey);
-		Player player = Main.instance.getServer().getPlayerExact(playerName);
+		Player player = QuickShop2Plugin.instance.getServer().getPlayerExact(playerName);
+
+		if(!player.isOp() && !shop.data.owner.equals(player.getName()))
+			return;
 
 		String ePrice = getResponse().getInputResponse(0);
 		String eOwner = getResponse().getInputResponse(1);
@@ -56,7 +59,7 @@ public class ShopDataPanel extends FormWindowCustom implements FormRespone
 		
 		
 		
-		if(!Main.isPrice(ePrice))
+		if(!QuickShop2Plugin.isPrice(ePrice))
 		{
 //			e.getPlayer().sendMessage("价格不是一个数字");
 			e.getPlayer().sendMessage(L.get(Lang.IM_PRICE_WRONG_FORMAT));
@@ -69,11 +72,11 @@ public class ShopDataPanel extends FormWindowCustom implements FormRespone
 		shop.data.owner = eOwner;
 		
 		if(player.isOp())
-			shop.data.unlimited = getResponse().getToggleResponse(3);
+			shop.data.serverShop = getResponse().getToggleResponse(3);
 		
 		shop.updateSignText();
 		
-		Main.instance.shopConfig.save();
+		QuickShop2Plugin.instance.shopConfig.save();
 		
 		player.sendMessage(L.get(Lang.IM_SHOP_INFO_UPDATED));
 	}

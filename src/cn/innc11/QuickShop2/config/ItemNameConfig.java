@@ -2,7 +2,7 @@ package cn.innc11.QuickShop2.config;
 
 import java.util.HashMap;
 
-import cn.innc11.QuickShop2.Main;
+import cn.innc11.QuickShop2.QuickShop2Plugin;
 import cn.nukkit.item.Item;
 
 public class ItemNameConfig extends MyConfig 
@@ -50,7 +50,7 @@ public class ItemNameConfig extends MyConfig
 			
 		}
 		
-		Main.instance.getLogger().info("Loaded "+itemNameMap.size()+" ItemName");
+		QuickShop2Plugin.instance.getLogger().info("Loaded "+itemNameMap.size()+" ItemName");
 	}
 
 	

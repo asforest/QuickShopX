@@ -2,7 +2,7 @@ package cn.innc11.QuickShop2.form;
 
 import java.util.Arrays;
 
-import cn.innc11.QuickShop2.Main;
+import cn.innc11.QuickShop2.QuickShop2Plugin;
 import cn.innc11.QuickShop2.config.LangConfig.Lang;
 import cn.innc11.QuickShop2.config.PluginConfig;
 import cn.innc11.QuickShop2.config.PluginConfig.FormOperate;
@@ -17,9 +17,9 @@ public class PluginControlPanel extends FormWindowCustom implements FormRespone
 {
 	public PluginControlPanel() 
 	{
-		super(L.get(Lang.FORM_CONTROL_PANEL__TITLE, "{PLUGIN_NAME}",  Main.instance.getDescription().getName(), "{CONFIG_FILE_VERSION}", Main.instance.pluginConfig.configVersion+""));
+		super(L.get(Lang.FORM_CONTROL_PANEL__TITLE, "{PLUGIN_NAME}",  QuickShop2Plugin.instance.getDescription().getName(), "{CONFIG_FILE_VERSION}", QuickShop2Plugin.instance.pluginConfig.configVersion+"", "{PLUGIN_VERSION}", QuickShop2Plugin.instance.getDescription().getVersion()));
 		
-		PluginConfig pc = Main.instance.pluginConfig;
+		PluginConfig pc = QuickShop2Plugin.instance.pluginConfig;
 		
 		//商店交互时间
 		//shop interaction timeout
@@ -34,7 +34,7 @@ public class PluginControlPanel extends FormWindowCustom implements FormRespone
 		
 		//全息显示的每秒最大发包量
 		//packet send per second max
-		addElement(new ElementSlider(L.get(Lang.FORM_CONTROL_PANEL__PACKET_SEND_PS), 1F, 100F, 1, pc.packetSendPerSecondMax>1000 ? 1000 : pc.packetSendPerSecondMax));
+		addElement(new ElementSlider(L.get(Lang.FORM_CONTROL_PANEL__PACKET_SEND_PS), 1F, 500F, 1, pc.packetSendPerSecondMax>500 ? 500 : pc.packetSendPerSecondMax));
 		
 		//和Residence插件交互
 		//interaction with residence plugin
@@ -44,45 +44,54 @@ public class PluginControlPanel extends FormWindowCustom implements FormRespone
 		//create shop in residence only
 		addElement(new ElementToggle(L.get(Lang.FORM_CONTROL_PANEL__CREATE_SHOP_IN_RESIDENCE_NOLY), pc.createShopInResidenceOnly));
 		
-		//op可以无视领地权限进行创建和破坏商店
-		//op can ignore residence permission
-		addElement(new ElementToggle(L.get(Lang.FORM_CONTROL_PANEL__OP_IGNORE_RESIDENCE), pc.opIgnoreResidence));
+		//op可以无视领地权限进行创建和破坏商店(无视build权限)
+		//op can ignore residence build permission
+		addElement(new ElementToggle(L.get(Lang.FORM_CONTROL_PANEL__OP_IGNORE_RESIDENCE_BUILD_PERMISSION), pc.opIgnoreResidenceBuildPermission));
+
+		//只能在潜行模式下破坏商店
+		//only destroy shop in snake mode
+		addElement(new ElementToggle(L.get(Lang.FORM_CONTROL_PANEL__SNAKE_MODE_DESTROY_SHOP), pc.snakeModeDestroyShop));
 	}
 
 	@Override
 	public void onFormResponse(PlayerFormRespondedEvent e) 
 	{
+		if(!e.getPlayer().isOp())
+			return;
+
 		int interactionInterval = (int) getResponse().getSliderResponse(0);
 		boolean hologramItemShow = getResponse().getToggleResponse(1);
 		int formOperate = getResponse().getStepSliderResponse(2).getElementID();
 		int packetSendPerSecondMax = (int) getResponse().getSliderResponse(3);
 		boolean  interactionWithResidencePlugin = getResponse().getToggleResponse(4);
 		boolean  createShopInResidenceOnly = getResponse().getToggleResponse(5);
-		boolean  opIgnoreResidence = getResponse().getToggleResponse(6);
+		boolean  opIgnoreResidenceBuildPermission = getResponse().getToggleResponse(6);
+		boolean  snakeDestroyShop = getResponse().getToggleResponse(7);
 
 		e.getPlayer().sendMessage(L.get(Lang.PLUGIN_MESSAGE_PLUGIN_CONFIGURE_UPDATED));
 		
-		if(Main.instance.pluginConfig.hologramItemShow && !hologramItemShow)
+		if(QuickShop2Plugin.instance.pluginConfig.hologramItemShow && !hologramItemShow)
 		{
-			Main.instance.hologramListener.removeAllItemEntityForAllPlayer();
+			QuickShop2Plugin.instance.hologramListener.removeAllItemEntityForAllPlayer();
 		}
 		
-		if(!Main.instance.pluginConfig.hologramItemShow && hologramItemShow)
+		if(!QuickShop2Plugin.instance.pluginConfig.hologramItemShow && hologramItemShow)
 		{
-			Main.instance.pluginConfig.hologramItemShow = hologramItemShow;
+			QuickShop2Plugin.instance.pluginConfig.hologramItemShow = hologramItemShow;
 			
-			Main.instance.hologramListener.addAllItemEntityForAllPlayer();
+			QuickShop2Plugin.instance.hologramListener.addAllItemEntityForAllPlayer();
 		}
 		
-		Main.instance.pluginConfig.interactionInterval = interactionInterval*1000;
-		Main.instance.pluginConfig.hologramItemShow = hologramItemShow;
-		Main.instance.pluginConfig.formOperate = FormOperate.values()[formOperate];
-		Main.instance.pluginConfig.packetSendPerSecondMax = packetSendPerSecondMax;
-		Main.instance.pluginConfig.interactionWithResidencePlugin = interactionWithResidencePlugin;
-		Main.instance.pluginConfig.createShopInResidenceOnly = createShopInResidenceOnly;
-		Main.instance.pluginConfig.opIgnoreResidence = opIgnoreResidence;
-		
-		Main.instance.pluginConfig.save();
+		QuickShop2Plugin.instance.pluginConfig.interactionInterval = interactionInterval*1000;
+		QuickShop2Plugin.instance.pluginConfig.hologramItemShow = hologramItemShow;
+		QuickShop2Plugin.instance.pluginConfig.formOperate = FormOperate.values()[formOperate];
+		QuickShop2Plugin.instance.pluginConfig.packetSendPerSecondMax = packetSendPerSecondMax;
+		QuickShop2Plugin.instance.pluginConfig.interactionWithResidencePlugin = interactionWithResidencePlugin;
+		QuickShop2Plugin.instance.pluginConfig.createShopInResidenceOnly = createShopInResidenceOnly;
+		QuickShop2Plugin.instance.pluginConfig.opIgnoreResidenceBuildPermission = opIgnoreResidenceBuildPermission;
+		QuickShop2Plugin.instance.pluginConfig.snakeModeDestroyShop = snakeDestroyShop;
+
+		QuickShop2Plugin.instance.pluginConfig.save();
 		
 	}
 

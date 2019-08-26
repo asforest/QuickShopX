@@ -2,7 +2,7 @@ package cn.innc11.QuickShop2.command;
 
 import java.util.HashMap;
 
-import cn.innc11.QuickShop2.Main;
+import cn.innc11.QuickShop2.QuickShop2Plugin;
 import cn.innc11.QuickShop2.Pair;
 import cn.innc11.QuickShop2.config.LangConfig.Lang;
 import cn.innc11.QuickShop2.form.PluginControlPanel;
@@ -24,8 +24,8 @@ public class QuickShop2Command extends Command
 	{
 		super("qs");
 		
-		setDescription("QuickShop Command");
-		setAliases(new String[]{"shop","qshop","quickshop"});
+		setDescription("QuickShop2 Command");
+		setAliases(new String[]{"shop","qshop","quickshop", "qs2"});
         setUsage("/qs <subcommand> [args]");
         
         HashMap<String, CommandParameter[]> parameter = new HashMap<>();
@@ -64,7 +64,7 @@ public class QuickShop2Command extends Command
 			case "s":{
 				if (sender instanceof Player)
 				{
-					Pair<Boolean, Shop> vi = Main.instance.interactionShopListenerInstance.isVaildInteraction(sender.getName());
+					Pair<Boolean, Shop> vi = QuickShop2Plugin.instance.interactionShopListenerInstance.isVaildInteraction(sender.getName());
 					if(vi!=null)
 					{
 						if(vi.key.booleanValue())
@@ -79,7 +79,7 @@ public class QuickShop2Command extends Command
 									{
 										shop.data.type = ShopType.BUY;
 										
-										Main.instance.shopConfig.save();
+										QuickShop2Plugin.instance.shopConfig.save();
 										
 										shop.updateSignText();
 										
@@ -93,7 +93,7 @@ public class QuickShop2Command extends Command
 									{
 										shop.data.type = ShopType.SELL;
 										
-										Main.instance.shopConfig.save();
+										QuickShop2Plugin.instance.shopConfig.save();
 										
 										shop.updateSignText();
 										
@@ -124,9 +124,9 @@ public class QuickShop2Command extends Command
 				if (sender instanceof Player)
 				{
 					if (args.length == 2) {
-						if (Main.isInteger(args[1]))
+						if (QuickShop2Plugin.isInteger(args[1]))
 						{
-							Pair<Boolean, Shop> vi = Main.instance.interactionShopListenerInstance.isVaildInteraction(sender.getName());
+							Pair<Boolean, Shop> vi = QuickShop2Plugin.instance.interactionShopListenerInstance.isVaildInteraction(sender.getName());
 							
 							if(vi!=null)
 							{
@@ -136,7 +136,7 @@ public class QuickShop2Command extends Command
 								{
 									shop.data.price = Float.valueOf(args[1]);
 									
-									Main.instance.shopConfig.save();
+									QuickShop2Plugin.instance.shopConfig.save();
 									
 									shop.updateSignText();
 									
@@ -166,19 +166,19 @@ public class QuickShop2Command extends Command
 				{
 					if(((Player)sender).isOp())
 					{
-						Pair<Boolean, Shop> vi = Main.instance.interactionShopListenerInstance.isVaildInteraction(sender.getName());
+						Pair<Boolean, Shop> vi = QuickShop2Plugin.instance.interactionShopListenerInstance.isVaildInteraction(sender.getName());
 						
 						if(vi!=null)
 						{
 							Shop shop = vi.value;
 							
-							shop.data.unlimited = !shop.data.unlimited;
+							shop.data.serverShop = !shop.data.serverShop;
 							
-							Main.instance.shopConfig.save();
+							QuickShop2Plugin.instance.shopConfig.save();
 							
 							shop.updateSignText();
 							
-							sender.sendMessage(shop.data.unlimited ? L.get(Lang.IM_SHOP_UPDATED_UNLIMITED) : L.get(Lang.IM_SHOP_UPDATED_LIMITED));
+							sender.sendMessage(shop.data.serverShop ? L.get(Lang.IM_SHOP_UPDATED_SERVER_SHOP) : L.get(Lang.IM_SHOP_UPDATED_LIMITED));
 						} else {
 							sender.sendMessage(L.get(Lang.IM_NO_SELECTED_SHOP));
 						}
@@ -192,7 +192,7 @@ public class QuickShop2Command extends Command
 			case "v":{
 				if (!(sender instanceof Player && !((Player)sender).isOp()))
 				{
-					PluginBase plugin = Main.instance;
+					PluginBase plugin = QuickShop2Plugin.instance;
 					sender.sendMessage(TextFormat.colorize(String.format("&l&e%s&r, &dMade by %s, original author WetABQ", plugin.getFullName(), plugin.getDescription().getAuthors().get(0))));
 				}
 				break;
@@ -220,10 +220,10 @@ public class QuickShop2Command extends Command
 			{
 				if (!(sender instanceof Player && !((Player)sender).isOp()))
 				{
-					Main.instance.itemNameConfig.reload();
-					Main.instance.signTextConfig.reload();
-					Main.instance.langConfig.reload();
-					Main.instance.pluginConfig.reload();
+					QuickShop2Plugin.instance.itemNameConfig.reload();
+					QuickShop2Plugin.instance.signTextConfig.reload();
+					QuickShop2Plugin.instance.langConfig.reload();
+					QuickShop2Plugin.instance.pluginConfig.reload();
 					
 //					sender.sendMessage("Reload done");
 					sender.sendMessage(L.get(Lang.PLUGIN_MESSAGE_RELOAD_DONE));
@@ -244,16 +244,6 @@ public class QuickShop2Command extends Command
         {
         	sender.sendMessage(L.get(Lang.PLUGIN_MESSAGE_HELP_OPERATOR));
         }
-//        sender.sendMessage("&6----QuickShop 指令----");
-//        sender.sendMessage("&b/qs help(h) - 查看帮助");
-//        sender.sendMessage("&b/qs buy(b) - 设置当前点击过的商店为&a购买&r类型");
-//        sender.sendMessage("&b/qs sell(s) - 设置当前点击过的商店为&4回收&r类型");
-//        sender.sendMessage("&b/qs price(p) <价格> - 设置当前点击过的商店的价格");
-//        if(!(sender instanceof Player && !((Player)sender).isOp()))
-//        {
-//        	sender.sendMessage("&b/qs unlimited(ul) - 设置当前点击过的商店为无限商店");
-//        	sender.sendMessage("&b/qs version(v) - 查看插件版本信息");
-//        }
 	}
 
 }

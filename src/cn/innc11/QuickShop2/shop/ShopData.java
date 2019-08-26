@@ -13,7 +13,7 @@ public class ShopData
 	public String world;
 	public int itemID;
 	public int itemMetadata;
-	public boolean unlimited;
+	public boolean serverShop;
 	
 //	public 
 	
@@ -23,7 +23,7 @@ public class ShopData
 	/*
 	public ShopData(String owner, ShopType type, float price, int chestX,
 			int chestY, int chestZ, int signX, int signZ, String world,
-			int itemID, int itemMetadata, boolean unlimited) 
+			int itemID, int itemMetadata, boolean serverShop)
 	{
 		this.owner = owner;
 		this.type = type;
@@ -36,7 +36,7 @@ public class ShopData
 		this.world = world;
 		this.itemID = itemID;
 		this.itemMetadata = itemMetadata;
-		this.unlimited = unlimited;
+		this.serverShop = serverShop;
 	}
 	*/
 	public Shop getShop()
@@ -48,25 +48,6 @@ public class ShopData
 	{
 		return String.format("%d:%d:%d:%s", chestX, chestY, chestZ, world);
 	}
-	
-	/*
-	public Map<String, Object> toMap()
-	{
-		HashMap<String, Object> map = new HashMap<>();
-		map.put("owner", owner);
-		map.put("type", type.toString());
-		map.put("price", price);
-		map.put("chestX", chestX);
-		map.put("chestY", chestY);
-		map.put("chestZ", chestZ);
-		map.put("signX", signX);
-		map.put("signZ", signZ);
-		map.put("world", world);
-		map.put("itemID", itemID);
-		map.put("itemMeta", itemMeta);
-		map.put("unlimited", unlimited);
-		return map;
-	}
-	*/
+
 	
 }

@@ -1,6 +1,6 @@
 package cn.innc11.QuickShop2.form;
 
-import cn.innc11.QuickShop2.Main;
+import cn.innc11.QuickShop2.QuickShop2Plugin;
 import cn.innc11.QuickShop2.config.LangConfig.Lang;
 import cn.innc11.QuickShop2.shop.Shop;
 import cn.innc11.QuickShop2.shop.ShopType;
@@ -33,16 +33,16 @@ public class ShopMasterPanel extends FormWindowSimple implements FormRespone
 		
 //		setContent(sb.toString());
 		setContent(L.get(Lang.FORM_MASTER__CONTENT, 
-				"{UNIT_PRICE}", shop.getFormatPrice(), 
+				"{UNIT_PRICE}", shop.getStringPrice(),
 				"{SHOP_TYPE}",  L.get(shop.data.type==ShopType.BUY ? Lang.BUY : Lang.SELL),
 				"{SHOP_STOCK}", String.valueOf(shop.getStock())));
-		
-//		addButton(new ElementButton("打开设置界面"));
-		addButton(new ElementButton(L.get(Lang.FORM_MASTER__BUTTON_SHOP_DATA_PANEL)));
-		
+
 //		addButton(new ElementButton("打开交易界面"));
 		addButton(new ElementButton(L.get(Lang.FORM_MASTER__BUTTON_SHOP_TRADING_PANEL)));
-		
+
+//		addButton(new ElementButton("打开设置界面"));
+		addButton(new ElementButton(L.get(Lang.FORM_MASTER__BUTTON_SHOP_DATA_PANEL)));
+
 //		addButton(new ElementButton("移除商店"));
 		addButton(new ElementButton(L.get(Lang.FORM_MASTER__BUTTON_REMOVE_SHOP)));
 	}
@@ -50,26 +50,32 @@ public class ShopMasterPanel extends FormWindowSimple implements FormRespone
 	@Override
 	public void onFormResponse(PlayerFormRespondedEvent e) 
 	{
+		Shop shop = Shop.getShopInstance(shopKey);
+
+		if(!e.getPlayer().isOp() && !e.getPlayer().getName().equals(shop.data.owner))
+		{
+			return;
+		}
+
 		int clickedButtonindex = getResponse().getClickedButtonId();
-		
-		switch (clickedButtonindex) 
+
+		switch (clickedButtonindex)
 		{
 			case 0:
-				e.getPlayer().showFormWindow(new ShopDataPanel(Shop.getShopInstance(shopKey), playerName));
-				break;
-				
-			case 1:
 				e.getPlayer().showFormWindow(new TradingPanel(Shop.getShopInstance(shopKey), playerName));
 				break;
-				
+
+			case 1:
+				e.getPlayer().showFormWindow(new ShopDataPanel(Shop.getShopInstance(shopKey), playerName));
+				break;
+
 			case 2:
 			{
-				
-				Shop shop = Shop.getShopInstance(shopKey);
+
 				shop.removeShop();
-				Main.instance.hologramListener.removeItemEntity(Server.getInstance().getOnlinePlayers().values(), shop.data);
+				QuickShop2Plugin.instance.hologramListener.removeItemEntity(Server.getInstance().getOnlinePlayers().values(), shop.data);
 					
-				Main.instance.getServer().getPlayerExact(playerName).sendMessage(L.get(Lang.IM_SUCCEESSFULLY_REMOVED_SHOP));
+				QuickShop2Plugin.instance.getServer().getPlayerExact(playerName).sendMessage(L.get(Lang.IM_SUCCEESSFULLY_REMOVED_SHOP));
 				break;
 			}
 	

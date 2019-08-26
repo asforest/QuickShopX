@@ -10,7 +10,8 @@ public class PluginConfig extends MyConfig
 	public int packetSendPerSecondMax;
 	public boolean interactionWithResidencePlugin;
 	public boolean createShopInResidenceOnly;
-	public boolean opIgnoreResidence;
+	public boolean opIgnoreResidenceBuildPermission;
+	public boolean snakeModeDestroyShop;
 	
 	public PluginConfig()
 	{
@@ -32,8 +33,9 @@ public class PluginConfig extends MyConfig
 		config.set("packetSendPerSecondMax", packetSendPerSecondMax);
 		config.set("interactionWithResidencePlugin", interactionWithResidencePlugin);
 		config.set("createShopInResidenceOnly", createShopInResidenceOnly);
-		config.set("opIgnoreResidence", opIgnoreResidence);
-		
+		config.set("opIgnoreResidenceBuildPermission", opIgnoreResidenceBuildPermission);
+		config.set("snakeModeDestroyShop", snakeModeDestroyShop);
+
 		config.save();
 	}
 
@@ -68,7 +70,9 @@ public class PluginConfig extends MyConfig
 		
 		createShopInResidenceOnly = config.getBoolean("createShopInResidenceOnly", true);
 		
-		opIgnoreResidence = config.getBoolean("opIgnoreResidence", false);
+		opIgnoreResidenceBuildPermission = config.getBoolean("opIgnoreResidenceBuildPermission", false);
+
+		snakeModeDestroyShop = config.getBoolean("snakeModeDestroyShop", true);
 	}
 
 	public static enum FormOperate

@@ -5,7 +5,7 @@ import java.util.Collection;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
-import cn.innc11.QuickShop2.Main;
+import cn.innc11.QuickShop2.QuickShop2Plugin;
 import cn.innc11.QuickShop2.Pair;
 import cn.innc11.QuickShop2.shop.ShopData;
 import cn.nukkit.Player;
@@ -25,7 +25,7 @@ public class HologramItem implements Listener
 {
 	ArrayBlockingQueue<Pair<Collection<Player>, DataPacket>> queue = new ArrayBlockingQueue<Pair<Collection<Player>,DataPacket>>(10000);	
 	
-	PluginTask<Main> sendDataPacketTask = new PluginTask<Main>(Main.instance) 
+	PluginTask<QuickShop2Plugin> sendDataPacketTask = new PluginTask<QuickShop2Plugin>(QuickShop2Plugin.instance)
 	{
 		@Override
 		public void onRun(int currentTicks) 
@@ -40,7 +40,7 @@ public class HologramItem implements Listener
 					Server.broadcastPacket(x.key, x.value);
 					
 					
-					packetSendDelay = (int)(1*1000 / Main.instance.pluginConfig.packetSendPerSecondMax);
+					packetSendDelay = (int)(1*1000 / QuickShop2Plugin.instance.pluginConfig.packetSendPerSecondMax);
 					
 					Thread.sleep(packetSendDelay);
 					
@@ -51,7 +51,7 @@ public class HologramItem implements Listener
 		}
 	};
 	
-	public HologramItem(Main main) 
+	public HologramItem(QuickShop2Plugin main)
 	{
 		main.getServer().getScheduler().scheduleDelayedTask(sendDataPacketTask, 0, true);
 	}
@@ -59,7 +59,7 @@ public class HologramItem implements Listener
 	@EventHandler
     public void onPlayerJoin(PlayerJoinEvent e) 
 	{
-		for (ShopData shopData : Main.instance.shopConfig.shopDataHashMap.values()) 
+		for (ShopData shopData : QuickShop2Plugin.instance.shopConfig.shopDataHashMap.values())
         {
         	if(shopData.world.equals(e.getPlayer().level.getFolderName()))
         		addShopItemEntity(Arrays.asList(e.getPlayer()), shopData);
@@ -77,7 +77,7 @@ public class HologramItem implements Listener
 		{
 //			Server.getInstance().getLogger().error(event.getPlayer().getName()+"传送到了不同的世界: 从"+event.getFrom().level.getName()+" 到"+event.getTo().level.getName());
 			
-			for (ShopData shopData : Main.instance.shopConfig.shopDataHashMap.values()) 
+			for (ShopData shopData : QuickShop2Plugin.instance.shopConfig.shopDataHashMap.values())
 			{
 				if(shopData.world.equals(event.getTo().level.getFolderName()))
 				{
@@ -97,7 +97,7 @@ public class HologramItem implements Listener
 	
 	public void removeAllItemEntityForAllPlayer()
 	{
-		for (ShopData shopData : Main.instance.shopConfig.shopDataHashMap.values()) 
+		for (ShopData shopData : QuickShop2Plugin.instance.shopConfig.shopDataHashMap.values())
         {
 			for(Player player : Server.getInstance().getOnlinePlayers().values())
 			{
@@ -109,7 +109,7 @@ public class HologramItem implements Listener
 	
 	public void addAllItemEntityForAllPlayer()
 	{
-		for (ShopData shopData : Main.instance.shopConfig.shopDataHashMap.values()) 
+		for (ShopData shopData : QuickShop2Plugin.instance.shopConfig.shopDataHashMap.values())
 		{
 			for(Player player : Server.getInstance().getOnlinePlayers().values())
 			{
@@ -131,7 +131,7 @@ public class HologramItem implements Listener
 	
 	public long addShopItemEntity(Collection<Player> players, ShopData shopData) 
 	{
-		if(!Main.instance.pluginConfig.hologramItemShow) return 0L;
+		if(!QuickShop2Plugin.instance.pluginConfig.hologramItemShow) return 0L;
 		
 		long entityId = getEid(shopData);
 		
@@ -162,7 +162,7 @@ public class HologramItem implements Listener
 	
 	public void removeItemEntity(Collection<Player> players, ShopData shopData) 
 	{
-		if(!Main.instance.pluginConfig.hologramItemShow) return;
+		if(!QuickShop2Plugin.instance.pluginConfig.hologramItemShow) return;
 		
 		RemoveEntityPacket removeItemEntityPacket = new RemoveEntityPacket();
 		removeItemEntityPacket.eid = getEid(shopData);

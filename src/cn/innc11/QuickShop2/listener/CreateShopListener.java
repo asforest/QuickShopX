@@ -5,7 +5,7 @@ import java.util.HashMap;
 import com.bekvon.bukkit.residence.Residence;
 import com.bekvon.bukkit.residence.protection.ClaimedResidence;
 
-import cn.innc11.QuickShop2.Main;
+import cn.innc11.QuickShop2.QuickShop2Plugin;
 import cn.innc11.QuickShop2.Pair;
 import cn.innc11.QuickShop2.config.LangConfig.Lang;
 import cn.innc11.QuickShop2.shop.Shop;
@@ -36,14 +36,19 @@ public class CreateShopListener implements Listener, ShopInteractionTimer
 		
 		boolean allowCreateShop = false;
 		
-		if(Main.instance.residencePluginLoaded && Main.instance.pluginConfig.interactionWithResidencePlugin)
+		if(QuickShop2Plugin.instance.residencePluginLoaded && QuickShop2Plugin.instance.pluginConfig.interactionWithResidencePlugin)
 		{
 			ClaimedResidence res = Residence.getResidenceManager().getByLoc(block);
-			
-			if(res!=null && !Main.instance.pluginConfig.opIgnoreResidence)
+
+			if(res!=null)
 			{
 				boolean hasBuildPerm = res.getPermissions().playerHas(player.getName(), "build", false);
-				
+
+				if(player.isOp() && QuickShop2Plugin.instance.pluginConfig.opIgnoreResidenceBuildPermission)
+				{
+					hasBuildPerm = true;
+				}
+
 				if(hasBuildPerm)
 				{
 					allowCreateShop = true;
@@ -54,7 +59,7 @@ public class CreateShopListener implements Listener, ShopInteractionTimer
 			} else {
 				allowCreateShop = true;
 				
-				if(Main.instance.pluginConfig.createShopInResidenceOnly)
+				if(QuickShop2Plugin.instance.pluginConfig.createShopInResidenceOnly)
 				{
 					allowCreateShop = false;
 					
@@ -69,7 +74,7 @@ public class CreateShopListener implements Listener, ShopInteractionTimer
 		
 		if(allowCreateShop)
 		{
-			int interval = Main.instance.pluginConfig.interactionInterval;
+			int interval = QuickShop2Plugin.instance.pluginConfig.interactionInterval;
 			
 			creatingShopPlayers.put(player.getName(), new Pair<Long,Block>(Long.valueOf(System.currentTimeMillis()+interval), block));
 			
@@ -120,7 +125,7 @@ public class CreateShopListener implements Listener, ShopInteractionTimer
 		
 		if(creatingShopPlayers.containsKey(playerName))
 		{
-			if(!Main.isInteger(message))
+			if(!QuickShop2Plugin.isPrice(message))
 			{
 				// not a number
 				player.sendMessage(L.get(Lang.IM_NO_ENTER_NUMBER));
@@ -135,7 +140,7 @@ public class CreateShopListener implements Listener, ShopInteractionTimer
 				Shop createdShop = Shop.placeShop(creatingShopChest, Float.parseFloat(message), player);
 				
 				if(createdShop!=null)
-					Main.instance.hologramListener.addShopItemEntity(Server.getInstance().getOnlinePlayers().values(), createdShop.data);
+					QuickShop2Plugin.instance.hologramListener.addShopItemEntity(Server.getInstance().getOnlinePlayers().values(), createdShop.data);
 				
 			}
 			

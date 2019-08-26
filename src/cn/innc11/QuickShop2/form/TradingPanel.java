@@ -1,16 +1,19 @@
 package cn.innc11.QuickShop2.form;
 
-import cn.innc11.QuickShop2.Main;
+import cn.innc11.QuickShop2.QuickShop2Plugin;
 import cn.innc11.QuickShop2.config.LangConfig.Lang;
 import cn.innc11.QuickShop2.shop.BuyShop;
 import cn.innc11.QuickShop2.shop.SellShop;
 import cn.innc11.QuickShop2.shop.Shop;
+import cn.innc11.QuickShop2.utils.InvItem;
 import cn.innc11.QuickShop2.utils.L;
 import cn.nukkit.Player;
+import cn.nukkit.Server;
 import cn.nukkit.event.player.PlayerFormRespondedEvent;
 import cn.nukkit.form.element.ElementLabel;
 import cn.nukkit.form.element.ElementSlider;
 import cn.nukkit.form.window.FormWindowCustom;
+import cn.nukkit.inventory.PlayerInventory;
 import me.onebone.economyapi.EconomyAPI;
 
 public class TradingPanel extends FormWindowCustom implements FormRespone 
@@ -27,9 +30,9 @@ public class TradingPanel extends FormWindowCustom implements FormRespone
 		this.playerName = playerName;
 		
 		addElement(new ElementLabel(L.get(Lang.FORM_TRADING__SHOP_INFO, 
-				"{GOODS_NAME}", Main.instance.itemNameConfig.getItemName(shop.getItem()), 
-				"{UNIT_PRICE}", shop.getFormatPrice(), "{SHOP_TYPE}", shop.data.type.toString(), 
-				"{STOCK}", Main.instance.itemNameConfig.getItemName(shop.getItem())
+				"{GOODS_NAME}", QuickShop2Plugin.instance.itemNameConfig.getItemName(shop.getItem()),
+				"{UNIT_PRICE}", shop.getStringPrice(), "{SHOP_TYPE}", shop.data.type.toString(),
+				"{STOCK}", QuickShop2Plugin.instance.itemNameConfig.getItemName(shop.getItem())
 				)));
 //		addElement(new ElementLabel("商品: "+Main.instance.itemNameConfig.getItemName(shop.getItem())));
 		
@@ -38,8 +41,11 @@ public class TradingPanel extends FormWindowCustom implements FormRespone
 //		addElement(new ElementLabel("类型: "+shop.data.type));
 
 //		addElement(new ElementLabel(TextFormat.colorize(Main.instance.signTextConfig.getStockText(shop))));
-		
-		int m = shop.getMaxTranscationVolume((float) EconomyAPI.getInstance().myMoney(playerName));
+
+		PlayerInventory playerInv = Server.getInstance().getPlayerExact(playerName).getInventory();
+		float playerMoney = (float) EconomyAPI.getInstance().myMoney(playerName);
+
+		int m = shop.getMaxTranscationVolume(playerMoney, InvItem.getItemInInventoryCount(playerInv, shop.getItem()));
 		
 //		addElement(new ElementSlider("交易量 "+m, 0, m, 1, 0));
 		addElement(new ElementSlider(L.get(Lang.FORM_TRADING__TRADING_VOLUME, "{TRADING_VOLUME}", String.valueOf(m)), 0, m, 1, 0));
@@ -53,7 +59,7 @@ public class TradingPanel extends FormWindowCustom implements FormRespone
 		if(tv!=0)
 		{
 			Shop shop = Shop.getShopInstance(shopKey);
-			Player player = Main.instance.getServer().getPlayerExact(playerName);
+			Player player = QuickShop2Plugin.instance.getServer().getPlayerExact(playerName);
 			
 			if(shop instanceof BuyShop)
 			{

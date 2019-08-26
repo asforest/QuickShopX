@@ -1,12 +1,13 @@
 package cn.innc11.QuickShop2.shop;
 
-import cn.innc11.QuickShop2.Main;
+import cn.innc11.QuickShop2.QuickShop2Plugin;
 import cn.innc11.QuickShop2.config.LangConfig.Lang;
 import cn.innc11.QuickShop2.utils.InvItem;
 import cn.innc11.QuickShop2.utils.L;
 import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.inventory.ChestInventory;
+import cn.nukkit.inventory.PlayerInventory;
 import cn.nukkit.item.Item;
 import me.onebone.economyapi.EconomyAPI;
 
@@ -18,7 +19,6 @@ public class SellShop extends Shop
 		super(shop);
 	}
 	
-	
 	public void sellItme(Player player, int count)
 	{
 		if(count <=0)
@@ -26,67 +26,69 @@ public class SellShop extends Shop
 			player.sendMessage(L.get(Lang.IM_TRADE_CANCELED));
 			return;
 		}
-		
-		double shopOwnerMoney = EconomyAPI.getInstance().myMoney(data.owner);
+
+		EconomyAPI economyAPI = EconomyAPI.getInstance();
+		double shopOwnerMoney =economyAPI.myMoney(data.owner);
 		double price = data.price * count;
-		
-		if(shopOwnerMoney >= price)
+		Player shopOwner = Server.getInstance().getPlayerExact(data.owner);
+		Item item = Item.get(data.itemID, data.itemMetadata, count);
+		PlayerInventory playerInv = player.getInventory();
+		ChestInventory shopChestInventory = (ChestInventory) getShopChest().getInventory();
+
+		if(getShopChest()!=null)
 		{
-			if(getShopChest()!=null)
+			if(shopOwnerMoney >= price || data.serverShop)
 			{
-				Item item = Item.get(data.itemID, data.itemMetadata, count);
-				
-				if(InvItem.hasItem(player.getInventory(), item) && 
-						(InvItem.getItemInInventoryCount(player.getInventory(), item) >= count)) 
+				if(shopChestInventory.canAddItem(item) || data.serverShop)
 				{
-					ChestInventory chestInventory = (ChestInventory) getShopChest().getInventory();
-					
-					if(!chestInventory.isFull() && chestInventory.canAddItem(item))
+					if(InvItem.getItemInInventoryCount(playerInv, item) >= count)
 					{
-						EconomyAPI.getInstance().addMoney(player, price);
-					
-						if(!data.unlimited)
+						economyAPI.addMoney(player, price);
+
+						if(!data.serverShop)
 						{
-							EconomyAPI.getInstance().reduceMoney(data.owner, price);
-							
-							Player owner = Server.getInstance().getPlayerExact(data.owner);
-							
-							if(owner!=null) 
-								owner.sendMessage(L.get(Lang.IM_SELLSHOP_OWNER, "{ITEM_NAME}", Main.instance.itemNameConfig.getItemName(item), "{ITEM_COUNT}", String.valueOf(count), "{MONEY}", String.format("%.2f", price)));
-							
-							getShopChest().getInventory().addItem(item);
+							economyAPI.reduceMoney(data.owner, price);
+
+							shopChestInventory.addItem(item);
+
+							if(shopOwner!=null) {
+								shopOwner.sendMessage(L.get(Lang.IM_SELLSHOP_OWNER, "{ITEM_NAME}", QuickShop2Plugin.instance.itemNameConfig.getItemName(item), "{ITEM_COUNT}", String.valueOf(count), "{MONEY}", String.format("%.2f", price)));
+							}
 						}
-						
-						player.getInventory().removeItem(item);
-						
+
+						playerInv.removeItem(item);
+
 						updateSignText();
-						
-						player.sendMessage(String.format(L.get(Lang.IM_SELLSHOP_CUSTOMER, "{ITEM_NAME}", Main.instance.itemNameConfig.getItemName(item), "{ITEM_COUNT}", String.valueOf(count), "{MONEY}", String.format("%.2f", price))));
+
+						player.sendMessage(String.format(L.get(Lang.IM_SELLSHOP_CUSTOMER, "{ITEM_NAME}", QuickShop2Plugin.instance.itemNameConfig.getItemName(item), "{ITEM_COUNT}", String.valueOf(count), "{MONEY}", String.format("%.2f", price))));
+
 					} else {
-						player.sendMessage(L.get(Lang.IM_STOCK_FULL, "{TARGET_COUNT}", String.valueOf(count), "{MAX_COUNT}", String.valueOf(getShopChest().getInventory().getFreeSpace(item))));
+						player.sendMessage(L.get(Lang.IM_ITEM_NOT_ENOUGH, "{ITEM_NAME}", QuickShop2Plugin.instance.itemNameConfig.getItemName(item), "{TARGET_COUNT}", String.valueOf(count)));
 					}
-					
+
 				} else {
-					player.sendMessage(L.get(Lang.IM_ITEM_NOT_ENOUGH, "{ITEM_NAME}", Main.instance.itemNameConfig.getItemName(item), "{TARGET_COUNT}", String.valueOf(count)));
+					player.sendMessage(L.get(Lang.IM_STOCK_FULL, "{TARGET_COUNT}", String.valueOf(count), "{MAX_COUNT}", String.valueOf(getShopChest().getInventory().getFreeSpace(item))));
 				}
-				
+
+			} else {
+				player.sendMessage(L.get(Lang.IM_SHOP_OWNER_NOT_ENOUGH_MONEY, "{OWNER}", data.owner));
 			}
-		} else {
-			player.sendMessage(L.get(Lang.IM_SHOP_OWNER_NOT_ENOUGH_MONEY, "{OWNER}", data.owner));
 		}
+
+
 	}
 
 
 	@Override
-	public int getMaxTranscationVolume(float price) 
+	public int getMaxTranscationVolume(float playerMoney, int playerItemCount)
 	{
 		int itemFree = getShopChest().getInventory().getFreeSpace(getItem());
 		int a = (int) (EconomyAPI.getInstance().myMoney(data.owner) / data.price);
 		
-		if(data.unlimited)
-			itemFree = a;
+		if(data.serverShop)
+			a = itemFree;
 		
-		return Math.min(itemFree, a);
+		return Math.min(Math.min(itemFree, a), playerItemCount);
 	}
 
 
