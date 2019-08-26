@@ -1,10 +1,10 @@
-#[QuickShop2](https://github.com/innc11/QuickShop2)
+# [QuickShop2](https://github.com/innc11/QuickShop2)
 
 一个适用于Nukkit的插件，QuickShop2，由原作者[WetABQ](https://github.com/WetABQ)的插件修改而来
 
  A plugin for Nukkit, QuickShop2,original author [WetABQ](https://github.com/WetABQ)
 
-##更新记录Change logs
+## 更新记录Change logs
 
 #### 1.0.1
 
