@@ -101,7 +101,7 @@
 | /qs buy(b)                  | 改变为购买类型的商店   | player |
 | /qs sell(s)                 | 改变为出售类型的商店   | player |
 | /qs price(p) <price>        | 改变商店的交易价格     | player |
-| /qs unlimited(u,server,se)  | 改变商店为系统商店     | op     |
+| /qs unlimited(u,)           | 改变商店为系统商店     | op     |
 | /qs version(v)              | 显示插件的版本信息     | op     |
 | /qs controlpanel(cp)        | 显示插件的控制面板     | op     |
 | /qs reload(r)               | 重新加载插件的配置文件 | op     |

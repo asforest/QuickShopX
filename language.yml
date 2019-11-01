@@ -76,7 +76,7 @@ PLUGIN_MESSAGE_HELP_NORMAL:
   - "&b/qs sell(s) - 设置当前点击过的商店为&4回收&b类型"
   - "&b/qs price(p) <价格> - 设置当前点击过的商店的价格"
 PLUGIN_MESSAGE_HELP_OPERATOR:
-  - "&9/qs unlimited(ul,server,se) - 设置当前点击过的商店为系统商店"
+  - "&9/qs unlimited(ul) - 设置当前点击过的商店为系统商店"
   - "&9/qs version(v) - 查看插件版本信息"
   - "&9/qs controlpanel(cp) - 打开插件的控制面板(FormUI)"
   - "&9/qs reload(r) - 重新加载插件的所有配置文件(商店数据文件除外)"
