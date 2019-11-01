@@ -1,10 +1,11 @@
-name: QuickShop2
-main: cn.innc11.QuickShop2.QuickShop2Plugin
+name: QuickShopX
+main: cn.innc11.QuickShop2.QuickShopXPlugin
 version: "1.1"
 author: innc11
 api: ["1.0.0"]
-prefix: "QuickShop2"
+prefix: "QuickShopX"
 load: POSTWORLD
 depend: ["EconomyAPI"]
 softdepend: ["Residence"]
-website: "https://github.com/innc11/QuickShop2"
+website: "https://github.com/innc11/QuickShopX"
+description: "&l&eQuickShopX&r, &dMade by innc11, original author WetABQ"

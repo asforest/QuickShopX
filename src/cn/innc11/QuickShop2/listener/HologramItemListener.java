@@ -5,8 +5,8 @@ import java.util.Collection;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
-import cn.innc11.QuickShop2.QuickShop2Plugin;
-import cn.innc11.QuickShop2.Pair;
+import cn.innc11.QuickShop2.QuickShopXPlugin;
+import cn.innc11.QuickShop2.utils.Pair;
 import cn.innc11.QuickShop2.shop.ShopData;
 import cn.nukkit.Player;
 import cn.nukkit.Server;
@@ -21,11 +21,11 @@ import cn.nukkit.network.protocol.DataPacket;
 import cn.nukkit.network.protocol.RemoveEntityPacket;
 import cn.nukkit.scheduler.PluginTask;
 
-public class HologramItem implements Listener 
+public class HologramItemListener implements Listener
 {
 	ArrayBlockingQueue<Pair<Collection<Player>, DataPacket>> queue = new ArrayBlockingQueue<Pair<Collection<Player>,DataPacket>>(10000);	
 	
-	PluginTask<QuickShop2Plugin> sendDataPacketTask = new PluginTask<QuickShop2Plugin>(QuickShop2Plugin.instance)
+	PluginTask<QuickShopXPlugin> sendDataPacketTask = new PluginTask<QuickShopXPlugin>(QuickShopXPlugin.instance)
 	{
 		@Override
 		public void onRun(int currentTicks) 
@@ -38,9 +38,8 @@ public class HologramItem implements Listener
 					Pair<Collection<Player>, DataPacket> x = queue.take();
 					
 					Server.broadcastPacket(x.key, x.value);
-					
-					
-					packetSendDelay = (int)(1*1000 / QuickShop2Plugin.instance.pluginConfig.packetSendPerSecondMax);
+
+					packetSendDelay = (int)(1*1000 / QuickShopXPlugin.instance.pluginConfig.packetSendPerSecondMax);
 					
 					Thread.sleep(packetSendDelay);
 					
@@ -51,7 +50,7 @@ public class HologramItem implements Listener
 		}
 	};
 	
-	public HologramItem(QuickShop2Plugin main)
+	public HologramItemListener(QuickShopXPlugin main)
 	{
 		main.getServer().getScheduler().scheduleDelayedTask(sendDataPacketTask, 0, true);
 	}
@@ -59,7 +58,7 @@ public class HologramItem implements Listener
 	@EventHandler
     public void onPlayerJoin(PlayerJoinEvent e) 
 	{
-		for (ShopData shopData : QuickShop2Plugin.instance.shopConfig.shopDataHashMap.values())
+		for (ShopData shopData : QuickShopXPlugin.instance.shopConfig.shopDataHashMap.values())
         {
         	if(shopData.world.equals(e.getPlayer().level.getFolderName()))
         		addShopItemEntity(Arrays.asList(e.getPlayer()), shopData);
@@ -77,7 +76,7 @@ public class HologramItem implements Listener
 		{
 //			Server.getInstance().getLogger().error(event.getPlayer().getName()+"传送到了不同的世界: 从"+event.getFrom().level.getName()+" 到"+event.getTo().level.getName());
 			
-			for (ShopData shopData : QuickShop2Plugin.instance.shopConfig.shopDataHashMap.values())
+			for (ShopData shopData : QuickShopXPlugin.instance.shopConfig.shopDataHashMap.values())
 			{
 				if(shopData.world.equals(event.getTo().level.getFolderName()))
 				{
@@ -97,7 +96,7 @@ public class HologramItem implements Listener
 	
 	public void removeAllItemEntityForAllPlayer()
 	{
-		for (ShopData shopData : QuickShop2Plugin.instance.shopConfig.shopDataHashMap.values())
+		for (ShopData shopData : QuickShopXPlugin.instance.shopConfig.shopDataHashMap.values())
         {
 			for(Player player : Server.getInstance().getOnlinePlayers().values())
 			{
@@ -109,7 +108,7 @@ public class HologramItem implements Listener
 	
 	public void addAllItemEntityForAllPlayer()
 	{
-		for (ShopData shopData : QuickShop2Plugin.instance.shopConfig.shopDataHashMap.values())
+		for (ShopData shopData : QuickShopXPlugin.instance.shopConfig.shopDataHashMap.values())
 		{
 			for(Player player : Server.getInstance().getOnlinePlayers().values())
 			{
@@ -131,7 +130,7 @@ public class HologramItem implements Listener
 	
 	public long addShopItemEntity(Collection<Player> players, ShopData shopData) 
 	{
-		if(!QuickShop2Plugin.instance.pluginConfig.hologramItemShow) return 0L;
+		if(!QuickShopXPlugin.instance.pluginConfig.hologramItemShow) return 0L;
 		
 		long entityId = getEid(shopData);
 		
@@ -162,7 +161,7 @@ public class HologramItem implements Listener
 	
 	public void removeItemEntity(Collection<Player> players, ShopData shopData) 
 	{
-		if(!QuickShop2Plugin.instance.pluginConfig.hologramItemShow) return;
+		if(!QuickShopXPlugin.instance.pluginConfig.hologramItemShow) return;
 		
 		RemoveEntityPacket removeItemEntityPacket = new RemoveEntityPacket();
 		removeItemEntityPacket.eid = getEid(shopData);

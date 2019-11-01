@@ -2,11 +2,12 @@ package cn.innc11.QuickShop2.listener;
 
 import java.util.HashMap;
 
+import cn.innc11.QuickShop2.pluginEvent.PlayerCreateShopEvent;
 import com.bekvon.bukkit.residence.Residence;
 import com.bekvon.bukkit.residence.protection.ClaimedResidence;
 
-import cn.innc11.QuickShop2.QuickShop2Plugin;
-import cn.innc11.QuickShop2.Pair;
+import cn.innc11.QuickShop2.QuickShopXPlugin;
+import cn.innc11.QuickShop2.utils.Pair;
 import cn.innc11.QuickShop2.config.LangConfig.Lang;
 import cn.innc11.QuickShop2.shop.Shop;
 import cn.innc11.QuickShop2.utils.L;
@@ -36,7 +37,7 @@ public class CreateShopListener implements Listener, ShopInteractionTimer
 		
 		boolean allowCreateShop = false;
 		
-		if(QuickShop2Plugin.instance.residencePluginLoaded && QuickShop2Plugin.instance.pluginConfig.interactionWithResidencePlugin)
+		if(QuickShopXPlugin.instance.residencePluginLoaded && QuickShopXPlugin.instance.pluginConfig.interactionWithResidencePlugin)
 		{
 			ClaimedResidence res = Residence.getResidenceManager().getByLoc(block);
 
@@ -44,7 +45,7 @@ public class CreateShopListener implements Listener, ShopInteractionTimer
 			{
 				boolean hasBuildPerm = res.getPermissions().playerHas(player.getName(), "build", false);
 
-				if(player.isOp() && QuickShop2Plugin.instance.pluginConfig.opIgnoreResidenceBuildPermission)
+				if(player.isOp() && QuickShopXPlugin.instance.pluginConfig.opIgnoreResidenceBuildPermission)
 				{
 					hasBuildPerm = true;
 				}
@@ -59,7 +60,7 @@ public class CreateShopListener implements Listener, ShopInteractionTimer
 			} else {
 				allowCreateShop = true;
 				
-				if(QuickShop2Plugin.instance.pluginConfig.createShopInResidenceOnly)
+				if(QuickShopXPlugin.instance.pluginConfig.createShopInResidenceOnly)
 				{
 					allowCreateShop = false;
 					
@@ -74,7 +75,7 @@ public class CreateShopListener implements Listener, ShopInteractionTimer
 		
 		if(allowCreateShop)
 		{
-			int interval = QuickShop2Plugin.instance.pluginConfig.interactionInterval;
+			int interval = QuickShopXPlugin.instance.pluginConfig.interactionInterval;
 			
 			creatingShopPlayers.put(player.getName(), new Pair<Long,Block>(Long.valueOf(System.currentTimeMillis()+interval), block));
 			
@@ -125,7 +126,7 @@ public class CreateShopListener implements Listener, ShopInteractionTimer
 		
 		if(creatingShopPlayers.containsKey(playerName))
 		{
-			if(!QuickShop2Plugin.isPrice(message))
+			if(!QuickShopXPlugin.isPrice(message))
 			{
 				// not a number
 				player.sendMessage(L.get(Lang.IM_NO_ENTER_NUMBER));
@@ -136,12 +137,20 @@ public class CreateShopListener implements Listener, ShopInteractionTimer
 				player.sendMessage(L.get(Lang.IM_INTERACTOIN_TIMEOUT));
 			}else {
 				BlockChest creatingShopChest = (BlockChest) creatingShopPlayers.get(playerName).value;
-				
+
 				Shop createdShop = Shop.placeShop(creatingShopChest, Float.parseFloat(message), player);
-				
-				if(createdShop!=null)
-					QuickShop2Plugin.instance.hologramListener.addShopItemEntity(Server.getInstance().getOnlinePlayers().values(), createdShop.data);
-				
+
+				if (createdShop != null)
+				{
+					PlayerCreateShopEvent event = new PlayerCreateShopEvent(player, createdShop);
+					QuickShopXPlugin.instance.getServer().getPluginManager().callEvent(event);
+
+					if(!event.isCancelled())
+					{
+						QuickShopXPlugin.instance.hologramListener.addShopItemEntity(Server.getInstance().getOnlinePlayers().values(), createdShop.data);
+					}
+
+				}
 			}
 			
 			creatingShopPlayers.remove(playerName);

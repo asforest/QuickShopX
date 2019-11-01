@@ -2,7 +2,7 @@ package cn.innc11.QuickShop2.config;
 
 import java.util.HashMap;
 
-import cn.innc11.QuickShop2.QuickShop2Plugin;
+import cn.innc11.QuickShop2.QuickShopXPlugin;
 import cn.nukkit.item.Item;
 
 public class ItemNameConfig extends MyConfig 
@@ -47,10 +47,9 @@ public class ItemNameConfig extends MyConfig
 			
 //			for(String key : itemNameMap.keySet())
 //				Main.instance.getLogger().warning(key+" -> "+itemNameMap.get(key));
-			
 		}
 		
-		QuickShop2Plugin.instance.getLogger().info("Loaded "+itemNameMap.size()+" ItemName");
+		QuickShopXPlugin.instance.getLogger().info("Loaded "+itemNameMap.size()+" ItemName");
 	}
 
 	
@@ -59,8 +58,7 @@ public class ItemNameConfig extends MyConfig
 		String key = item.getId()+":"+item.getDamage();
 		
 //		Main.instance.getLogger().warning("find: "+key);
-		
-		
+
 		if(itemNameMap.containsKey(key))
 		{
 			return itemNameMap.get(key);

@@ -1,6 +1,6 @@
 package cn.innc11.QuickShop2.config;
 
-import cn.innc11.QuickShop2.QuickShop2Plugin;
+import cn.innc11.QuickShop2.QuickShopXPlugin;
 import cn.innc11.QuickShop2.shop.Shop;
 import cn.innc11.QuickShop2.shop.ShopType;
 import cn.innc11.QuickShop2.utils.L;
@@ -67,7 +67,7 @@ public class SignTextConfig extends MyConfig
 	
 	private String variableReplace(String str, Shop shop)
 	{
-		ItemNameConfig inc = QuickShop2Plugin.instance.itemNameConfig;
+		ItemNameConfig inc = QuickShopXPlugin.instance.itemNameConfig;
 		
 		str = str.replaceAll("\\$\\{ITEM_NAME\\}", inc.getItemName(shop.getItem()));
 		str = str.replaceAll("\\$\\{PRICE\\}", shop.getStringPrice());

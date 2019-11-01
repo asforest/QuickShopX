@@ -1,5 +1,6 @@
 package cn.innc11.QuickShop2.pluginEvent;
 
+import cn.innc11.QuickShop2.shop.SellShop;
 import cn.innc11.QuickShop2.shop.Shop;
 import cn.nukkit.Player;
 import cn.nukkit.event.Cancellable;
@@ -16,17 +17,17 @@ public class PlayerSellEvent extends PlayerEvent implements Cancellable
         return handlers;
     }
 
-    private Shop shop;
+    private SellShop shop;
     private int count;
 
-    public PlayerSellEvent(Player player, Shop shop, int count)
+    public PlayerSellEvent(Player player, SellShop shop, int count)
     {
         this.player = player;
         this.shop = shop;
         this.count = count;
     }
 
-    public Shop getShop()
+    public SellShop getShop()
     {
         return shop;
     }

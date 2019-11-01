@@ -2,10 +2,12 @@ package cn.innc11.QuickShop2.config;
 
 import java.util.HashMap;
 
-import cn.innc11.QuickShop2.QuickShop2Plugin;
+import cn.innc11.QuickShop2.QuickShopXPlugin;
+import cn.innc11.QuickShop2.pluginEvent.PlayerRemoveShopEvent;
 import cn.innc11.QuickShop2.shop.Shop;
 import cn.innc11.QuickShop2.shop.ShopData;
 import cn.innc11.QuickShop2.shop.ShopType;
+import cn.nukkit.Player;
 import cn.nukkit.item.Item;
 import cn.nukkit.scheduler.PluginTask;
 
@@ -32,7 +34,7 @@ public class ShopConfig extends MyConfig
 	private boolean modified = false;
 	private boolean saving = false;
 	
-	private PluginTask<QuickShop2Plugin> saveTask;
+	private PluginTask<QuickShopXPlugin> saveTask;
 	
 	
 	public Shop addShop(ShopData shop)
@@ -45,17 +47,37 @@ public class ShopConfig extends MyConfig
 		return Shop.getShopInstance(key);
 	}
 	
-	public void removeShop(ShopData shop)
+	public boolean destoryShop(ShopData shopData, Player player)
 	{
-		String key = String.format("%d:%d:%d:%s", shop.chestX, shop.chestY, shop.chestZ, shop.world);
-		
-//		Shop.getShopInstance(key).destoryShop();
-		
+		PlayerRemoveShopEvent event = new PlayerRemoveShopEvent(player, shopData.getShop());
+		QuickShopXPlugin.instance.getServer().getPluginManager().callEvent(event);
+
+		if(!event.isCancelled())
+		{
+			String key = String.format("%d:%d:%d:%s", shopData.chestX, shopData.chestY, shopData.chestZ, shopData.world);
+
+//		    Shop.getShopInstance(key).destoryShop();
+
+			shopDataHashMap.remove(key);
+
+			save();
+
+			return true;
+		}
+
+		return false;
+	}
+
+	public void removeShop(ShopData shopData)
+	{
+		String key = String.format("%d:%d:%d:%s", shopData.chestX, shopData.chestY, shopData.chestZ, shopData.world);
+
+//		    Shop.getShopInstance(key).destoryShop();
+
 		shopDataHashMap.remove(key);
-		
 		save();
 	}
-	
+
 	@Override
 	public void save()
 	{
@@ -63,7 +85,7 @@ public class ShopConfig extends MyConfig
 		{
 			modified = true;
 			saving = true;
-			QuickShop2Plugin.instance.getServer().getScheduler().scheduleTask(QuickShop2Plugin.instance, saveTask, true);
+			QuickShopXPlugin.instance.getServer().getScheduler().scheduleTask(QuickShopXPlugin.instance, saveTask, true);
 		} else {
 			modified = true;
 		}
@@ -96,7 +118,7 @@ public class ShopConfig extends MyConfig
 			shopDataHashMap.put(key, shopData);
 		}
 		
-		QuickShop2Plugin.instance.getLogger().info("Loaded "+config.getKeys(false).size()+" Shops");
+		QuickShopXPlugin.instance.getLogger().info("Loaded "+config.getKeys(false).size()+" Shops");
 	}
 	
 	private void SAVE()
@@ -119,7 +141,7 @@ public class ShopConfig extends MyConfig
 			config.set(key+".itemID", shopData.itemID);
 			config.set(key+".itemMeta", shopData.itemMetadata);
 			config.set(key+".serverShop", shopData.serverShop);
-			config.set(key+".common", QuickShop2Plugin.instance.itemNameConfig.getItemName(Item.get(shopData.itemID, shopData.itemMetadata)));
+			config.set(key+".common", QuickShopXPlugin.instance.itemNameConfig.getItemName(Item.get(shopData.itemID, shopData.itemMetadata)));
 		}
 		
 		config.save();
@@ -131,7 +153,7 @@ public class ShopConfig extends MyConfig
 		
 		reload();
 		
-		saveTask = new PluginTask<QuickShop2Plugin>(QuickShop2Plugin.instance)
+		saveTask = new PluginTask<QuickShopXPlugin>(QuickShopXPlugin.instance)
 		{
 			@Override
 			public void onRun(int currentTicks) 

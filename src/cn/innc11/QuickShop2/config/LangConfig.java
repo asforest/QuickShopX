@@ -3,7 +3,7 @@ package cn.innc11.QuickShop2.config;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import cn.innc11.QuickShop2.QuickShop2Plugin;
+import cn.innc11.QuickShop2.QuickShopXPlugin;
 import cn.nukkit.utils.TextFormat;
 
 public class LangConfig extends MyConfig 
@@ -38,7 +38,7 @@ public class LangConfig extends MyConfig
 			if(v==null)
 			{
 				config.set(key.name(), key.getDefaultLangText());
-				QuickShop2Plugin.instance.getLogger().info("set default language for language.yml("+key.name()+")");
+				QuickShopXPlugin.instance.getLogger().info("set default language for language.yml("+key.name()+")");
 				supplement = true;
 				lang.put(key, key.getDefaultLangText());
 			}
@@ -71,7 +71,7 @@ public class LangConfig extends MyConfig
 		if(supplement)
 			save();
 		
-		QuickShop2Plugin.instance.getLogger().info("Loaded "+ct+" Languages.");
+		QuickShopXPlugin.instance.getLogger().info("Loaded "+ct+" Languages.");
 	}
 	
 	public String get(Lang l, String... argsPair)
@@ -143,6 +143,7 @@ public class LangConfig extends MyConfig
 		IM_CHEST_SIGN_DIFFERENT_RESIDENCE("商店的箱子和牌子不允许跨领地"),
 		IM_SIGN_NOT_IN_A_RESIDENCE_RANGE("商店的牌子不在领地范围内"),
 		IM_SIGN_NOT_ALLOWED_IN_A_RESIDENCE("商店的牌子不允许在一个领地范围内"),
+		IM_NOT_SHOP_OWNER_CANNOT_OPEN_CHEST("你不是这个商店的主人,无法打开箱子"),
 
 		FORM_SHOPDATA__TITLE("商店信息面板"),
 		FORM_SHOPDATA__UNIT_PRICE("物品价格"),

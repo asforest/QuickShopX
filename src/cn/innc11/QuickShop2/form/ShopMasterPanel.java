@@ -1,6 +1,6 @@
 package cn.innc11.QuickShop2.form;
 
-import cn.innc11.QuickShop2.QuickShop2Plugin;
+import cn.innc11.QuickShop2.QuickShopXPlugin;
 import cn.innc11.QuickShop2.config.LangConfig.Lang;
 import cn.innc11.QuickShop2.shop.Shop;
 import cn.innc11.QuickShop2.shop.ShopType;
@@ -44,7 +44,7 @@ public class ShopMasterPanel extends FormWindowSimple implements FormRespone
 		addButton(new ElementButton(L.get(Lang.FORM_MASTER__BUTTON_SHOP_DATA_PANEL)));
 
 //		addButton(new ElementButton("移除商店"));
-		addButton(new ElementButton(L.get(Lang.FORM_MASTER__BUTTON_REMOVE_SHOP)));
+		//addButton(new ElementButton(L.get(Lang.FORM_MASTER__BUTTON_REMOVE_SHOP)));
 	}
 
 	@Override
@@ -68,16 +68,17 @@ public class ShopMasterPanel extends FormWindowSimple implements FormRespone
 			case 1:
 				e.getPlayer().showFormWindow(new ShopDataPanel(Shop.getShopInstance(shopKey), playerName));
 				break;
-
+/*
 			case 2:
 			{
-
-				shop.removeShop();
-				QuickShop2Plugin.instance.hologramListener.removeItemEntity(Server.getInstance().getOnlinePlayers().values(), shop.data);
+				shop.destoryShop(QuickShopXPlugin.instance.getServer().getPlayerExact(playerName));
+				QuickShopXPlugin.instance.hologramListener.removeItemEntity(Server.getInstance().getOnlinePlayers().values(), shop.data);
 					
-				QuickShop2Plugin.instance.getServer().getPlayerExact(playerName).sendMessage(L.get(Lang.IM_SUCCEESSFULLY_REMOVED_SHOP));
+				QuickShopXPlugin.instance.getServer().getPlayerExact(playerName).sendMessage(L.get(Lang.IM_SUCCEESSFULLY_REMOVED_SHOP));
 				break;
 			}
+*/
+
 	
 		}
 		

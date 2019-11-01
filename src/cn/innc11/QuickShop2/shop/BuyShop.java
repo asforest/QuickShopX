@@ -1,7 +1,8 @@
 package cn.innc11.QuickShop2.shop;
 
-import cn.innc11.QuickShop2.QuickShop2Plugin;
+import cn.innc11.QuickShop2.QuickShopXPlugin;
 import cn.innc11.QuickShop2.config.LangConfig.Lang;
+import cn.innc11.QuickShop2.pluginEvent.PlayerBuyEvent;
 import cn.innc11.QuickShop2.utils.InvItem;
 import cn.innc11.QuickShop2.utils.L;
 import cn.nukkit.Player;
@@ -43,27 +44,34 @@ public class BuyShop extends Shop {
 				{
 					if(playerInv.canAddItem(item))
 					{
-						economyAPI.reduceMoney(player, price);
+						PlayerBuyEvent event = new PlayerBuyEvent(player, this, count);
+						QuickShopXPlugin.instance.getServer().getPluginManager().callEvent(event);
 
-						playerInv.addItem(item);
-
-						if(!data.serverShop)
+						if(!event.isCancelled())
 						{
-							economyAPI.addMoney(data.owner, price);
+							economyAPI.reduceMoney(player, price);
 
-							getShopChest().getInventory().removeItem(item);
+							playerInv.addItem(item);
 
-							if(shopOwner!=null) {
-								shopOwner.sendMessage(L.get(Lang.IM_BUYSHOP_OWNER, "{ITEM_NAME}", QuickShop2Plugin.instance.itemNameConfig.getItemName(item), "{ITEM_COUNT}", String.valueOf(count), "{MONEY}", String.format("%.2f", price)));
+							if(!data.serverShop)
+							{
+								economyAPI.addMoney(data.owner, price);
+
+								getShopChest().getInventory().removeItem(item);
+
+								if(shopOwner!=null) {
+									shopOwner.sendMessage(L.get(Lang.IM_BUYSHOP_OWNER, "{ITEM_NAME}", QuickShopXPlugin.instance.itemNameConfig.getItemName(item), "{ITEM_COUNT}", String.valueOf(count), "{MONEY}", String.format("%.2f", price)));
+								}
 							}
+
+							updateSignText();
+
+							player.sendMessage(L.get(Lang.IM_BUYSHOP_CUSTOMER, "{ITEM_NAME}", QuickShopXPlugin.instance.itemNameConfig.getItemName(item), "{ITEM_COUNT}", String.valueOf(count), "{MONEY}", String.format("%.2f", price)));
 						}
 
-						updateSignText();
-						
-						player.sendMessage(L.get(Lang.IM_BUYSHOP_CUSTOMER, "{ITEM_NAME}", QuickShop2Plugin.instance.itemNameConfig.getItemName(item), "{ITEM_COUNT}", String.valueOf(count), "{MONEY}", String.format("%.2f", price)));
-						
+
 					} else {
-						player.sendMessage(L.get(Lang.IM_BACKPACK_FULL, "{TARGET_COUNT}", String.valueOf(count), "{ITEM_NAME}", QuickShop2Plugin.instance.itemNameConfig.getItemName(item)));
+						player.sendMessage(L.get(Lang.IM_BACKPACK_FULL, "{TARGET_COUNT}", String.valueOf(count), "{ITEM_NAME}", QuickShopXPlugin.instance.itemNameConfig.getItemName(item)));
 					}
 				}  else {
 					player.sendMessage(L.get(Lang.IM_NOT_ENOUGH_MONEY_TO_BUYING, "{MONEY}", String.format("%.2f", playerMoney), "{ITEM_PRICE}", String.format("%.2f", data.price), "{ITEM_COUNT}", String.valueOf(count), "{SUBTOTAL}", String.format("%.2f", data.price*count), "{LACK_MONEY}", String.format("%.2f", price-playerMoney)));

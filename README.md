@@ -1,15 +1,66 @@
-# [QuickShop2](https://github.com/innc11/QuickShop2)
+# [QuickShopX](https://github.com/innc11/QuickShopX)
 
-一个适用于Nukkit的插件，QuickShop2，由原作者[WetABQ](https://github.com/WetABQ)的插件修改而来
+一个适用于Nukkit的插件，QuickShopX，由原作者[WetABQ](https://github.com/WetABQ)的插件修改而来
 
- A plugin for Nukkit, QuickShop2,original author [WetABQ](https://github.com/WetABQ)
+ A plugin for Nukkit, QuickShopX,original author [WetABQ](https://github.com/WetABQ)
 
-## 更新记录Change logs
+## 相对于QuickShop的变化
+
+#### - 创建商店的变化
+
+创建商店由自己放置牌子和右键交互事件改为只有左键交互事件（就是和Bukkit上的QuickShop一样，左键点击一下，就是轻微的破坏一点点，在创造模式下也能很好的工作
+
+#### - 商店保护机制的变化
+
+增加了商店的保护机制，包括爆炸、活塞、燃烧做了相应的处理，不会在出现箱子消失的情况了
+
+#### - 商店配置文件的变化
+
+商店的商店配置文件沿用了QuickShop的设计，并作出了一些小小的更改，其中common字段是方便调试用的，插件不会读取它
+
+#### - 全息物品的变化
+
+完善全息物品（商店箱子上方的悬浮物品）显示的问题，在有多个世界的情况下也能很好的工作，并将发包操作放到了异步线程里进行
+
+#### - 商店牌子文字的变化
+
+商店的牌子上的文字可以自由修改了（通过signText.yml文件），同样支持彩色代码
+
+#### - 商店牌子的变化
+
+增加了商店牌子实时显示商店库存等信息（包括往箱子里面放物品的时候也会实时更新牌子数据），对使用漏斗机械来作为自动补货机制的商店同样有效，牌子会实时更新
+
+#### - 自定义物品名称的变化
+
+插件现在自带了中文物品名的config文件（插件自带的是Java版的物品命名，目前只提供了JE命名，如果觉得不满意还烦请手动修调），找不到自定义物品名的情况下才会使用Nukkit自带的英文物品名称
+
+#### - 插件API的变化
+
+比如QuickShop的PlayerBuyEvent可以获取到Player对象和ShopData对象，但QuickShopX的PlayerBuyEvent是可以获取Player对象和BuyShop对象，由BuyShop对象可以获取到ShopData对象，这一点在PlayerBuyEvent上同理，需要注意
+
+#### - 语言文件的变化
+
+由QuickShop的{}占位符变化成${ITEM_NAME}、${TARGET_COUNT}占位符，现在可以自由调整占位符的前后顺序了，几乎所有能见到的文字都可以自定义
+
+#### - 工作机制的变化
+
+1. 对商店的操作增加了FORM界面的支持，当然如果愿意可以使用chat进行操作，这个可以由配置文件控制触发方式，或是一直使用chat操作，或者一直使用form操作，或是单击牌子使用chat操作，双击使用form操作
+2. 对插件本身的配置也由form接管，使用/qs cp可以打开插件的控制面板(默认OP)具体内容可以看图片（包括针对Residence插件的交互，对全息物品的控制，对op的权限控制等）
+3. 当Residence插件存在的时候并启用了与Residence插件交互时，领地内有build权限和container权限的人可以破坏商店和打开商店箱子但无法修改商店的信息（商店信息只能由商店主人来修改，且主人如果没有build权限是无法破坏商店的，但一般不会出现这个情况）
+
+## 尚未完善的地方
+1. 语言文件目前只提供了中文，因为工作量太大没能顾及英文语言，争取在下个版本补上
+2. 每个商店箱子的角落方向上的4个位置上不能出现另一个商店的箱子，否则商店牌子和箱子可能会出现错乱（不要在商店箱子的挨着的4个角落位置上创建新的商店，会出现问题，不过一般没有人会这样放），下个版本会修复
+3. 对大箱子的支持任然不够完善，争取在下个版本修复
+4. 商店目前因为支持漏斗补货的机制的存在，不在领地内创建商店可能会导致物品被窃走（即使在领地内也要防止漏斗矿车到达箱子底下），请尽量尽量尽量在领地内创建商店，插件虽然能够提供一些基础防护，但还是请务必在领地内创建商店，此功能可以被配置启动或者关闭
+5. Win10右键可能会多次触发Interaction事件，会导致打开多个form界面叠在一起，对插件功能没有影响，争取在下个版本修复
+
+## 更新记录 Change logs
 
 #### 1.0.1
 
 1. 修改插件控制面板标题中显示的配置文件版本为插件版本
-2. 添加商店破坏条件：是否在潜行下才能破坏，这个功能可以由配置文件控制
+2. 添加商店破坏条件：是否在潜行下才能破坏，这个功能可以由配置文件进行控制
 3. 优化部分默认语言文本
 4. 添加本README文件(｀・ω・´)
 
@@ -18,11 +69,8 @@
 1. 优化语言配置文件读取机制，缺少的语言会自动补齐
 2. 添加可监听的插件事件
 	- PlayerBuyEvent（玩家购买事件）
-	
 	- PlayerSellEvent（玩家出售事件）
-	
 	- PlayerCreateShopEvent（玩家创建商店事件）
-	
 	- PlayerRemoveShopEvent（玩家破坏商店事件）
 3. 交换商店店主页面的"打开商店设置面板"和"打开商店交易面板"的按钮的位置
 4. 优化所有金额的显示格式
@@ -34,3 +82,41 @@
 10. 修复出售商店最大交易量计算不正确的问题
 11. 修改商店主人显示信息
 12. 修改"控制面板"中的"全息物品每秒最大发包量"的最大值由100提升到500
+
+#### 1.2
+
+1. 移除了店主面板里面的"移除商店"按钮
+2. 修复了插件事件无法触发的问题
+3. 增加了对漏斗补货机制中牌子文字显示不更新的问题
+4. 添加了对非商店主人或在领地内时没有build权限的人的商店箱子保护机制（不让他们打开）
+5. 调整了修改商店主人的功能只能由OP使用
+6. 修改"控制面板"中的"全息物品每秒最大发包量"的最大值由500提升到800
+7. 增加了针对没有打开商店箱子权限时的提示（在语言文件里）
+
+## 指令：
+
+| 指令                        | 描述                   | 权限   |
+| --------------------------- | ---------------------- | ------ |
+| /qs help(h)                 | 显示帮助信息           | player |
+| /qs buy(b)                  | 改变为购买类型的商店   | player |
+| /qs sell(s)                 | 改变为出售类型的商店   | player |
+| /qs price(p) <price>        | 改变商店的交易价格     | player |
+| /qs unlimited(u,server,se)  | 改变商店为系统商店     | op     |
+| /qs version(v)              | 显示插件的版本信息     | op     |
+| /qs controlpanel(cp)        | 显示插件的控制面板     | op     |
+| /qs reload(r)               | 重新加载插件的配置文件 | op     |
+
+## API
+
+```java
+//Listening event(PlayerBuyEvent,PlayerSellEvent,PlayerCreateShopEvent,PlayerRemoveShopEvent)
+
+@EventHandler
+public void onPlayerBuyEvent(PlayerBuyEvent event) 
+{
+    event.getPlayer().sendMessage(event.getShop().getStringPrice()+"\n"+event.getCount());
+}
+```
+
+## 作者
+- [innc11](https://github.com/innc11)

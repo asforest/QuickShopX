@@ -1,4 +1,4 @@
-package cn.innc11.QuickShop2;
+package cn.innc11.QuickShop2.utils;
 
 public class Pair <K, V>
 {

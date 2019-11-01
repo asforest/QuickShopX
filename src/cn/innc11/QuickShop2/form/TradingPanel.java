@@ -1,6 +1,6 @@
 package cn.innc11.QuickShop2.form;
 
-import cn.innc11.QuickShop2.QuickShop2Plugin;
+import cn.innc11.QuickShop2.QuickShopXPlugin;
 import cn.innc11.QuickShop2.config.LangConfig.Lang;
 import cn.innc11.QuickShop2.shop.BuyShop;
 import cn.innc11.QuickShop2.shop.SellShop;
@@ -30,9 +30,9 @@ public class TradingPanel extends FormWindowCustom implements FormRespone
 		this.playerName = playerName;
 		
 		addElement(new ElementLabel(L.get(Lang.FORM_TRADING__SHOP_INFO, 
-				"{GOODS_NAME}", QuickShop2Plugin.instance.itemNameConfig.getItemName(shop.getItem()),
+				"{GOODS_NAME}", QuickShopXPlugin.instance.itemNameConfig.getItemName(shop.getItem()),
 				"{UNIT_PRICE}", shop.getStringPrice(), "{SHOP_TYPE}", shop.data.type.toString(),
-				"{STOCK}", QuickShop2Plugin.instance.itemNameConfig.getItemName(shop.getItem())
+				"{STOCK}", QuickShopXPlugin.instance.itemNameConfig.getItemName(shop.getItem())
 				)));
 //		addElement(new ElementLabel("商品: "+Main.instance.itemNameConfig.getItemName(shop.getItem())));
 		
@@ -59,7 +59,7 @@ public class TradingPanel extends FormWindowCustom implements FormRespone
 		if(tv!=0)
 		{
 			Shop shop = Shop.getShopInstance(shopKey);
-			Player player = QuickShop2Plugin.instance.getServer().getPlayerExact(playerName);
+			Player player = QuickShopXPlugin.instance.getServer().getPlayerExact(playerName);
 			
 			if(shop instanceof BuyShop)
 			{

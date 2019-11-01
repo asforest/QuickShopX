@@ -3,7 +3,7 @@ package cn.innc11.QuickShop2.shop;
 import com.bekvon.bukkit.residence.Residence;
 import com.bekvon.bukkit.residence.protection.ClaimedResidence;
 
-import cn.innc11.QuickShop2.QuickShop2Plugin;
+import cn.innc11.QuickShop2.QuickShopXPlugin;
 import cn.innc11.QuickShop2.config.LangConfig.Lang;
 import cn.innc11.QuickShop2.utils.InvItem;
 import cn.innc11.QuickShop2.utils.L;
@@ -36,7 +36,7 @@ public abstract class Shop
 	 */
 	protected Shop(String shop)
 	{
-		data = QuickShop2Plugin.instance.shopConfig.shopDataHashMap.get(shop);
+		data = QuickShopXPlugin.instance.shopConfig.shopDataHashMap.get(shop);
 		
 		if(data==null) throw new NullPointerException("Key of Shop is Null("+shop+")");
 		
@@ -116,7 +116,7 @@ public abstract class Shop
 		} 
 		
 		
-		QuickShop2Plugin.instance.getServer().getScheduler().scheduleDelayedTask(new PluginTask<QuickShop2Plugin>(QuickShop2Plugin.instance)
+		QuickShopXPlugin.instance.getServer().getScheduler().scheduleDelayedTask(new PluginTask<QuickShopXPlugin>(QuickShopXPlugin.instance)
 		{
 			@Override
 			public void onRun(int currentTick) 
@@ -130,7 +130,7 @@ public abstract class Shop
 	{
 		BlockEntitySign sign = getShopSign();
 		
-		String[] bt = QuickShop2Plugin.instance.signTextConfig.getLang(this);
+		String[] bt = QuickShopXPlugin.instance.signTextConfig.getLang(this);
 		
 		sign.setText(bt[0], bt[1], bt[2], bt[3]);
 	}
@@ -175,13 +175,20 @@ public abstract class Shop
 		
 	}
 	
-	public void removeShop() 
+	public void destoryShop(Player player)
+	{
+		if (QuickShopXPlugin.instance.shopConfig.destoryShop(data, player))
+		{
+			destoryShopSign();
+		}
+	}
+
+	public void removeShop()
 	{
 		destoryShopSign();
-		
-		QuickShop2Plugin.instance.shopConfig.removeShop(data);
+		QuickShopXPlugin.instance.shopConfig.removeShop(data);
 	}
-	
+
 	public String getShopKey()
 	{
 		return String.format("%.0f:%.0f:%.0f:%s", chestPos.x, chestPos.y, chestPos.z, world.getFolderName());
@@ -225,7 +232,7 @@ public abstract class Shop
 		{
 			boolean allow = true;
 			
-			if(QuickShop2Plugin.instance.residencePluginLoaded)
+			if(QuickShopXPlugin.instance.residencePluginLoaded)
 			{
 				ClaimedResidence chestRes = Residence.getResidenceManager().getByLoc(chest);
 				ClaimedResidence signRes = Residence.getResidenceManager().getByLoc(signPos);
@@ -282,7 +289,7 @@ public abstract class Shop
 					sd.itemMetadata = itemInHand.getDamage();
 					sd.serverShop = false;
 					
-					rt = QuickShop2Plugin.instance.shopConfig.addShop(sd);
+					rt = QuickShopXPlugin.instance.shopConfig.addShop(sd);
 					
 					rt.updateSignText();
 					
@@ -296,7 +303,7 @@ public abstract class Shop
 			
 		} else {
 			// shop sign blocked
-			player.sendMessage(L.get(Lang.IM_SHOP_SIGN_BLOCKED, "{BLOCK_NAME}", QuickShop2Plugin.instance.itemNameConfig.getItemName(signBlock.toItem())));
+			player.sendMessage(L.get(Lang.IM_SHOP_SIGN_BLOCKED, "{BLOCK_NAME}", QuickShopXPlugin.instance.itemNameConfig.getItemName(signBlock.toItem())));
 		}
 		
 		return rt;
@@ -314,7 +321,7 @@ public abstract class Shop
 	
 	public static Shop getShopInstance(String shopKey)
 	{
-		ShopData shopData = QuickShop2Plugin.instance.shopConfig.shopDataHashMap.get(shopKey);
+		ShopData shopData = QuickShopXPlugin.instance.shopConfig.shopDataHashMap.get(shopKey);
 		
 		if(shopData==null)
 			return null;

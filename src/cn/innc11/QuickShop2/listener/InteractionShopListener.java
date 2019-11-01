@@ -3,11 +3,13 @@ package cn.innc11.QuickShop2.listener;
 import java.util.Arrays;
 import java.util.HashMap;
 
+import cn.nukkit.event.inventory.InventoryMoveItemEvent;
+import cn.nukkit.event.inventory.InventoryOpenEvent;
 import com.bekvon.bukkit.residence.Residence;
 import com.bekvon.bukkit.residence.protection.ClaimedResidence;
 
-import cn.innc11.QuickShop2.QuickShop2Plugin;
-import cn.innc11.QuickShop2.Pair;
+import cn.innc11.QuickShop2.QuickShopXPlugin;
+import cn.innc11.QuickShop2.utils.Pair;
 import cn.innc11.QuickShop2.config.LangConfig.Lang;
 import cn.innc11.QuickShop2.form.ShopMasterPanel;
 import cn.innc11.QuickShop2.form.TradingPanel;
@@ -48,9 +50,9 @@ public class InteractionShopListener implements Listener, ShopInteractionTimer
 			{
 				shop.updateSignText();
 				
-				QuickShop2Plugin.instance.hologramListener.addShopItemEntity(Arrays.asList(player), shop.data);
+				QuickShopXPlugin.instance.hologramListener.addShopItemEntity(Arrays.asList(player), shop.data);
 				
-				switch (QuickShop2Plugin.instance.pluginConfig.formOperate)
+				switch (QuickShopXPlugin.instance.pluginConfig.formOperate)
 				{
 					case DOUBLE_CLICK:
 					{
@@ -71,12 +73,12 @@ public class InteractionShopListener implements Listener, ShopInteractionTimer
 						Item shopItem = Item.get(shop.data.itemID, shop.data.itemMetadata);
 						
 						// show this shop detail information
-						player.sendMessage(L.get(Lang.IM_SHOP_INFO_SHOW, "{OWNER}", shop.data.serverShop? L.get(Lang.SERVER_SHOP_NICKNAME):shop.data.owner, "{GOODS}", QuickShop2Plugin.instance.itemNameConfig.getItemName(shopItem), "{PRICE}", String.format("%.2f", shop.data.price), "{SHOP_TYPE}", shop.data.type.toString(), "{SIGN_STOCK_TEXT}", QuickShop2Plugin.instance.signTextConfig.getStockText(shop)));
+						player.sendMessage(L.get(Lang.IM_SHOP_INFO_SHOW, "{OWNER}", shop.data.serverShop? L.get(Lang.SERVER_SHOP_NICKNAME):shop.data.owner, "{GOODS}", QuickShopXPlugin.instance.itemNameConfig.getItemName(shopItem), "{PRICE}", String.format("%.2f", shop.data.price), "{SHOP_TYPE}", shop.data.type.toString(), "{SIGN_STOCK_TEXT}", QuickShopXPlugin.instance.signTextConfig.getStockText(shop)));
 						
 						if(!player.getName().equals(shop.data.owner))
 							player.sendMessage(L.get(Lang.IM_ENTER_TRANSACTIONS_COUNT));
 						
-						interactingShopHashMap.put(player.getName(), new Pair<Long, Shop>(System.currentTimeMillis()+ QuickShop2Plugin.instance.pluginConfig.interactionInterval, shop));
+						interactingShopHashMap.put(player.getName(), new Pair<Long, Shop>(System.currentTimeMillis()+ QuickShopXPlugin.instance.pluginConfig.interactionInterval, shop));
 						break;
 					}
 					
@@ -87,7 +89,7 @@ public class InteractionShopListener implements Listener, ShopInteractionTimer
 						else
 							player.showFormWindow(new TradingPanel(shop, player.getName()));
 						
-						interactingShopHashMap.put(player.getName(), new Pair<Long, Shop>(System.currentTimeMillis()+ QuickShop2Plugin.instance.pluginConfig.interactionInterval, shop));
+						interactingShopHashMap.put(player.getName(), new Pair<Long, Shop>(System.currentTimeMillis()+ QuickShopXPlugin.instance.pluginConfig.interactionInterval, shop));
 						
 						break;
 				}
@@ -96,22 +98,6 @@ public class InteractionShopListener implements Listener, ShopInteractionTimer
 			}
 			
 		}
-	}
-	
-	@EventHandler
-	public void onInventoryTransactionEvent(InventoryTransactionEvent e)
-	{
-		for(Inventory inv : e.getTransaction().getInventories().toArray(new Inventory[0]))
-		{
-			if(inv instanceof ChestInventory)
-			{
-				ChestInventory ci = (ChestInventory) inv;
-				Shop shop = Shop.findShop(ci.getHolder());
-				if(shop!=null)
-					shop.updateSignText(5);
-			}
-		}
-		
 	}
 	
 	@EventHandler
@@ -125,7 +111,7 @@ public class InteractionShopListener implements Listener, ShopInteractionTimer
 			// not is owner
 			if(!interactingShopHashMap.get(playerName).value.data.owner.equals(playerName))
 			{
-				if(!QuickShop2Plugin.isInteger(e.getMessage()))
+				if(!QuickShopXPlugin.isInteger(e.getMessage()))
 				{
 					// not a number
 					e.getPlayer().sendMessage(L.get(Lang.IM_NO_ENTER_NUMBER));
@@ -154,7 +140,7 @@ public class InteractionShopListener implements Listener, ShopInteractionTimer
 		}
 	}
 	
-	@EventHandler
+	@EventHandler(ignoreCancelled = true)
 	public void onPlayerBrokeBlockEvent(BlockBreakEvent e)
 	{
 		if(e.getBlock() instanceof BlockChest)
@@ -190,11 +176,11 @@ public class InteractionShopListener implements Listener, ShopInteractionTimer
 			{
 				boolean allow = true;
 				
-				if(QuickShop2Plugin.instance.residencePluginLoaded && QuickShop2Plugin.instance.pluginConfig.interactionWithResidencePlugin)
+				if(QuickShopXPlugin.instance.residencePluginLoaded && QuickShopXPlugin.instance.pluginConfig.interactionWithResidencePlugin)
 				{
 					ClaimedResidence res = Residence.getResidenceManager().getByLoc(e.getBlock());
 					
-					if(res!=null && !QuickShop2Plugin.instance.pluginConfig.opIgnoreResidenceBuildPermission)
+					if(res!=null && !QuickShopXPlugin.instance.pluginConfig.opIgnoreResidenceBuildPermission)
 					{
 						if(!player.getName().equals(shop.data.owner)/* && !player.isOp()*/)
 						{
@@ -215,7 +201,7 @@ public class InteractionShopListener implements Listener, ShopInteractionTimer
 				
 				if(allow)
 				{
-					if(QuickShop2Plugin.instance.pluginConfig.snakeModeDestroyShop && !player.isSneaking())
+					if(QuickShopXPlugin.instance.pluginConfig.snakeModeDestroyShop && !player.isSneaking())
 					{
 						player.sendMessage(L.get(Lang.IM_SNAKE_MODE_DESTROY_SHOP));
 
@@ -224,13 +210,12 @@ public class InteractionShopListener implements Listener, ShopInteractionTimer
 						return;
 					}
 
-					QuickShop2Plugin.instance.hologramListener.removeItemEntity(Server.getInstance().getOnlinePlayers().values(), shop.data);
-
-					QuickShop2Plugin.instance.shopConfig.removeShop(shop.data);
-
-					e.setDrops(new Item[0]);
-
-					player.sendMessage(L.get(Lang.IM_SUCCEESSFULLY_REMOVED_SHOP));
+					if(QuickShopXPlugin.instance.shopConfig.destoryShop(shop.data, player))
+					{
+						QuickShopXPlugin.instance.hologramListener.removeItemEntity(Server.getInstance().getOnlinePlayers().values(), shop.data);
+						e.setDrops(new Item[0]);
+						player.sendMessage(L.get(Lang.IM_SUCCEESSFULLY_REMOVED_SHOP));
+					}
 /*
 					if(QuickShop2Plugin.instance.pluginConfig.snakeModeDestroyShop && player.isSneaking())
 					{
@@ -248,9 +233,7 @@ public class InteractionShopListener implements Listener, ShopInteractionTimer
 					}
 */
 				} else {
-					
 					player.sendMessage(L.get(Lang.IM_NO_RESIDENCE_PERMISSION, "{PERMISSION}", "build"));
-					
 					e.setCancelled();
 				}
 			}

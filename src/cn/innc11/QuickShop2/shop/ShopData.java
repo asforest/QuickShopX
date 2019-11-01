@@ -41,13 +41,24 @@ public class ShopData
 	*/
 	public Shop getShop()
 	{
-		return Shop.getShopInstance(toShopKey());
+		return Shop.getShopInstance(getShopKey());
 	}
 	
-	public String toShopKey()
+	public String getShopKey()
 	{
 		return String.format("%d:%d:%d:%s", chestX, chestY, chestZ, world);
 	}
 
-	
+	/*
+	public ShopData clonE()
+	{
+		ShopData sd = null;
+		try {
+			sd = (ShopData) clone();
+		} catch (CloneNotSupportedException e) {
+			e.printStackTrace();
+		}
+
+		return sd;
+	}*/
 }

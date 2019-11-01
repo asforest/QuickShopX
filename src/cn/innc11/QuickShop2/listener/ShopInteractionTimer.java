@@ -1,6 +1,6 @@
 package cn.innc11.QuickShop2.listener;
 
-import cn.innc11.QuickShop2.Pair;
+import cn.innc11.QuickShop2.utils.Pair;
 
 public interface ShopInteractionTimer 
 {
