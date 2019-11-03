@@ -5,6 +5,7 @@ import cn.innc11.QuickShopX.config.LangConfig;
 import cn.innc11.QuickShopX.shop.Shop;
 import cn.innc11.QuickShopX.utils.L;
 import cn.nukkit.Player;
+import cn.nukkit.Server;
 import cn.nukkit.event.EventHandler;
 import cn.nukkit.event.Listener;
 import cn.nukkit.event.inventory.InventoryMoveItemEvent;
@@ -13,6 +14,7 @@ import cn.nukkit.event.inventory.InventoryTransactionEvent;
 import cn.nukkit.inventory.ChestInventory;
 import cn.nukkit.inventory.Inventory;
 import com.bekvon.bukkit.residence.Residence;
+import com.bekvon.bukkit.residence.protection.ClaimedResidence;
 import com.bekvon.bukkit.residence.protection.FlagPermissions;
 
 public class ItemAndInventoryListener implements Listener
@@ -54,7 +56,7 @@ public class ItemAndInventoryListener implements Listener
 			Player player = e.getPlayer();
 			ChestInventory chestInventory = (ChestInventory) e.getInventory();
 			Shop shop = Shop.findShop(chestInventory.getHolder());
-			boolean hasResidence = Residence.getResidenceManager().getByLoc(chestInventory.getHolder())!=null;
+			ClaimedResidence claimedResidence = Residence.getResidenceManager().getByLoc(chestInventory.getHolder());
 
 			if(shop==null)
 				return;
@@ -62,11 +64,11 @@ public class ItemAndInventoryListener implements Listener
 			boolean allow = true;
 
 			if(QuickShopXPlugin.instance.residencePluginLoaded && QuickShopXPlugin.instance.pluginConfig.interactionWithResidencePlugin
-				&& hasResidence)
+				&& claimedResidence!=null)
 			{
-				FlagPermissions permissions = Residence.getPermsByLocForPlayer(chestInventory.getHolder(), player);
+				boolean hp = claimedResidence.getPermissions().playerHas(player.getName(), "build", false);
 
-				if(permissions.has("build", false) || (player.isOp() && QuickShopXPlugin.instance.pluginConfig.opIgnoreResidenceBuildPermission))
+				if(hp || (player.isOp() && QuickShopXPlugin.instance.pluginConfig.opIgnoreResidenceBuildPermission))
 				{
 					allow = true;
 				}else {
@@ -74,9 +76,9 @@ public class ItemAndInventoryListener implements Listener
 				}
 			}
 
-			if(hasResidence)
+			if(claimedResidence!=null)
 			{
-				if(!player.getName().equals(shop.data.owner) || !allow)
+				if(!player.getName().equals(shop.data.owner) && !allow)
 				{
 					e.setCancelled();
 					player.sendMessage(L.get(LangConfig.Lang.IM_NO_RESIDENCE_PERMISSION, "{PERMISSION}", "build"));
