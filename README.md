@@ -78,9 +78,9 @@
 
 #### GIF图片 GIF Images
 
-![创建](https://sm.ms/image/VnNhZJwRlKbqGCP)
-![购买](https://sm.ms/image/t9zmHdSZniVvRFI)
-![出售](https://sm.ms/image/xPBM2lezvikJ3Cm)
+![创建商店.gif](https://i.loli.net/2019/11/05/VnNhZJwRlKbqGCP.gif)
+![购买.gif](https://i.loli.net/2019/11/05/t9zmHdSZniVvRFI.gif)
+![出售.gif](https://i.loli.net/2019/11/05/xPBM2lezvikJ3Cm.gif)
 
 ## 更新记录 Change logs
 
