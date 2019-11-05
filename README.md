@@ -57,6 +57,22 @@
 
 ## 图片预览
 
+![](https://github.com/innc11/QuickShopX/blob/master/images/create.png?raw=true)
+![](https://github.com/innc11/QuickShopX/blob/master/images/blocked.png?raw=true)
+![](https://github.com/innc11/QuickShopX/blob/master/images/preview.png?raw=true)
+![](https://github.com/innc11/QuickShopX/blob/master/images/infopanel.png?raw=true)
+![](https://github.com/innc11/QuickShopX/blob/master/images/masterpanel.png?raw=true)
+![](https://github.com/innc11/QuickShopX/blob/master/images/trading.png?raw=true)
+![](https://github.com/innc11/QuickShopX/blob/master/images/message.png?raw=true)
+![](https://github.com/innc11/QuickShopX/blob/master/images/cp.png?raw=true)
+![](https://github.com/innc11/QuickShopX/blob/master/images/trading.png?raw=true)
+
+#### 配置文件图片
+
+![](https://github.com/innc11/QuickShopX/blob/master/images/itemName.png?raw=true)
+![](https://github.com/innc11/QuickShopX/blob/master/images/language.png?raw=true)
+![](https://github.com/innc11/QuickShopX/blob/master/images/signText.png?raw=true)
+![](https://github.com/innc11/QuickShopX/blob/master/images/shops.png?raw=true)
 
 ## 更新记录 Change logs
 
