@@ -24,7 +24,7 @@ public class TradingPanel extends FormWindowCustom implements FormRespone
 	public TradingPanel(Shop shop, String playerName) 
 	{
 //		super(shop.data.owner+"的商店交易界面");
-		super(L.get(Lang.FORM_TRADING__TITLE, "{OWNER}", shop.data.owner));
+		super(L.get(Lang.FORM_TRADING__TITLE, "{OWNER}", (shop.data.serverShop? L.get(Lang.SERVER_SHOP_NICKNAME):shop.data.owner)));
 		
 		this.shopKey = shop.getShopKey();
 		this.playerName = playerName;
