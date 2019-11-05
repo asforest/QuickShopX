@@ -48,14 +48,14 @@
 2. 对插件本身的配置也由form接管，使用/qs cp可以打开插件的控制面板(默认OP)具体内容可以看图片（包括针对Residence插件的交互，对全息物品的控制，对op的权限控制等）
 3. 当Residence插件存在的时候并启用了与Residence插件交互时，领地内有build权限和container权限的人可以破坏商店和打开商店箱子但无法修改商店的信息（商店信息只能由商店主人来修改，且主人如果没有build权限是无法破坏商店的，但一般不会出现这个情况）
 
-## 尚未完善的地方
+## 尚未完善的地方 Not perfect
 1. 语言文件目前只提供了中文，因为工作量太大没能顾及英文语言，争取在下个版本补上
 2. 每个商店箱子的角落方向上的4个位置上不能出现另一个商店的箱子，否则商店牌子和箱子可能会出现错乱（不要在商店箱子的挨着的4个角落位置上创建新的商店，会出现问题，不过一般没有人会这样放），下个版本会修复
 3. 对大箱子的支持任然不够完善，争取在下个版本修复
 4. 商店目前因为支持漏斗补货的机制的存在，不在领地内创建商店可能会导致物品被窃走（即使在领地内也要防止漏斗矿车到达箱子底下），请尽量尽量尽量在领地内创建商店，插件虽然能够提供一些基础防护，但还是请务必在领地内创建商店，此功能可以被配置启动或者关闭
 5. Win10右键可能会多次触发Interaction事件，会导致打开多个form界面叠在一起，对插件功能没有影响，争取在下个版本修复
 
-## 图片预览
+## 图片预览 Picture Preview
 
 图片加载可能比较缓慢或者直接404,如果不能显示请打开images文件夹下载后查看
 
@@ -69,12 +69,18 @@
 ![cp](https://github.com/innc11/QuickShopX/blob/master/images/cp.png?raw=true)
 ![trading](https://github.com/innc11/QuickShopX/blob/master/images/trading.png?raw=true)
 
-#### 配置文件图片
+#### 配置文件图片 Configuration files
 
 ![itemName](https://github.com/innc11/QuickShopX/blob/master/images/itemName.png?raw=true)
 ![language](https://github.com/innc11/QuickShopX/blob/master/images/language.png?raw=true)
 ![signText](https://github.com/innc11/QuickShopX/blob/master/images/signText.png?raw=true)
 ![shops](https://github.com/innc11/QuickShopX/blob/master/images/shops.png?raw=true)
+
+#### GIF图片 GIF Images
+
+![创建](https://sm.ms/image/VnNhZJwRlKbqGCP)
+![购买](https://sm.ms/image/t9zmHdSZniVvRFI)
+![出售](https://sm.ms/image/xPBM2lezvikJ3Cm)
 
 ## 更新记录 Change logs
 
@@ -122,7 +128,7 @@
 #### 1.2.2
 1. 修复了交易面板和店主面板Title显示不正确的问题
 
-## 指令：
+## 指令 Commands
 
 | 指令                        | 描述                   | 权限   |
 | --------------------------- | ---------------------- | ------ |
@@ -130,7 +136,7 @@
 | /qs buy(b)                  | 改变为购买类型的商店   | player |
 | /qs sell(s)                 | 改变为出售类型的商店   | player |
 | /qs price(p) <price>        | 改变商店的交易价格     | player |
-| /qs unlimited(u,)           | 改变商店为系统商店     | op     |
+| /qs unlimited(u)           | 改变商店为系统商店     | op     |
 | /qs version(v)              | 显示插件的版本信息     | op     |
 | /qs controlpanel(cp)        | 显示插件的控制面板     | op     |
 | /qs reload(r)               | 重新加载插件的配置文件 | op     |
@@ -147,5 +153,5 @@ public void onPlayerBuyEvent(PlayerBuyEvent event)
 }
 ```
 
-## 作者
-- [innc11](https://github.com/innc11)
+## 作者 Authors
+- [innc11](https://github.com/innc11)(original author [WetABQ](https://github.com/WetABQ))
