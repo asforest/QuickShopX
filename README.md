@@ -57,22 +57,24 @@
 
 ## 图片预览
 
-![](https://github.com/innc11/QuickShopX/blob/master/images/create.png?raw=true)
-![](https://github.com/innc11/QuickShopX/blob/master/images/blocked.png?raw=true)
-![](https://github.com/innc11/QuickShopX/blob/master/images/preview.png?raw=true)
-![](https://github.com/innc11/QuickShopX/blob/master/images/infopanel.png?raw=true)
-![](https://github.com/innc11/QuickShopX/blob/master/images/masterpanel.png?raw=true)
-![](https://github.com/innc11/QuickShopX/blob/master/images/trading.png?raw=true)
-![](https://github.com/innc11/QuickShopX/blob/master/images/message.png?raw=true)
-![](https://github.com/innc11/QuickShopX/blob/master/images/cp.png?raw=true)
-![](https://github.com/innc11/QuickShopX/blob/master/images/trading.png?raw=true)
+图片加载可能比较缓慢或者直接404,如果不能显示请打开images文件夹下载后查看
+
+![creating](https://github.com/innc11/QuickShopX/blob/master/images/create.png?raw=true)
+![blocked](https://github.com/innc11/QuickShopX/blob/master/images/blocked.png?raw=true)
+![preview](https://github.com/innc11/QuickShopX/blob/master/images/preview.png?raw=true)
+![infopanel](https://github.com/innc11/QuickShopX/blob/master/images/infopanel.png?raw=true)
+![masterpanel](https://github.com/innc11/QuickShopX/blob/master/images/masterpanel.png?raw=true)
+![trading](https://github.com/innc11/QuickShopX/blob/master/images/trading.png?raw=true)
+![message](https://github.com/innc11/QuickShopX/blob/master/images/message.png?raw=true)
+![cp](https://github.com/innc11/QuickShopX/blob/master/images/cp.png?raw=true)
+![trading](https://github.com/innc11/QuickShopX/blob/master/images/trading.png?raw=true)
 
 #### 配置文件图片
 
-![](https://github.com/innc11/QuickShopX/blob/master/images/itemName.png?raw=true)
-![](https://github.com/innc11/QuickShopX/blob/master/images/language.png?raw=true)
-![](https://github.com/innc11/QuickShopX/blob/master/images/signText.png?raw=true)
-![](https://github.com/innc11/QuickShopX/blob/master/images/shops.png?raw=true)
+![itemName](https://github.com/innc11/QuickShopX/blob/master/images/itemName.png?raw=true)
+![language](https://github.com/innc11/QuickShopX/blob/master/images/language.png?raw=true)
+![signText](https://github.com/innc11/QuickShopX/blob/master/images/signText.png?raw=true)
+![shops](https://github.com/innc11/QuickShopX/blob/master/images/shops.png?raw=true)
 
 ## 更新记录 Change logs
 
