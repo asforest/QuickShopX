@@ -1,10 +1,10 @@
-version: 2
-interactionInterval: 9000
+version: 3
+interactionInterval: 5000
 hologramItemShow: true
 # never, doubleclick, always
 formOperate: "doubleclick"
-packetSendPerSecondMax: 60
+packetSendPerSecondMax: 500
 interactionWithResidencePlugin: true
 createShopInResidenceOnly: true
 opIgnoreResidence: false
-snakeDestroyShop: true
+snakeDestroyShop: false

@@ -56,34 +56,44 @@ public class ItemAndInventoryListener implements Listener
 			Player player = e.getPlayer();
 			ChestInventory chestInventory = (ChestInventory) e.getInventory();
 			Shop shop = Shop.findShop(chestInventory.getHolder());
-			ClaimedResidence claimedResidence = Residence.getResidenceManager().getByLoc(chestInventory.getHolder());
+			boolean residenceEnable = QuickShopXPlugin.instance.residencePluginLoaded && QuickShopXPlugin.instance.pluginConfig.interactionWithResidencePlugin;
 
 			if(shop==null)
 				return;
 
 			boolean allow = true;
 
-			if(QuickShopXPlugin.instance.residencePluginLoaded && QuickShopXPlugin.instance.pluginConfig.interactionWithResidencePlugin
-				&& claimedResidence!=null)
+			if(residenceEnable)
 			{
-				boolean hp = claimedResidence.getPermissions().playerHas(player.getName(), "build", false);
 
-				if(hp || (player.isOp() && QuickShopXPlugin.instance.pluginConfig.opIgnoreResidenceBuildPermission))
+				ClaimedResidence claimedResidence = Residence.getResidenceManager().getByLoc(chestInventory.getHolder());
+				if(claimedResidence!=null)
 				{
-					allow = true;
+					boolean hp = claimedResidence.getPermissions().playerHas(player.getName(), "build", false);
+
+					if(hp || (player.isOp() && QuickShopXPlugin.instance.pluginConfig.opIgnoreResidenceBuildPermission))
+					{
+						allow = true;
+					}else {
+						allow = false;
+					}
+				}
+
+				if(claimedResidence!=null)
+				{
+					if(!player.getName().equals(shop.data.owner) && !allow)
+					{
+						e.setCancelled();
+						player.sendMessage(L.get(LangConfig.Lang.IM_NO_RESIDENCE_PERMISSION, "{PERMISSION}", "build"));
+					}
 				}else {
-					allow = false;
+					if(!player.getName().equals(shop.data.owner))
+					{
+						e.setCancelled();
+						player.sendMessage(L.get(LangConfig.Lang.IM_NOT_SHOP_OWNER_CANNOT_OPEN_CHEST));
+					}
 				}
-			}
-
-			if(claimedResidence!=null)
-			{
-				if(!player.getName().equals(shop.data.owner) && !allow)
-				{
-					e.setCancelled();
-					player.sendMessage(L.get(LangConfig.Lang.IM_NO_RESIDENCE_PERMISSION, "{PERMISSION}", "build"));
-				}
-			}else {
+			}else{
 				if(!player.getName().equals(shop.data.owner))
 				{
 					e.setCancelled();
