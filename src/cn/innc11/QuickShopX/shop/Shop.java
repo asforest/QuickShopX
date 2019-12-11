@@ -342,13 +342,45 @@ public abstract class Shop
 	public static Shop findShopBySignPos(Block sign)
 	{
 		if(!(sign instanceof BlockWallSign)) return null;
-		
+
+		BlockWallSign blockSign = (BlockWallSign) sign;
 		Shop shop = null;
-		
-		Block N = sign.getSide(BlockFace.NORTH);
-		Block E = sign.getSide(BlockFace.EAST);
-		Block S = sign.getSide(BlockFace.SOUTH);
-		Block W = sign.getSide(BlockFace.WEST);
+
+		BlockFace chestFace = BlockFace.SOUTH;
+
+		/*
+		QuickShopXPlugin.instance.getLogger().info("BBBBBBface: "+blockSign.getBlockFace().getName());
+		QuickShopXPlugin.instance.getLogger().info("EAST: "+blockSign.getSide(BlockFace.EAST).getName());
+		QuickShopXPlugin.instance.getLogger().info("WEST: "+blockSign.getSide(BlockFace.WEST).getName());
+		QuickShopXPlugin.instance.getLogger().info("SOUTH: "+blockSign.getSide(BlockFace.SOUTH).getName());
+		QuickShopXPlugin.instance.getLogger().info("NORTH: "+blockSign.getSide(BlockFace.NORTH).getName());
+*/
+
+		switch (blockSign.getBlockFace())
+		{
+			case SOUTH:
+				chestFace = BlockFace.NORTH;
+				break;
+			case NORTH:
+				chestFace = BlockFace.SOUTH;
+				break;
+			case WEST:
+				chestFace = BlockFace.EAST;
+				break;
+			case EAST:
+				chestFace = BlockFace.WEST;
+				break;
+			default:
+				break;
+		}
+
+		Position chestPos = blockSign.getSide(chestFace);
+		shop = Shop.getShopInstance(Shop.getShopKey(chestPos));
+/*
+		Block N = blockSign.getSide(BlockFace.NORTH);
+		Block E = blockSign.getSide(BlockFace.EAST);
+		Block S = blockSign.getSide(BlockFace.SOUTH);
+		Block W = blockSign.getSide(BlockFace.WEST);
 		
 		if(shop==null && N instanceof BlockChest){
 			Shop shopN = Shop.getShopInstance(Shop.getShopKey(N));
@@ -373,6 +405,8 @@ public abstract class Shop
 			if(shopW!=null)
 				shop = shopW;
 		}
+
+ */
 		
 		return shop;
 	}

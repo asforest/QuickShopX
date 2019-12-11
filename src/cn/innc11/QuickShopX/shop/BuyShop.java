@@ -33,7 +33,7 @@ public class BuyShop extends Shop {
 		Player shopOwner = Server.getInstance().getPlayerExact(data.owner);
 		Item item = Item.get(data.itemID, data.itemMetadata, count);
 		PlayerInventory playerInv = player.getInventory();
-		ChestInventory shopChestInventory = (ChestInventory) getShopChest().getInventory();
+		ChestInventory shopChestInventory = getShopChest().getRealInventory();
 		int itemCountInChest = InvItem.getItemInInventoryCount(shopChestInventory, item);
 
 		if(getShopChest()!=null)

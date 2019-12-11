@@ -34,7 +34,7 @@ public class PluginControlPanel extends FormWindowCustom implements FormRespone
 		
 		//全息显示的每秒最大发包量
 		//packet send per second max
-		addElement(new ElementSlider(L.get(Lang.FORM_CONTROL_PANEL__PACKET_SEND_PS), 1F, 800F, 1, pc.packetSendPerSecondMax>500 ? 500 : pc.packetSendPerSecondMax));
+		addElement(new ElementSlider(L.get(Lang.FORM_CONTROL_PANEL__PACKET_SEND_PS), 1F, 1000f, 1, pc.packetSendPerSecondMax>1000 ? 1000 : pc.packetSendPerSecondMax));
 		
 		//和Residence插件交互
 		//interaction with residence plugin

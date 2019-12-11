@@ -9,7 +9,7 @@ public class InvItem
 	{
 		for(Item i : baseInventory.slots.values())
 		{
-			if(i.getId()==item.getId() && i.getDamage()==item.getDamage())
+			if (item.equals(i, true, true))
 			{
 				return true;
 			}
@@ -22,9 +22,10 @@ public class InvItem
 	{
 		for(Item i : baseInventory.slots.values())
 		{
-	        if (i.getId() == item.getId() && i.getDamage() == item.getDamage()) {
-	            return i;
-	        }
+			if (item.equals(i, true, true))
+			{
+				return i;
+			}
 		}
 		
 		return null;
@@ -35,9 +36,10 @@ public class InvItem
 		int count = 0;
 		for(Item i : baseInventory.slots.values()) 
 		{
-            if (i.getId() == item.getId() && i.getDamage() == item.getDamage()) {
-                count += i.count;
-            }
+			if (item.equals(i, true, true))
+			{
+				count += i.count;
+			}
         }
         return count;
 	}

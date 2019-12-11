@@ -30,6 +30,7 @@ import cn.nukkit.item.Item;
 public class InteractionShopListener implements Listener, ShopInteractionTimer
 {
 	public HashMap<String, Pair<Long, Shop>> interactingShopHashMap = new HashMap<>();
+	//public HashMap<String, Long> interactionCooldown = new HashMap<>();
 	
 	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent e) 
@@ -38,6 +39,7 @@ public class InteractionShopListener implements Listener, ShopInteractionTimer
 		{
 			Block block = e.getBlock();
 			Player player = e.getPlayer();
+			String playerName = player.getName();
 			
 			Shop shop = Shop.findShopBySignPos(block);
 			
@@ -46,14 +48,26 @@ public class InteractionShopListener implements Listener, ShopInteractionTimer
 				shop.updateSignText();
 				
 				QuickShopXPlugin.instance.hologramListener.addShopItemEntity(Arrays.asList(player), shop.data);
+
+				/*
+				interactionCooldown.put(playerName, System.currentTimeMillis());
+				long interactionTimeDiff = getInteractionTimeDiff(player);
+				if(!(interactionTimeDiff>800 || interactionTimeDiff==0))
+				{
+					e.setCancelled();
+					return;
+				}
+				 */
 				
 				switch (QuickShopXPlugin.instance.pluginConfig.formOperate)
 				{
 					case DOUBLE_CLICK:
 					{
-						Pair<Boolean, Shop> t = isVaildInteraction(player.getName());
+						Pair<Boolean, Shop> interactionInfo = isVaildInteraction(playerName);
+						Shop interactiveShop = interactionInfo!=null? interactionInfo.value:null;
+						boolean noTimeout = interactionInfo!=null? interactionInfo.key:true;
 						
-						if(t!=null && t.value.equals(shop) && t.key)
+						if(interactionInfo!=null && interactiveShop.equals(shop) && noTimeout)
 						{
 							if(player.getName().equals(shop.data.owner) || player.isOp())
 								player.showFormWindow(new ShopMasterPanel(shop, player.getName()));
@@ -62,7 +76,9 @@ public class InteractionShopListener implements Listener, ShopInteractionTimer
 							interactingShopHashMap.remove(e.getPlayer().getName());
 							break;
 						}
+						//no break
 					}
+
 					case NEVER:
 					{
 						Item shopItem = Item.get(shop.data.itemID, shop.data.itemMetadata);
@@ -71,7 +87,9 @@ public class InteractionShopListener implements Listener, ShopInteractionTimer
 						player.sendMessage(L.get(Lang.IM_SHOP_INFO_SHOW, "{OWNER}", shop.data.serverShop? L.get(Lang.SERVER_SHOP_NICKNAME):shop.data.owner, "{GOODS}", QuickShopXPlugin.instance.itemNameConfig.getItemName(shopItem), "{PRICE}", String.format("%.2f", shop.data.price), "{SHOP_TYPE}", shop.data.type.toString(), "{SIGN_STOCK_TEXT}", QuickShopXPlugin.instance.signTextConfig.getStockText(shop)));
 						
 						if(!player.getName().equals(shop.data.owner))
+						{
 							player.sendMessage(L.get(Lang.IM_ENTER_TRANSACTIONS_COUNT));
+						}
 						
 						interactingShopHashMap.put(player.getName(), new Pair<Long, Shop>(System.currentTimeMillis()+ QuickShopXPlugin.instance.pluginConfig.interactionInterval, shop));
 						break;
@@ -83,7 +101,7 @@ public class InteractionShopListener implements Listener, ShopInteractionTimer
 							player.showFormWindow(new ShopMasterPanel(shop, player.getName()));
 						else
 							player.showFormWindow(new TradingPanel(shop, player.getName()));
-						
+
 						interactingShopHashMap.put(player.getName(), new Pair<Long, Shop>(System.currentTimeMillis()+ QuickShopXPlugin.instance.pluginConfig.interactionInterval, shop));
 						
 						break;
@@ -100,39 +118,38 @@ public class InteractionShopListener implements Listener, ShopInteractionTimer
 	{
 		Player player = e.getPlayer();
 		String playerName = player.getName();
+		Pair<Boolean, Shop> interactionInfo = isVaildInteraction(playerName);
+		Shop interactiveShop = interactionInfo!=null? interactionInfo.value:null;
+		boolean noTimeout = interactionInfo!=null? interactionInfo.key:true;
 		
-		if(interactingShopHashMap.containsKey(playerName))
+		if(interactionInfo!=null)
 		{
 			// not is owner
-			if(!interactingShopHashMap.get(playerName).value.data.owner.equals(playerName))
-			{
-				if(!QuickShopXPlugin.isInteger(e.getMessage()))
+			//if(!interactiveShop.data.owner.equals(playerName) || interactiveShop.data.serverShop)
+			//{
+				if(noTimeout)
 				{
-					// not a number
-					e.getPlayer().sendMessage(L.get(Lang.IM_NO_ENTER_NUMBER));
-					e.setCancelled();
-				}else{
-					if(isVaildInteraction(playerName).key)
+					if (QuickShopXPlugin.isInteger(e.getMessage()))
 					{
-						Shop shop = interactingShopHashMap.get(playerName).value;
-						
-						if(shop instanceof BuyShop)
-						{
-							((BuyShop) shop).buyItem(player, Integer.parseInt(e.getMessage()));
-						}else if(shop instanceof SellShop)
-						{
-							((SellShop) shop).sellItme(player, Integer.parseInt(e.getMessage()));
+						if (interactiveShop instanceof BuyShop) {
+							((BuyShop) interactiveShop).buyItem(player, Integer.parseInt(e.getMessage()));
+						} else if (interactiveShop instanceof SellShop) {
+							((SellShop) interactiveShop).sellItme(player, Integer.parseInt(e.getMessage()));
 						}
-						
+
+						e.setCancelled();
+					} else {
+						player.sendMessage(L.get(Lang.IM_NO_ENTER_NUMBER));
 						e.setCancelled();
 					}
 				}
-				
-				interactingShopHashMap.remove(playerName);
-			}
-			
-			
+
+			//}
+
+			interactingShopHashMap.remove(playerName);
 		}
+
+
 	}
 	
 	@EventHandler(ignoreCancelled = true)
@@ -250,5 +267,17 @@ public class InteractionShopListener implements Listener, ShopInteractionTimer
 		
 		return null;
 	}
-	
+
+	/*
+	public long getInteractionTimeDiff(Player player)
+	{
+		if(interactionCooldown.containsKey(player))
+		{
+			return System.currentTimeMillis()- interactionCooldown.get(player).longValue();
+		}
+
+		return 0;
+	}
+
+	 */
 }
