@@ -49,21 +49,22 @@ public class ItemNameConfig extends MyConfig
 //				Main.instance.getLogger().warning(key+" -> "+itemNameMap.get(key));
 		}
 		
-		QuickShopXPlugin.instance.getLogger().info("Loaded "+itemNameMap.size()+" ItemName");
+		QuickShopXPlugin.instance.getLogger().info("Loaded "+itemNameMap.size()+" ItemNames");
 	}
 
 	
 	public String getItemName(Item item) 
 	{
-		String key = item.getId()+":"+item.getDamage();
-		
-//		Main.instance.getLogger().warning("find: "+key);
-
-		if(itemNameMap.containsKey(key))
+		if(QuickShopXPlugin.instance.pluginConfig.useCustomItemName)
 		{
-			return itemNameMap.get(key);
+			String key = item.getId()+":"+item.getDamage();
+
+			if(itemNameMap.containsKey(key))
+			{
+				return itemNameMap.get(key);
+			}
 		}
-		
+
 		return item.getName();
 	}
 }

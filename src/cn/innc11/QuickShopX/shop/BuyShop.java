@@ -74,7 +74,7 @@ public class BuyShop extends Shop {
 						player.sendMessage(L.get(Lang.IM_BACKPACK_FULL, "{TARGET_COUNT}", String.valueOf(count), "{ITEM_NAME}", QuickShopXPlugin.instance.itemNameConfig.getItemName(item)));
 					}
 				}  else {
-					player.sendMessage(L.get(Lang.IM_NOT_ENOUGH_MONEY_TO_BUYING, "{MONEY}", String.format("%.2f", playerMoney), "{ITEM_PRICE}", String.format("%.2f", data.price), "{ITEM_COUNT}", String.valueOf(count), "{SUBTOTAL}", String.format("%.2f", data.price*count), "{LACK_MONEY}", String.format("%.2f", price-playerMoney)));
+					player.sendMessage(L.get(Lang.IM_NOT_ENOUGH_MONEY_TO_BUYING, "{MONEY}", String.format("%.2f", playerMoney), "{ITEM_PRICE}", String.format("%.2f", data.price), "{ITEM_COUNT}", String.valueOf(count), "{SUBTOTAL}", String.format("%.2f", data.price*count), "{LACKING_MONEY}", String.format("%.2f", price-playerMoney)));
 				}
 			}else {
 				if(itemCountInChest==0)

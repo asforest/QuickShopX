@@ -1,9 +1,8 @@
 name: QuickShopX
 main: cn.innc11.QuickShopX.QuickShopXPlugin
-version: "1.2.3"
+version: "1.2.5"
 author: innc11
 api: ["1.0.0"]
-prefix: "QuickShopX"
 load: POSTWORLD
 depend: ["EconomyAPI"]
 softdepend: ["Residence"]

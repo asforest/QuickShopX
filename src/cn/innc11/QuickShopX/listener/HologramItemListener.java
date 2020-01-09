@@ -23,7 +23,7 @@ import cn.nukkit.scheduler.PluginTask;
 
 public class HologramItemListener implements Listener
 {
-	ArrayBlockingQueue<Pair<Collection<Player>, DataPacket>> queue = new ArrayBlockingQueue<Pair<Collection<Player>,DataPacket>>(10000);	
+	ArrayBlockingQueue<Pair<Collection<Player>, DataPacket>> queue = new ArrayBlockingQueue<Pair<Collection<Player>,DataPacket>>(3000);
 	
 	PluginTask<QuickShopXPlugin> sendDataPacketTask = new PluginTask<QuickShopXPlugin>(QuickShopXPlugin.instance)
 	{

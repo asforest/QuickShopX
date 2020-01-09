@@ -22,7 +22,7 @@ public class PluginControlPanel extends FormWindowCustom implements FormRespone
 		PluginConfig pc = QuickShopXPlugin.instance.pluginConfig;
 		
 		//商店交互时间
-		//shop interaction timeout
+		//interaction timeout
 		addElement(new ElementSlider(L.get(Lang.FORM_CONTROL_PANEL__SHOP_INTERACTION_TIME), 1F, 60F, 1, pc.interactionInterval/1000>60 ? 60 : pc.interactionInterval/1000));
 		
 		//商店全息显示
@@ -41,16 +41,23 @@ public class PluginControlPanel extends FormWindowCustom implements FormRespone
 		addElement(new ElementToggle(L.get(Lang.FORM_CONTROL_PANEL__INTERACTION_WITH_RESIDENCE_PLUGIN), pc.interactionWithResidencePlugin));
 		
 		//只能在领地内创建商店
-		//create shop in residence only
+		//players can only create shop within residence
 		addElement(new ElementToggle(L.get(Lang.FORM_CONTROL_PANEL__CREATE_SHOP_IN_RESIDENCE_NOLY), pc.createShopInResidenceOnly));
 		
 		//op可以无视领地权限进行创建和破坏商店(无视build权限)
-		//op can ignore residence build permission
+		//operator can ignore build permission in residence
 		addElement(new ElementToggle(L.get(Lang.FORM_CONTROL_PANEL__OP_IGNORE_RESIDENCE_BUILD_PERMISSION), pc.opIgnoreResidenceBuildPermission));
 
 		//只能在潜行模式下破坏商店
-		//only destroy shop in snake mode
+		//can only destroy shop in snake mode
 		addElement(new ElementToggle(L.get(Lang.FORM_CONTROL_PANEL__SNAKE_MODE_DESTROY_SHOP), pc.snakeModeDestroyShop));
+
+		//漏斗只在领地内与商店交互
+		//funnel only interacts with shop within the residence
+		addElement(new ElementToggle(L.get(Lang.FORM_CONTROL_PANEL__HOPPER_ACTIVE_IN_RESIDENCE_ONLY), pc.hopperActiveInResidenceOnly));
+
+		addElement(new ElementToggle(L.get(Lang.FORM_CONTROL_PANEL__USE_CUSTOM_ITEM_NAME), pc.useCustomItemName));
+
 	}
 
 	@Override
@@ -67,6 +74,8 @@ public class PluginControlPanel extends FormWindowCustom implements FormRespone
 		boolean  createShopInResidenceOnly = getResponse().getToggleResponse(5);
 		boolean  opIgnoreResidenceBuildPermission = getResponse().getToggleResponse(6);
 		boolean  snakeDestroyShop = getResponse().getToggleResponse(7);
+		boolean  hopperActiveInResidenceOnly = getResponse().getToggleResponse(8);
+		boolean  useCustomItemName = getResponse().getToggleResponse(9);
 
 		e.getPlayer().sendMessage(L.get(Lang.PLUGIN_MESSAGE_PLUGIN_CONFIGURE_UPDATED));
 		
@@ -90,6 +99,8 @@ public class PluginControlPanel extends FormWindowCustom implements FormRespone
 		QuickShopXPlugin.instance.pluginConfig.createShopInResidenceOnly = createShopInResidenceOnly;
 		QuickShopXPlugin.instance.pluginConfig.opIgnoreResidenceBuildPermission = opIgnoreResidenceBuildPermission;
 		QuickShopXPlugin.instance.pluginConfig.snakeModeDestroyShop = snakeDestroyShop;
+		QuickShopXPlugin.instance.pluginConfig.hopperActiveInResidenceOnly = hopperActiveInResidenceOnly;
+		QuickShopXPlugin.instance.pluginConfig.useCustomItemName = useCustomItemName;
 
 		QuickShopXPlugin.instance.pluginConfig.save();
 		

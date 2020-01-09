@@ -65,7 +65,6 @@ public class ItemAndInventoryListener implements Listener
 
 			if(residenceEnable)
 			{
-
 				ClaimedResidence claimedResidence = Residence.getResidenceManager().getByLoc(chestInventory.getHolder());
 				if(claimedResidence!=null)
 				{

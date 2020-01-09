@@ -297,7 +297,7 @@ public abstract class Shop
 					player.sendMessage(L.get(Lang.IM_SUCCEESSFULLY_CREATED_SHOP));
 				} else {
 					// need to held an item in hand
-					player.sendMessage(L.get(Lang.IM_NO_ITEM_ON_HAND));
+					player.sendMessage(L.get(Lang.IM_NO_ITEM_IN_HAND));
 				}
 			}
 			

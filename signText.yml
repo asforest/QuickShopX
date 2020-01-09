@@ -1,12 +1,12 @@
 buy:
-  text1: "[&l&6QuickShop&r]"
+  text1: "[&l&6QuickShopX&r]"
   text2: "${ITEM_NAME} / ${PRICE}"
   text3: "购买(BUY), 店主:${OWNER}"
   text4: "${STOCK}"
   stock: "剩余库存：&a&l${STOCK_SPACE}"
 sell:
-  text1: "[&l&6QuickShop&r]"
+  text1: "[&l&eQuickShopX&r]"
   text2: "${ITEM_NAME} / ${PRICE}"
   text3: "回收(SELL), 店主:${OWNER}"
   text4: "${STOCK}"
-  stock: "空闲库存：&a&l${STOCK_SPACE}"
+  stock: "空闲库存：&b&l${STOCK_SPACE}"

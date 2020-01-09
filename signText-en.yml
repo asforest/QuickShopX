@@ -1,0 +1,12 @@
+buy:
+  text1: "[&l&6QuickShop&r]"
+  text2: "${ITEM_NAME}"
+  text3: "BUY(${PRICE})/${OWNER}"
+  text4: "${STOCK}"
+  stock: "stock: &a&l${STOCK_SPACE}"
+sell:
+  text1: "[&l&6QuickShop&r]"
+  text2: "${ITEM_NAME}"
+  text3: "SELL(${PRICE})/${OWNER}"
+  text4: "${STOCK}"
+  stock: "free stock: &b&l${STOCK_SPACE}"

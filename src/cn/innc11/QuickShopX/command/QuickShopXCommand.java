@@ -85,7 +85,7 @@ public class QuickShopXCommand extends Command
 										
 										sender.sendMessage(L.get(Lang.IM_SHOP_TYPE_UPDATED, "{NEW_SHOP_TYPE}", ShopType.BUY.toString()));
 									} else {
-										sender.sendMessage(L.get(Lang.IM_SHOP_TYPE_NO_UPDATE));
+										sender.sendMessage(L.get(Lang.IM_SHOP_TYPE_DONT_NEED_UPDATE));
 									}
 								} else if(args[0].equals("s") || args[0].equals("sell"))
 								{
@@ -99,20 +99,20 @@ public class QuickShopXCommand extends Command
 										
 										sender.sendMessage(L.get(Lang.IM_SHOP_TYPE_UPDATED, "{NEW_SHOP_TYPE}", ShopType.SELL.toString()));
 									} else {
-										sender.sendMessage(L.get(Lang.IM_SHOP_TYPE_NO_UPDATE));
+										sender.sendMessage(L.get(Lang.IM_SHOP_TYPE_DONT_NEED_UPDATE));
 									}
 								}
 								
 										
 							} else {
-								sender.sendMessage(L.get(Lang.IM_PRICE_NO_UPDATE_NO_ONWER));
+								sender.sendMessage(L.get(Lang.IM_PRICE_CANT_UPDATE_NOT_ONWER));
 							}
 						} else {
 							sender.sendMessage(L.get(Lang.IM_INTERACTOIN_TIMEOUT));
 						}
 						
 					}else{
-						sender.sendMessage(L.get(Lang.IM_NO_SELECTED_SHOP));
+						sender.sendMessage(L.get(Lang.IM_NOT_SELECTED_SHOP));
 					}
 				} else {
 					sender.sendMessage(L.get(Lang.IM_INTERCEPT_CONSOLE));
@@ -142,16 +142,16 @@ public class QuickShopXCommand extends Command
 									
 									sender.sendMessage(L.get(Lang.IM_SHOP_PRICE_UPDATED, String.format("%.2f", shop.data.price)));
 								} else {
-									sender.sendMessage(L.get(Lang.IM_PRICE_NO_UPDATE_NO_ONWER));
+									sender.sendMessage(L.get(Lang.IM_PRICE_CANT_UPDATE_NOT_ONWER));
 								}
 							} else {
-								sender.sendMessage(L.get(Lang.IM_NO_SELECTED_SHOP));
+								sender.sendMessage(L.get(Lang.IM_NOT_SELECTED_SHOP));
 							}
 						} else {
 							sender.sendMessage(L.get(Lang.IM_PRICE_WRONG_FORMAT));
 						}
 					} else {
-						sender.sendMessage(L.get(Lang.IM_PRICE_NO_UPDATE_WRONG_ARGS));
+						sender.sendMessage(L.get(Lang.IM_PRICE_WRONG_ARGS));
 					}
 				} else {
 					sender.sendMessage(L.get(Lang.IM_INTERCEPT_CONSOLE));
@@ -178,9 +178,9 @@ public class QuickShopXCommand extends Command
 							
 							shop.updateSignText();
 							
-							sender.sendMessage(shop.data.serverShop ? L.get(Lang.IM_SHOP_UPDATED_SERVER_SHOP) : L.get(Lang.IM_SHOP_UPDATED_LIMITED));
+							sender.sendMessage(shop.data.serverShop ? L.get(Lang.IM_SHOP_UPDATED_SERVER_SHOP) : L.get(Lang.IM_SHOP_UPDATED_ORDINARY));
 						} else {
-							sender.sendMessage(L.get(Lang.IM_NO_SELECTED_SHOP));
+							sender.sendMessage(L.get(Lang.IM_NOT_SELECTED_SHOP));
 						}
 					}
 				} else {

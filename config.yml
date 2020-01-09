@@ -1,4 +1,4 @@
-version: 3
+version: 4
 interactionInterval: 5000
 hologramItemShow: true
 # never, doubleclick, always
@@ -8,3 +8,5 @@ interactionWithResidencePlugin: true
 createShopInResidenceOnly: true
 opIgnoreResidence: false
 snakeDestroyShop: false
+hopperActiveInResidenceOnly: true
+useCustomItemName: true

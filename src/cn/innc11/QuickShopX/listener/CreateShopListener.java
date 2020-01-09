@@ -129,7 +129,7 @@ public class CreateShopListener implements Listener, ShopInteractionTimer
 			if(!QuickShopXPlugin.isPrice(message))
 			{
 				// not a number
-				player.sendMessage(L.get(Lang.IM_NO_ENTER_NUMBER));
+				player.sendMessage(L.get(Lang.IM_NOT_A_NUMBER));
 			}else
 			if(!isVaildInteraction(playerName).key)
 			{

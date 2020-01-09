@@ -30,8 +30,7 @@ import cn.nukkit.item.Item;
 public class InteractionShopListener implements Listener, ShopInteractionTimer
 {
 	public HashMap<String, Pair<Long, Shop>> interactingShopHashMap = new HashMap<>();
-	//public HashMap<String, Long> interactionCooldown = new HashMap<>();
-	
+
 	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent e) 
 	{
@@ -49,16 +48,6 @@ public class InteractionShopListener implements Listener, ShopInteractionTimer
 				
 				QuickShopXPlugin.instance.hologramListener.addShopItemEntity(Arrays.asList(player), shop.data);
 
-				/*
-				interactionCooldown.put(playerName, System.currentTimeMillis());
-				long interactionTimeDiff = getInteractionTimeDiff(player);
-				if(!(interactionTimeDiff>800 || interactionTimeDiff==0))
-				{
-					e.setCancelled();
-					return;
-				}
-				 */
-				
 				switch (QuickShopXPlugin.instance.pluginConfig.formOperate)
 				{
 					case DOUBLE_CLICK:
@@ -76,7 +65,7 @@ public class InteractionShopListener implements Listener, ShopInteractionTimer
 							interactingShopHashMap.remove(e.getPlayer().getName());
 							break;
 						}
-						//no break
+						//no 'break;'
 					}
 
 					case NEVER:
@@ -88,7 +77,7 @@ public class InteractionShopListener implements Listener, ShopInteractionTimer
 						
 						if(!player.getName().equals(shop.data.owner))
 						{
-							player.sendMessage(L.get(Lang.IM_ENTER_TRANSACTIONS_COUNT));
+							player.sendMessage(L.get(Lang.IM_ENTER_TRANSACTIONS_VOLUME));
 						}
 						
 						interactingShopHashMap.put(player.getName(), new Pair<Long, Shop>(System.currentTimeMillis()+ QuickShopXPlugin.instance.pluginConfig.interactionInterval, shop));
@@ -139,7 +128,7 @@ public class InteractionShopListener implements Listener, ShopInteractionTimer
 
 						e.setCancelled();
 					} else {
-						player.sendMessage(L.get(Lang.IM_NO_ENTER_NUMBER));
+						player.sendMessage(L.get(Lang.IM_NOT_A_NUMBER));
 						e.setCancelled();
 					}
 				}
@@ -268,16 +257,4 @@ public class InteractionShopListener implements Listener, ShopInteractionTimer
 		return null;
 	}
 
-	/*
-	public long getInteractionTimeDiff(Player player)
-	{
-		if(interactionCooldown.containsKey(player))
-		{
-			return System.currentTimeMillis()- interactionCooldown.get(player).longValue();
-		}
-
-		return 0;
-	}
-
-	 */
 }

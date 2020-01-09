@@ -2,6 +2,7 @@ package cn.innc11.QuickShopX.listener;
 
 import java.util.ArrayList;
 
+import cn.innc11.QuickShopX.QuickShopXPlugin;
 import cn.innc11.QuickShopX.shop.Shop;
 import cn.nukkit.block.Block;
 import cn.nukkit.block.BlockChest;
@@ -11,6 +12,11 @@ import cn.nukkit.event.Listener;
 import cn.nukkit.event.block.BlockBurnEvent;
 import cn.nukkit.event.block.BlockPistonChangeEvent;
 import cn.nukkit.event.entity.EntityExplodeEvent;
+import cn.nukkit.event.inventory.InventoryMoveItemEvent;
+import cn.nukkit.inventory.ChestInventory;
+import cn.nukkit.inventory.Inventory;
+import com.bekvon.bukkit.residence.Residence;
+import com.bekvon.bukkit.residence.protection.ClaimedResidence;
 
 public class ShopProtectListener implements Listener 
 {
@@ -87,6 +93,48 @@ public class ShopProtectListener implements Listener
 			 if(shop!=null)
 				 e.setCancelled();
 		 }
+	}
+
+	@EventHandler
+	public void onInventoryMoveItem2(InventoryMoveItemEvent e)
+	{
+		boolean hopperCanOnlyActiveInResidence = QuickShopXPlugin.instance.pluginConfig.hopperActiveInResidenceOnly;
+		boolean residenceEnable = QuickShopXPlugin.instance.residencePluginLoaded && QuickShopXPlugin.instance.pluginConfig.interactionWithResidencePlugin;
+
+		if(!(residenceEnable && hopperCanOnlyActiveInResidence))
+		{
+			return;
+		}
+
+		Inventory sourceInventory = e.getInventory();
+		Inventory targetInventory = e.getTargetInventory();
+
+		if(sourceInventory instanceof ChestInventory
+				&& e.getAction() == InventoryMoveItemEvent.Action.SLOT_CHANGE)
+		{
+			ChestInventory chestInventory = (ChestInventory) sourceInventory;
+			Shop shop = Shop.findShop(chestInventory.getHolder());
+			ClaimedResidence claimedResidence = Residence.getResidenceManager().getByLoc(chestInventory.getHolder());
+
+			if(shop!=null && claimedResidence==null)
+			{
+				e.setCancelled();
+			}
+		}
+
+
+		if(targetInventory instanceof ChestInventory
+				&& e.getAction() == InventoryMoveItemEvent.Action.SLOT_CHANGE)
+		{
+			ChestInventory chestInventory = (ChestInventory) targetInventory;
+			Shop shop = Shop.findShop(chestInventory.getHolder());
+			ClaimedResidence claimedResidence = Residence.getResidenceManager().getByLoc(chestInventory.getHolder());
+
+			if(shop!=null && claimedResidence==null)
+			{
+				e.setCancelled();
+			}
+		}
 	}
 	
 }

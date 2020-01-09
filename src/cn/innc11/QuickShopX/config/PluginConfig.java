@@ -12,6 +12,8 @@ public class PluginConfig extends MyConfig
 	public boolean createShopInResidenceOnly;
 	public boolean opIgnoreResidenceBuildPermission;
 	public boolean snakeModeDestroyShop;
+	public boolean hopperActiveInResidenceOnly;
+	public boolean useCustomItemName;
 	
 	public PluginConfig()
 	{
@@ -35,6 +37,8 @@ public class PluginConfig extends MyConfig
 		config.set("createShopInResidenceOnly", createShopInResidenceOnly);
 		config.set("opIgnoreResidenceBuildPermission", opIgnoreResidenceBuildPermission);
 		config.set("snakeModeDestroyShop", snakeModeDestroyShop);
+		config.set("hopperActiveInResidenceOnly", hopperActiveInResidenceOnly);
+		config.set("useCustomItemName", useCustomItemName);
 
 		config.save();
 	}
@@ -73,6 +77,11 @@ public class PluginConfig extends MyConfig
 		opIgnoreResidenceBuildPermission = config.getBoolean("opIgnoreResidenceBuildPermission", false);
 
 		snakeModeDestroyShop = config.getBoolean("snakeModeDestroyShop", true);
+
+		hopperActiveInResidenceOnly = config.getBoolean("hopperActiveInResidenceOnly", true);
+
+		useCustomItemName = config.getBoolean("useCustomItemName", false);
+
 	}
 
 	public static enum FormOperate
