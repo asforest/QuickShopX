@@ -183,4 +183,4 @@ public void onPlayerBuyEvent(PlayerBuyEvent event)
 ```
 
 ## 作者 Authors
-- [innc11](https://github.com/innc11)(original author [WetABQ](https://github.com/WetABQ))
+- [innc11](https://github.com/innc11)
