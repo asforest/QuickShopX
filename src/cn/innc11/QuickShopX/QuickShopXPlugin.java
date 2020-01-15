@@ -3,11 +3,8 @@ package cn.innc11.QuickShopX;
 import java.util.regex.Pattern;
 
 import cn.innc11.QuickShopX.command.QuickShopXCommand;
-import cn.innc11.QuickShopX.config.ItemNameConfig;
-import cn.innc11.QuickShopX.config.LangConfig;
-import cn.innc11.QuickShopX.config.PluginConfig;
-import cn.innc11.QuickShopX.config.ShopConfig;
-import cn.innc11.QuickShopX.config.SignTextConfig;
+import cn.innc11.QuickShopX.config.*;
+import cn.innc11.QuickShopX.crossVersion.Analyst;
 import cn.innc11.QuickShopX.listener.*;
 import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.utils.TextFormat;
@@ -15,14 +12,15 @@ import cn.nukkit.utils.TextFormat;
 public class QuickShopXPlugin extends PluginBase
 {
 	public static QuickShopXPlugin instance;
-	
+
 	public boolean residencePluginLoaded = false;
 	
 	public ShopConfig shopConfig;
-	public ItemNameConfig itemNameConfig;
+	public ItemNamesConfig itemNameConfig;
 	public SignTextConfig signTextConfig;
 	public LangConfig langConfig;
 	public PluginConfig pluginConfig;
+	public EnchantmentNamesConfig enchantmentNamesConfig;
 	
 	public CreateShopListener createShopListenerInstance;
 	public InteractionShopListener interactionShopListenerInstance;
@@ -30,19 +28,19 @@ public class QuickShopXPlugin extends PluginBase
 	public FormResponseListener formResponseListener;
 	public ShopProtectListener shopProtectListener;
 	public ItemAndInventoryListener itemAndInventoryListener;
-	
+
 	@Override
 	public void onEnable() 
 	{
 		instance = this;
 
 		String pluginName = getDescription().getName();
-		String[] pluginDepends = getDescription().getDepend().toArray(new String[0]);
+		//String[] pluginDepends = getDescription().getDepend().toArray(new String[0]);
 		
 		if(getServer().getPluginManager().getPlugin("QuickShop")!=null) 
 		{
-			getLogger().warning(TextFormat.colorize("&4QuickShop插件和"+pluginName+"插件只能二选一"));
-			getLogger().warning(TextFormat.colorize("&4Choose one of QuickShop or "+pluginName));
+			getLogger().warning(TextFormat.colorize("&4QuickShop插件无法和"+pluginName+"插件一起工作"));
+			getLogger().warning(TextFormat.colorize("&4The QuickShop cannot coexist with "+pluginName));
 			getServer().getPluginManager().disablePlugin(this);
 			
 			return;
@@ -50,7 +48,10 @@ public class QuickShopXPlugin extends PluginBase
 		
 		residencePluginLoaded = getServer().getPluginManager().getPlugin("Residence")!=null;
 
-		if(residencePluginLoaded) getLogger().info(TextFormat.colorize("&aSuccessfully linked with Residence!"));
+		if(residencePluginLoaded)
+		{
+			getLogger().info(TextFormat.colorize("&aSuccessfully linked with Residence!"));
+		}
 		
 		loadConfig();
 		
@@ -68,8 +69,8 @@ public class QuickShopXPlugin extends PluginBase
 
 	void registerEvents()
 	{
-		getServer().getPluginManager().registerEvents(createShopListenerInstance, this);
 		getServer().getPluginManager().registerEvents(interactionShopListenerInstance, this);
+		getServer().getPluginManager().registerEvents(createShopListenerInstance, this);
 		getServer().getPluginManager().registerEvents(hologramListener, this);
 		getServer().getPluginManager().registerEvents(formResponseListener, this);
 		getServer().getPluginManager().registerEvents(shopProtectListener, this);
@@ -88,13 +89,16 @@ public class QuickShopXPlugin extends PluginBase
 		saveResource("signText.yml", false);
 		saveResource("language.yml", false);
 		saveResource("config.yml", false);
-		
+		saveResource("enchantmentNames.yml", false);
+
 		shopConfig = new ShopConfig();
-		itemNameConfig = new ItemNameConfig();
+		itemNameConfig = new ItemNamesConfig();
 		signTextConfig = new SignTextConfig();
 		langConfig = new LangConfig();
 		pluginConfig = new PluginConfig();
-		
+		enchantmentNamesConfig = new EnchantmentNamesConfig();
+
+		Analyst.check();
 	}
 	
 	public static boolean isInteger(String str)

@@ -72,7 +72,7 @@ public class LangConfig extends MyConfig
 		if(supplement)
 			save();
 		
-		QuickShopXPlugin.instance.getLogger().info("Loaded "+ct+" Languages.");
+		QuickShopXPlugin.instance.getLogger().info("Loaded "+ct+" languages.");
 	}
 	
 	public String get(Lang l, String... argsPair)
@@ -103,6 +103,14 @@ public class LangConfig extends MyConfig
 		BUY,
 		SELL,
 		SERVER_SHOP_NICKNAME,
+
+		ENCHANTMENT__TEXT,
+		ENCHANTMENT__PER_LINE,
+		ENCHANTMENT__PER_PREFIX,
+		ENCHANTMENT__PER_SUFFIX,
+		ENCHANTMENT__PER_PREFIX_FIRST,
+		ENCHANTMENT__PER_SUFFIX_LAST,
+		ENCHANTMENT__MULTIPLE_SIGN,
 		
 		IM_SHOP_TYPE_UPDATED,
 		IM_SHOP_TYPE_DONT_NEED_UPDATE,

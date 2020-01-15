@@ -7,7 +7,7 @@ import cn.nukkit.utils.Config;
 
 public abstract class MyConfig 
 {
-	Config config;
+	public Config config;
 	
 	public MyConfig(String fileName)
 	{

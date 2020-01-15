@@ -21,7 +21,6 @@ public class ShopDataPanel extends FormWindowCustom implements FormRespone
 	
 	public ShopDataPanel(Shop shop, String playerName)
 	{
-//		super("商店信息面板");
 		super(L.get(Lang.FORM_SHOPDATA__TITLE));
 		
 		this.shopKey = shop.getShopKey();
@@ -29,19 +28,15 @@ public class ShopDataPanel extends FormWindowCustom implements FormRespone
 		
 		Player player = QuickShopXPlugin.instance.getServer().getPlayerExact(playerName);
 		
-//		addElement(new ElementInput("价格", "", shop.getFormatPrice()));
 		addElement(new ElementInput(L.get(Lang.FORM_SHOPDATA__UNIT_PRICE), "", shop.getStringPrice()));
 
-//		addElement(new ElementDropdown("类型", Arrays.asList("购买", "回收"), shop.data.type==ShopType.BUY ? 0 : 1));
 		addElement(new ElementDropdown(L.get(Lang.FORM_SHOPDATA__SHOP_TYPE), Arrays.asList(L.get(Lang.BUY), L.get(Lang.SELL)), shop.data.type==ShopType.BUY ? 0 :1));
 	
 		if(player.isOp())
 		{
-			//		addElement(new ElementInput("店长", "", shop.data.owner));
 			addElement(new ElementInput(L.get(Lang.FORM_SHOPDATA__SHOP_OWNER), "", shop.data.owner));
 
 			addElement(new ElementToggle(L.get(Lang.FORM_SHOPDATA__SERVER_SHOP), shop.data.serverShop));
-			//		addElement(new ElementToggle("服务器商店", shop.data.serverShop));
 		}
 	}
 
@@ -59,7 +54,6 @@ public class ShopDataPanel extends FormWindowCustom implements FormRespone
 
 		if(!QuickShopXPlugin.isPrice(ePrice))
 		{
-//			e.getPlayer().sendMessage("价格不是一个数字");
 			e.getPlayer().sendMessage(L.get(Lang.IM_PRICE_WRONG_FORMAT));
 			return;
 		}

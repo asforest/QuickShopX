@@ -23,7 +23,6 @@ public class TradingPanel extends FormWindowCustom implements FormRespone
 	
 	public TradingPanel(Shop shop, String playerName) 
 	{
-//		super(shop.data.owner+"的商店交易界面");
 		super(L.get(Lang.FORM_TRADING__TITLE, "{OWNER}", (shop.data.serverShop? L.get(Lang.SERVER_SHOP_NICKNAME):shop.data.owner)));
 		
 		this.shopKey = shop.getShopKey();
@@ -31,23 +30,17 @@ public class TradingPanel extends FormWindowCustom implements FormRespone
 		
 		addElement(new ElementLabel(L.get(Lang.FORM_TRADING__SHOP_INFO, 
 				"{GOODS_NAME}", QuickShopXPlugin.instance.itemNameConfig.getItemName(shop.getItem()),
-				"{UNIT_PRICE}", shop.getStringPrice(), "{SHOP_TYPE}", shop.data.type.toString(),
-				"{STOCK}", QuickShopXPlugin.instance.itemNameConfig.getItemName(shop.getItem())
+				"{UNIT_PRICE}", shop.getStringPrice(),
+				"{SHOP_TYPE}", shop.data.type.toString(),
+				"{STOCK}", QuickShopXPlugin.instance.itemNameConfig.getItemName(shop.getItem()),
+				"{ENCHANTMENT__TEXT}", L.getEnchantments(shop.getItem())
 				)));
-//		addElement(new ElementLabel("商品: "+Main.instance.itemNameConfig.getItemName(shop.getItem())));
-		
-//		addElement(new ElementLabel("价格: "+shop.getFormatPrice()));
-		
-//		addElement(new ElementLabel("类型: "+shop.data.type));
-
-//		addElement(new ElementLabel(TextFormat.colorize(Main.instance.signTextConfig.getStockText(shop))));
 
 		PlayerInventory playerInv = Server.getInstance().getPlayerExact(playerName).getInventory();
 		float playerMoney = (float) EconomyAPI.getInstance().myMoney(playerName);
 
 		int m = shop.getMaxTranscationVolume(playerMoney, InvItem.getItemInInventoryCount(playerInv, shop.getItem()));
 		
-//		addElement(new ElementSlider("交易量 "+m, 0, m, 1, 0));
 		addElement(new ElementSlider(L.get(Lang.FORM_TRADING__TRADING_VOLUME, "{TRADING_VOLUME}", String.valueOf(m)), 0, m, 1, 0));
 	}
 

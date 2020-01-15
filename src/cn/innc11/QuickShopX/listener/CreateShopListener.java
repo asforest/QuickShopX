@@ -1,8 +1,10 @@
 package cn.innc11.QuickShopX.listener;
 
+import java.util.Arrays;
 import java.util.HashMap;
 
 import cn.innc11.QuickShopX.pluginEvent.PlayerCreateShopEvent;
+import cn.nukkit.event.EventPriority;
 import com.bekvon.bukkit.residence.Residence;
 import com.bekvon.bukkit.residence.protection.ClaimedResidence;
 
@@ -117,15 +119,20 @@ public class CreateShopListener implements Listener, ShopInteractionTimer
 		}
 	}
 	
-	@EventHandler
+	@EventHandler(priority = EventPriority.LOW)
 	public void onPlayerChatEvent(PlayerChatEvent e)
 	{
 		Player player = e.getPlayer();
 		String message = e.getMessage();
 		String playerName = player.getName();
-		
+
 		if(creatingShopPlayers.containsKey(playerName))
 		{
+			if(QuickShopXPlugin.instance.interactionShopListenerInstance.interactingShopHashMap.containsKey(player.getName()))
+			{
+				QuickShopXPlugin.instance.interactionShopListenerInstance.interactingShopHashMap.remove(player.getName());
+			}
+
 			if(!QuickShopXPlugin.isPrice(message))
 			{
 				// not a number

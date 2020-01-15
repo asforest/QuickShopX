@@ -22,10 +22,10 @@ public class QuickShopXCommand extends Command
 
 	public QuickShopXCommand()
 	{
-		super("qs");
+		super("quickshopx");
 		
 		setDescription("QuickShopX Command");
-		setAliases(new String[]{"shop","qshop","quickshopx", "qsx"});
+		setAliases(new String[]{"shop","qshop","qs", "qsx"});
         setUsage("/qs <subcommand> [args]");
         
         HashMap<String, CommandParameter[]> parameter = new HashMap<>();
@@ -33,8 +33,8 @@ public class QuickShopXCommand extends Command
         parameter.put("1arg", new CommandParameter[] {new CommandParameter("help(h)", false, new String[]{"help", "h"})});
         parameter.put("2arg", new CommandParameter[] {new CommandParameter("buy(b)", false, new String[]{"buy", "b"})});
         parameter.put("3arg", new CommandParameter[] {new CommandParameter("sell(s)", false, new String[]{"sell", "s"})});
-        parameter.put("4arg", new CommandParameter[] {new CommandParameter("price(p)", false, new String[]{"price", "p"}), new CommandParameter("price", CommandParamType.INT, false)});
-        parameter.put("5arg", new CommandParameter[] {new CommandParameter("unlimited(u)", false, new String[]{"unlimited", "u"})});
+        parameter.put("4arg", new CommandParameter[] {new CommandParameter("price(p)", false, new String[]{"price", "p"}), new CommandParameter("price", CommandParamType.FLOAT, false)});
+        parameter.put("5arg", new CommandParameter[] {new CommandParameter("server(se)", false, new String[]{"server", "se"})});
         parameter.put("6arg", new CommandParameter[] {new CommandParameter("version(v)", false, new String[]{"version", "v"})});
         parameter.put("7arg", new CommandParameter[] {new CommandParameter("controlpanel(cp)", false, new String[]{"controlpanel", "cp", "c"})});
         parameter.put("8arg", new CommandParameter[] {new CommandParameter("reload(r)", false, new String[]{"reload", "r"})});
@@ -159,9 +159,8 @@ public class QuickShopXCommand extends Command
 				
 				break;
 			}
-			case "unlimited":
-			case "ul":
-			case "u":{
+			case "server":
+			case "se":{
 				if (sender instanceof Player) 
 				{
 					if(((Player)sender).isOp())
@@ -225,6 +224,8 @@ public class QuickShopXCommand extends Command
 					QuickShopXPlugin.instance.signTextConfig.reload();
 					QuickShopXPlugin.instance.langConfig.reload();
 					QuickShopXPlugin.instance.pluginConfig.reload();
+					QuickShopXPlugin.instance.enchantmentNamesConfig.reload();
+
 //					sender.sendMessage("Reload done");
 					sender.sendMessage(L.get(Lang.PLUGIN_MESSAGE_RELOAD_DONE));
 				}

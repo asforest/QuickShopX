@@ -17,6 +17,8 @@ import com.bekvon.bukkit.residence.Residence;
 import com.bekvon.bukkit.residence.protection.ClaimedResidence;
 import com.bekvon.bukkit.residence.protection.FlagPermissions;
 
+import java.util.Arrays;
+
 public class ItemAndInventoryListener implements Listener
 {
 	@EventHandler
@@ -33,6 +35,7 @@ public class ItemAndInventoryListener implements Listener
 			if(shop!=null)
 			{
 				shop.updateSignText(5);
+				QuickShopXPlugin.instance.hologramListener.addShopItemEntity(Server.getInstance().getOnlinePlayers().values(), shop.data);/////////////////
 			}
 		}
 
@@ -44,6 +47,7 @@ public class ItemAndInventoryListener implements Listener
 			if(shop!=null)
 			{
 				shop.updateSignText(5);
+				QuickShopXPlugin.instance.hologramListener.addShopItemEntity(Server.getInstance().getOnlinePlayers().values(), shop.data);//////////////
 			}
 		}
 	}
@@ -113,7 +117,10 @@ public class ItemAndInventoryListener implements Listener
 				ChestInventory ci = (ChestInventory) inv;
 				Shop shop = Shop.findShop(ci.getHolder());
 				if(shop!=null)
+				{
 					shop.updateSignText(5);
+					QuickShopXPlugin.instance.hologramListener.addShopItemEntity(Server.getInstance().getOnlinePlayers().values(), shop.data);/////////////////
+				}
 			}
 		}
 	}

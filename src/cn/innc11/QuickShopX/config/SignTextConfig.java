@@ -67,13 +67,13 @@ public class SignTextConfig extends MyConfig
 	
 	private String variableReplace(String str, Shop shop)
 	{
-		ItemNameConfig inc = QuickShopXPlugin.instance.itemNameConfig;
+		ItemNamesConfig inc = QuickShopXPlugin.instance.itemNameConfig;
 		
 		str = str.replaceAll("\\$\\{ITEM_NAME\\}", inc.getItemName(shop.getItem()));
 		str = str.replaceAll("\\$\\{PRICE\\}", shop.getStringPrice());
 		str = str.replaceAll("\\$\\{STOCK\\}", shop.data.serverShop ? "" : getStockText(shop));
 		str = str.replaceAll("\\$\\{OWNER\\}", shop.data.serverShop? L.get(LangConfig.Lang.SERVER_SHOP_NICKNAME):shop.data.owner);
-		str = str.replaceAll("\\$\\{DAMAGE\\}", String.valueOf(shop.data.itemMetadata));
+		str = str.replaceAll("\\$\\{DAMAGE\\}", String.valueOf(shop.data.item.getDamage()));
 		
 		return str;
 	}

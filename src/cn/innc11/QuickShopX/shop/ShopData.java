@@ -1,6 +1,9 @@
 package cn.innc11.QuickShopX.shop;
 
-public class ShopData 
+import cn.innc11.QuickShopX.QuickShopXPlugin;
+import cn.nukkit.item.Item;
+
+public class ShopData
 {
 	public String owner;
 	public ShopType type;
@@ -11,34 +14,13 @@ public class ShopData
 	public int signX;
 	public int signZ;
 	public String world;
-	public int itemID;
-	public int itemMetadata;
+	public Item item;
 	public boolean serverShop;
 	
-//	public 
-	
-	public ShopData() 
+	public ShopData()
 	{
 	}
-	/*
-	public ShopData(String owner, ShopType type, float price, int chestX,
-			int chestY, int chestZ, int signX, int signZ, String world,
-			int itemID, int itemMetadata, boolean serverShop)
-	{
-		this.owner = owner;
-		this.type = type;
-		this.price = price;
-		this.chestX = chestX;
-		this.chestY = chestY;
-		this.chestZ = chestZ;
-		this.signX = signX;
-		this.signZ = signZ;
-		this.world = world;
-		this.itemID = itemID;
-		this.itemMetadata = itemMetadata;
-		this.serverShop = serverShop;
-	}
-	*/
+
 	public Shop getShop()
 	{
 		return Shop.getShopInstance(getShopKey());
@@ -49,16 +31,28 @@ public class ShopData
 		return String.format("%d:%d:%d:%s", chestX, chestY, chestZ, world);
 	}
 
-	/*
-	public ShopData clonE()
+	public boolean equals(Object obj)
 	{
-		ShopData sd = null;
-		try {
-			sd = (ShopData) clone();
-		} catch (CloneNotSupportedException e) {
-			e.printStackTrace();
-		}
+		if(obj instanceof ShopData)
+		{
+			ShopData sd = ((ShopData) obj);
+			boolean ret = true;
+			ret &= serverShop == sd.serverShop;
+			ret &= owner.equals(sd.owner);
+			ret &= type == sd.type;
+			ret &= price == sd.price;
+			ret &= chestX == sd.chestX;
+			ret &= chestY == sd.chestY;
+			ret &= chestZ == sd.chestZ;
+			ret &= signX == sd.signX;
+			ret &= signZ == sd.signZ;
+			ret &= world.equals(sd.world);
+			ret &= serverShop == sd.serverShop;
+			ret &= item.equalsExact(sd.item);
 
-		return sd;
-	}*/
+			return ret;
+		}else{
+			return false;
+		}
+	}
 }

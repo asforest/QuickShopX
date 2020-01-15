@@ -6,6 +6,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
 import cn.innc11.QuickShopX.QuickShopXPlugin;
+import cn.innc11.QuickShopX.shop.ShopType;
 import cn.innc11.QuickShopX.utils.Pair;
 import cn.innc11.QuickShopX.shop.ShopData;
 import cn.nukkit.Player;
@@ -138,6 +139,12 @@ public class HologramItemListener implements Listener
 		addItemEntityPacket.entityUniqueId = entityId;
 		addItemEntityPacket.entityRuntimeId = addItemEntityPacket.entityUniqueId;
 		addItemEntityPacket.item = shopData.getShop().getItem();
+		/*
+		if(shopData.getShop().data.type== ShopType.BUY && shopData.getShop().getStock()>1)
+		{
+			addItemEntityPacket.item.setCount(shopData.getShop().getStock());
+		}
+		 */
 		addItemEntityPacket.x = (float) (shopData.chestX + 0.5F);
 		addItemEntityPacket.y = (float) (shopData.chestY + 1);
 		addItemEntityPacket.z = (float) (shopData.chestZ + 0.5F);

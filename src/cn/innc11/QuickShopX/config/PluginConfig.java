@@ -1,86 +1,154 @@
 package cn.innc11.QuickShopX.config;
 
-public class PluginConfig extends MyConfig 
+import cn.innc11.QuickShopX.QuickShopXPlugin;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+import java.lang.reflect.Field;
+
+public class PluginConfig extends MyConfig
 {
+	@DefaultValue(defalutValue = 0)
 	public int configVersion;
-	
+
+	@DefaultValue(defalutValue = 5000)
 	public int interactionInterval;
+
+	@DefaultValue(defalutValue = 1)
 	public boolean hologramItemShow;
+
+	@DefaultValue(defalutValue = 1)
 	public FormOperate formOperate;
+
+	@DefaultValue(defalutValue = 500)
 	public int packetSendPerSecondMax;
+
+	@DefaultValue(defalutValue = 1)
 	public boolean interactionWithResidencePlugin;
+
+	@DefaultValue(defalutValue = 1)
 	public boolean createShopInResidenceOnly;
+
+	@DefaultValue(defalutValue = 0)
 	public boolean opIgnoreResidenceBuildPermission;
+
+	@DefaultValue(defalutValue = 0)
 	public boolean snakeModeDestroyShop;
+
+	@DefaultValue(defalutValue = 1)
 	public boolean hopperActiveInResidenceOnly;
+
+	@DefaultValue(defalutValue = 0)
 	public boolean useCustomItemName;
 	
 	public PluginConfig()
 	{
 		super("config.yml");
-		
+
 		reload();
 	}
 
 	@Override
-	public void save() 
+	public void save()
 	{
 		config.getRootSection().clear();
 		
-		config.set("version", configVersion);
-		
-		config.set("interactionInterval", interactionInterval);
-		config.set("hologramItemShow", hologramItemShow);
-		config.set("formOperate", formOperate.text);
-		config.set("packetSendPerSecondMax", packetSendPerSecondMax);
-		config.set("interactionWithResidencePlugin", interactionWithResidencePlugin);
-		config.set("createShopInResidenceOnly", createShopInResidenceOnly);
-		config.set("opIgnoreResidenceBuildPermission", opIgnoreResidenceBuildPermission);
-		config.set("snakeModeDestroyShop", snakeModeDestroyShop);
-		config.set("hopperActiveInResidenceOnly", hopperActiveInResidenceOnly);
-		config.set("useCustomItemName", useCustomItemName);
+
+		for(Field field : getClass().getDeclaredFields())
+		{
+			if(field.isAnnotationPresent(DefaultValue.class))
+			{
+				int annotationValue = field.getAnnotation(DefaultValue.class).defalutValue();
+				if(annotationValue<0) continue;
+
+				String fieldName = field.getName();
+
+				try {
+
+					if(field.getType().isEnum())
+					{
+						config.set(fieldName, field.get(this).toString());
+					}else{
+						config.set(fieldName, field.get(this));
+					}
+
+				} catch (IllegalAccessException e) {e.printStackTrace();}
+			}
+		}
 
 		config.save();
 	}
 
 	@Override
-	public void reload() 
+	public void reload()
 	{
 		config.reload();
-		
-		configVersion = config.getInt("version");
-		
-		interactionInterval = config.getInt("interactionInterval", 7000);
-		
-		hologramItemShow = config.getBoolean("hologramItemShow", false);
-		
-		String temp = config.getString("formOperate", "doubleclick");
-		
-		switch (temp) {
-		case "never":
-			formOperate = FormOperate.NEVER;
-			break;
-		case "doubleclick":
-			formOperate = FormOperate.DOUBLE_CLICK;
-			break;
-		case "always":
-			formOperate = FormOperate.ALWAYS;
-			break;
+
+		for(Field field : getClass().getDeclaredFields())
+		{
+			if(field.isAnnotationPresent(DefaultValue.class))
+			{
+				int annotationValue = field.getAnnotation(DefaultValue.class).defalutValue();
+				if(annotationValue<0) continue;
+
+				String fieldName = field.getName();
+
+				try {
+
+					if(field.getType()==int.class)
+					{
+						int defaultValue = annotationValue;
+
+						field.setInt(this, config.getInt(fieldName, defaultValue));
+
+					}
+
+					if(field.getType()==boolean.class)
+					{
+						boolean defaultValue = annotationValue!=0;
+						field.setBoolean(this, config.getBoolean(fieldName, defaultValue));
+					}
+
+					if(field.getType().isEnum())
+					{
+						int defaultIndex = Math.min(field.getType().getEnumConstants().length-1, annotationValue);
+
+						String configText = config.getString(fieldName, field.getType().getEnumConstants()[defaultIndex].toString());
+
+						boolean found = false;
+
+						for (Object v : field.getType().getEnumConstants())
+						{
+							FormOperate object = (FormOperate) v;
+
+							if(configText.equals(object.text))
+							{
+								field.set(this, object);
+								found = true;
+							}
+						}
+
+						if(!found)
+						{
+							field.set(this, field.getType().getEnumConstants()[defaultIndex]);
+						}
+
+					}
+
+				} catch (IllegalAccessException e) {e.printStackTrace();}
+
+
+				/*
+				try {
+					QuickShopXPlugin.instance.getLogger().error(field.getName()+" --> "+field.get(this));
+				} catch (IllegalAccessException e) {
+					e.printStackTrace();
+				}
+				 */
+			}
 		}
-		
-		packetSendPerSecondMax = config.getInt("packetSendPerSecondMax", 40);
-		
-		interactionWithResidencePlugin = config.getBoolean("interactionWithResidencePlugin", true);
-		
-		createShopInResidenceOnly = config.getBoolean("createShopInResidenceOnly", true);
-		
-		opIgnoreResidenceBuildPermission = config.getBoolean("opIgnoreResidenceBuildPermission", false);
-
-		snakeModeDestroyShop = config.getBoolean("snakeModeDestroyShop", true);
-
-		hopperActiveInResidenceOnly = config.getBoolean("hopperActiveInResidenceOnly", true);
-
-		useCustomItemName = config.getBoolean("useCustomItemName", false);
 
 	}
 
@@ -96,5 +164,16 @@ public class PluginConfig extends MyConfig
 		{
 			this.text = text;
 		}
+
+		@Override
+		public String toString() {
+			return text;
+		}
+	}
+
+	@Target({ElementType.FIELD })
+	@Retention(RetentionPolicy.RUNTIME)
+	@interface DefaultValue{
+		int defalutValue() default -1;
 	}
 }

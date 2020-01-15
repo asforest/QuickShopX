@@ -147,6 +147,16 @@
 4. 这个版本更新需要删除language.yml让其从新生成
 5. 修复语言文件无法被/qs reload重载的问题
 
+#### 1.3
+1. 支持NBT(附魔, Lore, CustomName)特性(物品上的CustomName不受"使用自定义物品命名"的影响,仍然会被显示,且会把原有的名字代替)
+2. ~~对出售商店的悬浮物增加了堆叠的机制（当物品多余1个的时候会有堆叠的效果）~~(有点难看,已删除)
+3. 修复always模式下商店牌子无法破坏的问题
+4. 修复在"交互超时"时间以内创建商店会一起触发与上一次的商店的购买行为
+5. 这个版本更新需要删除language.yml让其从新生成(记得备份,修改了 IM_SHOP_INFO_SHOW, FORM_TRADING__SHOP_INFO, FORM_MASTER__CONTENT, 以及新增了部分语言(在文件开头))
+6. 修改/qs unlimited指令变为/qs server，功能不变
+7. 修改美化signText.yml默认配色
+
+
 ## 指令 Commands
 
 | 指令                        | 描述                   | 权限   |
@@ -155,7 +165,7 @@
 | /qs buy(b)                  | 改变为购买类型的商店   | player |
 | /qs sell(s)                 | 改变为出售类型的商店   | player |
 | /qs price(p) <price>        | 改变商店的交易价格     | player |
-| /qs unlimited(u)           | 改变商店为系统商店     | op     |
+| /qs server(se)              | 改变商店为系统商店     | op     |
 | /qs version(v)              | 显示插件的版本信息     | op     |
 | /qs controlpanel(cp)        | 显示插件的控制面板     | op     |
 | /qs reload(r)               | 重新加载插件的配置文件 | op     |

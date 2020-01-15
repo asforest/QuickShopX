@@ -31,7 +31,8 @@ public class BuyShop extends Shop {
 		double playerMoney = economyAPI.myMoney(player);
 		double price = data.price * count;
 		Player shopOwner = Server.getInstance().getPlayerExact(data.owner);
-		Item item = Item.get(data.itemID, data.itemMetadata, count);
+		Item item = getItem();
+		item.setCount(count);
 		PlayerInventory playerInv = player.getInventory();
 		ChestInventory shopChestInventory = getShopChest().getRealInventory();
 		int itemCountInChest = InvItem.getItemInInventoryCount(shopChestInventory, item);

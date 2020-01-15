@@ -21,6 +21,7 @@ import cn.nukkit.level.Position;
 import cn.nukkit.math.BlockFace;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.scheduler.PluginTask;
+import jdk.internal.org.objectweb.asm.tree.IincInsnNode;
 
 public abstract class Shop 
 {
@@ -142,15 +143,19 @@ public abstract class Shop
 		boolean ret = false;
 		
 		if(obj instanceof Shop)
+		{
 			ret = ((Shop) obj).data.equals(data);
-		
+		}
+
 		return ret;
 	}
 	
 	
 	public Item getItem()
 	{
-		return Item.get(data.itemID, data.itemMetadata);
+		Item temp = data.item.clone();
+		temp.setCount(1);
+		return temp;
 	}
 	
 	public String getStringPrice()
@@ -285,8 +290,9 @@ public abstract class Shop
 					sd.signX = (int) signBlock.x;
 					sd.signZ = (int) signBlock.z;
 					sd.world = chestBlock.level.getFolderName();
-					sd.itemID = itemInHand.getId();
-					sd.itemMetadata = itemInHand.getDamage();
+					//sd.item = new Item(itemInHand.getId(), itemInHand.getDamage());
+					sd.item = itemInHand.clone();
+					sd.item.setCount(1);
 					sd.serverShop = false;
 					
 					rt = QuickShopXPlugin.instance.shopConfig.addShop(sd);

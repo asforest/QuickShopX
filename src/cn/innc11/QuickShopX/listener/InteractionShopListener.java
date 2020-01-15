@@ -1,6 +1,5 @@
 package cn.innc11.QuickShopX.listener;
 
-import java.util.Arrays;
 import java.util.HashMap;
 
 import com.bekvon.bukkit.residence.Residence;
@@ -9,7 +8,7 @@ import com.bekvon.bukkit.residence.protection.ClaimedResidence;
 import cn.innc11.QuickShopX.QuickShopXPlugin;
 import cn.innc11.QuickShopX.utils.Pair;
 import cn.innc11.QuickShopX.config.LangConfig.Lang;
-import cn.innc11.QuickShopX.form.ShopMasterPanel;
+import cn.innc11.QuickShopX.form.ShopOwnerPanel;
 import cn.innc11.QuickShopX.form.TradingPanel;
 import cn.innc11.QuickShopX.shop.BuyShop;
 import cn.innc11.QuickShopX.shop.SellShop;
@@ -34,7 +33,7 @@ public class InteractionShopListener implements Listener, ShopInteractionTimer
 	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent e) 
 	{
-		if(e.getBlock() instanceof BlockWallSign)
+		if(e.getBlock() instanceof BlockWallSign && e.getAction()== PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK)
 		{
 			Block block = e.getBlock();
 			Player player = e.getPlayer();
@@ -46,7 +45,8 @@ public class InteractionShopListener implements Listener, ShopInteractionTimer
 			{
 				shop.updateSignText();
 				
-				QuickShopXPlugin.instance.hologramListener.addShopItemEntity(Arrays.asList(player), shop.data);
+				//QuickShopXPlugin.instance.hologramListener.addShopItemEntity(Arrays.asList(player), shop.data);
+				QuickShopXPlugin.instance.hologramListener.addShopItemEntity(Server.getInstance().getOnlinePlayers().values(), shop.data);
 
 				switch (QuickShopXPlugin.instance.pluginConfig.formOperate)
 				{
@@ -55,11 +55,11 @@ public class InteractionShopListener implements Listener, ShopInteractionTimer
 						Pair<Boolean, Shop> interactionInfo = isVaildInteraction(playerName);
 						Shop interactiveShop = interactionInfo!=null? interactionInfo.value:null;
 						boolean noTimeout = interactionInfo!=null? interactionInfo.key:true;
-						
+
 						if(interactionInfo!=null && interactiveShop.equals(shop) && noTimeout)
 						{
 							if(player.getName().equals(shop.data.owner) || player.isOp())
-								player.showFormWindow(new ShopMasterPanel(shop, player.getName()));
+								player.showFormWindow(new ShopOwnerPanel(shop, player.getName()));
 							else
 								player.showFormWindow(new TradingPanel(shop, player.getName()));
 							interactingShopHashMap.remove(e.getPlayer().getName());
@@ -70,11 +70,18 @@ public class InteractionShopListener implements Listener, ShopInteractionTimer
 
 					case NEVER:
 					{
-						Item shopItem = Item.get(shop.data.itemID, shop.data.itemMetadata);
+						Item shopItem = shop.getItem();
 						
 						// show this shop detail information
-						player.sendMessage(L.get(Lang.IM_SHOP_INFO_SHOW, "{OWNER}", shop.data.serverShop? L.get(Lang.SERVER_SHOP_NICKNAME):shop.data.owner, "{GOODS}", QuickShopXPlugin.instance.itemNameConfig.getItemName(shopItem), "{PRICE}", String.format("%.2f", shop.data.price), "{SHOP_TYPE}", shop.data.type.toString(), "{SIGN_STOCK_TEXT}", QuickShopXPlugin.instance.signTextConfig.getStockText(shop)));
-						
+						player.sendMessage(L.get(Lang.IM_SHOP_INFO_SHOW,
+								"{OWNER}", shop.data.serverShop? L.get(Lang.SERVER_SHOP_NICKNAME):shop.data.owner,
+								"{GOODS}", QuickShopXPlugin.instance.itemNameConfig.getItemName(shopItem),
+								"{PRICE}", String.format("%.2f", shop.data.price),
+								"{SHOP_TYPE}", shop.data.type.toString(),
+								"{SIGN_STOCK_TEXT}", QuickShopXPlugin.instance.signTextConfig.getStockText(shop),
+                                "{ENCHANTMENT__TEXT}", L.getEnchantments(shopItem)
+                        ));
+
 						if(!player.getName().equals(shop.data.owner))
 						{
 							player.sendMessage(L.get(Lang.IM_ENTER_TRANSACTIONS_VOLUME));
@@ -87,7 +94,7 @@ public class InteractionShopListener implements Listener, ShopInteractionTimer
 						
 					case ALWAYS:
 						if(player.getName().equals(shop.data.owner))
-							player.showFormWindow(new ShopMasterPanel(shop, player.getName()));
+							player.showFormWindow(new ShopOwnerPanel(shop, player.getName()));
 						else
 							player.showFormWindow(new TradingPanel(shop, player.getName()));
 
@@ -110,7 +117,7 @@ public class InteractionShopListener implements Listener, ShopInteractionTimer
 		Pair<Boolean, Shop> interactionInfo = isVaildInteraction(playerName);
 		Shop interactiveShop = interactionInfo!=null? interactionInfo.value:null;
 		boolean noTimeout = interactionInfo!=null? interactionInfo.key:true;
-		
+
 		if(interactionInfo!=null)
 		{
 			// not is owner
