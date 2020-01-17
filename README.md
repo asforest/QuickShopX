@@ -156,6 +156,9 @@
 6. 修改/qs unlimited指令变为/qs server，功能不变
 7. 修改美化signText.yml默认配色
 
+#### 1.3.1
+1. 添加部分具有Damage值的物品的中文命名(需要删除itemName.yml并重启服务器来生效)
+
 
 ## 指令 Commands
 
