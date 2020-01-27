@@ -65,6 +65,8 @@ public class ShopDataPanel extends FormWindowCustom implements FormRespone
 		{
 			shop.data.owner = getResponse().getInputResponse(2);
 			shop.data.serverShop = getResponse().getToggleResponse(3);
+		}else{
+			shop.data.serverShop = false;
 		}
 
 		shop.updateSignText();

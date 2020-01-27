@@ -1,5 +1,6 @@
 package cn.innc11.QuickShopX;
 
+import java.io.File;
 import java.util.regex.Pattern;
 
 import cn.innc11.QuickShopX.command.QuickShopXCommand;
@@ -39,8 +40,8 @@ public class QuickShopXPlugin extends PluginBase
 		
 		if(getServer().getPluginManager().getPlugin("QuickShop")!=null) 
 		{
-			getLogger().warning(TextFormat.colorize("&4QuickShop插件无法和"+pluginName+"插件一起工作"));
-			getLogger().warning(TextFormat.colorize("&4The QuickShop cannot coexist with "+pluginName));
+			getLogger().warning(TextFormat.colorize("&cQuickShop插件无法和"+pluginName+"插件一起工作"));
+			getLogger().warning(TextFormat.colorize("&cThe QuickShop cannot coexist with "+pluginName));
 			getServer().getPluginManager().disablePlugin(this);
 			
 			return;
@@ -91,11 +92,11 @@ public class QuickShopXPlugin extends PluginBase
 		saveResource("config.yml", false);
 		saveResource("enchantmentNames.yml", false);
 
+		pluginConfig = new PluginConfig();
 		shopConfig = new ShopConfig();
 		itemNameConfig = new ItemNamesConfig();
 		signTextConfig = new SignTextConfig();
 		langConfig = new LangConfig();
-		pluginConfig = new PluginConfig();
 		enchantmentNamesConfig = new EnchantmentNamesConfig();
 
 		Analyst.check();

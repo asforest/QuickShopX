@@ -76,7 +76,7 @@ public class InteractionShopListener implements Listener, ShopInteractionTimer
 						player.sendMessage(L.get(Lang.IM_SHOP_INFO_SHOW,
 								"{OWNER}", shop.data.serverShop? L.get(Lang.SERVER_SHOP_NICKNAME):shop.data.owner,
 								"{GOODS}", QuickShopXPlugin.instance.itemNameConfig.getItemName(shopItem),
-								"{PRICE}", String.format("%.2f", shop.data.price),
+								"{PRICE}", String.format("%.1f", shop.data.price),
 								"{SHOP_TYPE}", shop.data.type.toString(),
 								"{SIGN_STOCK_TEXT}", QuickShopXPlugin.instance.signTextConfig.getStockText(shop),
                                 "{ENCHANTMENT__TEXT}", L.getEnchantments(shopItem)

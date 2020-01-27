@@ -124,8 +124,11 @@ public class HologramItemListener implements Listener
 	
 	public long getEid(ShopData shopData)
 	{
-		long l = (long) Math.abs((shopData.signX * shopData.chestY * shopData.signZ)+Math.sqrt(shopData.signX * shopData.chestY * shopData.signZ));
-//		Server.getInstance().getLogger().error("添加实体包: "+l);
+		int cx = shopData.chestX;
+		int cy = shopData.chestY;
+		int cz = shopData.chestZ;
+		long l = ((cx<<32) + cz) * cy;
+		//Server.getInstance().getLogger().error("添加实体包: "+l);
 		return l;
 	}
 	
@@ -145,19 +148,18 @@ public class HologramItemListener implements Listener
 			addItemEntityPacket.item.setCount(shopData.getShop().getStock());
 		}
 		 */
-		addItemEntityPacket.x = (float) (shopData.chestX + 0.5F);
-		addItemEntityPacket.y = (float) (shopData.chestY + 1);
-		addItemEntityPacket.z = (float) (shopData.chestZ + 0.5F);
+
+		addItemEntityPacket.x = (shopData.chestX + 0.5F);
+		addItemEntityPacket.y = (shopData.chestY + 1F);
+		addItemEntityPacket.z = (shopData.chestZ + 0.5F);
 		addItemEntityPacket.speedX = 0f;
 		addItemEntityPacket.speedY = 0f;
 		addItemEntityPacket.speedZ = 0f;
-		int flags = Entity.DATA_FLAG_IMMOBILE;
+		long flags = 1 << Entity.DATA_FLAG_IMMOBILE;
 		addItemEntityPacket.metadata = new EntityMetadata()
 				.putLong(Entity.DATA_FLAGS, flags)
 				.putLong(Entity.DATA_LEAD_HOLDER_EID, -1)
 				.putFloat(Entity.DATA_SCALE, 4f);
-//		Server.broadcastPacket(players, addItemEntityPacket);
-		
 		try {
 			queue.offer(new Pair<Collection<Player>, DataPacket>(players, addItemEntityPacket), 2L, TimeUnit.SECONDS);
 		} catch (InterruptedException e) {e.printStackTrace();}

@@ -10,3 +10,4 @@ opIgnoreResidence: false
 snakeDestroyShop: false
 hopperActiveInResidenceOnly: true
 useCustomItemName: true
+debug: false

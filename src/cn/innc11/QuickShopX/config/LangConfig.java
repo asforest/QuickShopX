@@ -1,9 +1,11 @@
 package cn.innc11.QuickShopX.config;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import cn.innc11.QuickShopX.QuickShopXPlugin;
+import cn.nukkit.event.block.BlockPlaceEvent;
 import cn.nukkit.utils.TextFormat;
 
 public class LangConfig extends MyConfig 
@@ -94,10 +96,11 @@ public class LangConfig extends MyConfig
 			}
 			
 		}
+        
 		
 		return TextFormat.colorize(rawStr);
 	}
-	
+
 	public static enum Lang
 	{
 		BUY,

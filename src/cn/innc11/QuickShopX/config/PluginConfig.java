@@ -1,6 +1,7 @@
 package cn.innc11.QuickShopX.config;
 
 import cn.innc11.QuickShopX.QuickShopXPlugin;
+import cn.nukkit.utils.TextFormat;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -42,6 +43,9 @@ public class PluginConfig extends MyConfig
 
 	@DefaultValue(defalutValue = 0)
 	public boolean useCustomItemName;
+
+	@DefaultValue(defalutValue = 0)
+	public boolean debug;
 	
 	public PluginConfig()
 	{
@@ -147,8 +151,13 @@ public class PluginConfig extends MyConfig
 					e.printStackTrace();
 				}
 				 */
+
+
 			}
 		}
+
+		if(debug)
+			QuickShopXPlugin.instance.getLogger().error(TextFormat.colorize("&cDEBUG is on"));
 
 	}
 

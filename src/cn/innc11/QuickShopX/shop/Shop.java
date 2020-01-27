@@ -157,12 +157,12 @@ public abstract class Shop
 		temp.setCount(1);
 		return temp;
 	}
-	
+
 	public String getStringPrice()
 	{
 		return String.valueOf(data.price)/*String.format("%.2f", data.price)*/;
 	}
-	
+
 	public int getStock()
 	{
 		Item item = getItem();
