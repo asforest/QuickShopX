@@ -1,0 +1,12 @@
+buy:
+  text1: "[&l&6BuyShop&r]"
+  text2: "{ITEM_NAME}"
+  text3: "{OWNER} - &e{PRICE}"
+  text4: "{STOCK}"
+  stock: "stock: &a&l{STOCK_SPACE}"
+sell:
+  text1: "[&l&eSellShop&r]"
+  text2: "{ITEM_NAME}"
+  text3: "{OWNER} - &6{PRICE}"
+  text4: "{STOCK}"
+  stock: "free: &b&l{STOCK_SPACE}"

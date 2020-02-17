@@ -1,0 +1,12 @@
+buy:
+  text1: "[&l&6出售商店&r]"
+  text2: "{ITEM_NAME}"
+  text3: "{OWNER} - &e{PRICE}"
+  text4: "{STOCK}"
+  stock: "剩余库存: &a&l{STOCK_SPACE}"
+sell:
+  text1: "[&l&e回收商店&r]"
+  text2: "{ITEM_NAME}"
+  text3: "{OWNER} - &6{PRICE}"
+  text4: "{STOCK}"
+  stock: "空闲库存: &b&l{STOCK_SPACE}"
