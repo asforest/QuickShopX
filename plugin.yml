@@ -1,6 +1,6 @@
 name: QuickShopX
 main: cn.innc11.quickshopx.Quickshopx
-version: "1.5"
+version: "1.5.1"
 author: innc11
 api: ["1.0.0"]
 load: POSTWORLD

@@ -50,6 +50,7 @@ im-not-allow-cross-residence: "商店的箱子和牌子不允许跨领地"
 im-sign-not-in-residence: "商店的牌子不在领地范围内"
 im-not-allow-sign-in-another-residence: "商店的牌子不允许在另一个领地范围内"
 im-not-allow-others-open-chest: "你不能打开这个箱子"
+im-not-allow-have-more-shop: "你不能再创建更多的商店了,你只能拥有{MAX_COUNT}个商店"
 
 shopdata-title: "商店信息面板"
 shopdata-price: "物品价格"

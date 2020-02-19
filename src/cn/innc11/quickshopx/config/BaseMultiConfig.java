@@ -97,7 +97,6 @@ public abstract class BaseMultiConfig
 		if(bc==null && create)
 		{
 			bc = addBaseConfigByFileName(fileNameWithoutSuffix, false);
-			System.out.println("created: "+bc);
 		}
 
 		return bc;

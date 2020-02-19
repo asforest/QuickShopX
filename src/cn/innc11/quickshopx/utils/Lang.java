@@ -54,6 +54,7 @@ public enum Lang
     im_sign_not_in_residence,
     im_not_allow_sign_in_another_residence,
     im_not_allow_others_open_chest,
+    im_not_allow_have_more_shop,
 
 
     shopdata_title,

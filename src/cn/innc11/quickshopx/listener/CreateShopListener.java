@@ -1,10 +1,14 @@
 package cn.innc11.quickshopx.listener;
 
+import java.lang.reflect.Field;
 import java.util.HashMap;
 
+import cn.innc11.quickshopx.config.ShopsConfig;
 import cn.innc11.quickshopx.pluginEvent.PlayerCreateShopEvent;
+import cn.innc11.quickshopx.shop.ShopData;
 import cn.innc11.quickshopx.utils.Lang;
 import cn.nukkit.event.EventPriority;
+import cn.nukkit.permission.PermissibleBase;
 import com.bekvon.bukkit.residence.Residence;
 import com.bekvon.bukkit.residence.protection.ClaimedResidence;
 
@@ -67,6 +71,50 @@ public class CreateShopListener implements Listener, ShopInteractionTimer
 		} else {
 			allowCreateShop = true;
 		}
+
+
+		PermissibleBase pb = null;
+		try {
+			Field perm = player.getClass().getDeclaredField("perm");
+			perm.setAccessible(true);
+			pb = (PermissibleBase) perm.get(player);
+		} catch (NoSuchFieldException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+
+		int countLimit = -1;
+
+		for(String p : pb.getEffectivePermissions().keySet())
+		{
+			if(p.matches("quickshopx\\.create\\.\\d+"))
+			{
+				countLimit = Integer.parseInt(p.split("\\.")[2]);
+				Quickshopx.logger.info("- "+p);
+				break;
+			}
+		}
+
+		if(countLimit!=-1)
+		{
+			int currCount = 0;
+			for (ShopsConfig sc : Quickshopx.ins.multiShopsConfig.getAllShops())
+			{
+				for (ShopData shopData : sc.shopDataMapping.values())
+				{
+					if(shopData.owner.equals(player.getName()))
+					{
+						currCount++;
+					}
+				}
+			}
+
+			if(currCount>=countLimit)
+			{
+				player.sendMessage(L.get(Lang.im_not_allow_have_more_shop, "{MAX_COUNT}", String.valueOf(countLimit)));
+				return;
+			}
+		}
+
 		
 		if(allowCreateShop)
 		{

@@ -50,6 +50,7 @@ im-not-allow-cross-residence: "This shop's sign and chest are not allowed across
 im-sign-not-in-residence: "The shop's sign is not in the residence area"
 im-not-allow-sign-in-another-residence: "The shop's sign are not allowed within a residence"
 im-not-allow-others-open-chest: "You are not the owner of this shop and cannot open the chest"
+im-not-allow-have-more-shop: "You cannot create any more shop, you can only have up to {MAX_COUNT} shops"
 
 shopdata-title: "Shop Information Panel"
 shopdata-price: "Price of goods"

@@ -9,6 +9,7 @@ import cn.innc11.quickshopx.config.*;
 import cn.innc11.quickshopx.crossVersion.Shops_v0;
 import cn.innc11.quickshopx.crossVersion.Shops_v1;
 import cn.innc11.quickshopx.listener.*;
+import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.scheduler.ServerScheduler;
@@ -120,7 +121,6 @@ public class Quickshopx extends PluginBase
 		signTextConfig = new SignTextConfig(new File(getDataFolder(), String.format("lang/signTexts-%s.yml", pluginConfig.language)));
 		langConfig = new LangConfig(new File(getDataFolder(), String.format("lang/languages-%s.yml", pluginConfig.language)));
 		enchantmentNamesConfig = new EnchantmentNamesConfig(new File(getDataFolder(), String.format("lang/enchantments-%s.yml", pluginConfig.language)));
-
 	}
 	
 	public static boolean isInteger(String str)

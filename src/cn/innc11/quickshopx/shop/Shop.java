@@ -254,18 +254,18 @@ public abstract class Shop
 			
 			if(allow)
 			{
-			
-				BlockWallSign signInstance = new BlockWallSign();
-				
-				signInstance.level = chestBlock.level;
-				signInstance.place(Block.get(Block.WALL_SIGN).toItem(), signBlock, null, BlockFace.fromIndex(chestBlock.getDamage()), 0d, 0d, 0d, player);
-				
 				Item itemInHand = player.getInventory().getItemInHand();
-				
+
 				if(itemInHand.getId()!=Item.AIR)
 				{
+					BlockWallSign signInstance = new BlockWallSign();
+
+					signInstance.level = chestBlock.level;
+					signInstance.place(Block.get(Block.WALL_SIGN).toItem(), signBlock, null, BlockFace.fromIndex(chestBlock.getDamage()), 0d, 0d, 0d, player);
+
+
 					ShopData sd = new ShopData();
-					
+
 					sd.owner = player.getName();
 					sd.type = ShopType.BUY;
 					sd.price = price;
@@ -285,11 +285,12 @@ public abstract class Shop
 
 					SHOP = sd.getShop();
 					SHOP.updateSignText();
-					
+
 					player.sendMessage(L.get(Lang.im_successfully_created_shop));
 				} else {
 					player.sendMessage(L.get(Lang.im_no_item_in_hand));
 				}
+
 			}
 			
 		} else {

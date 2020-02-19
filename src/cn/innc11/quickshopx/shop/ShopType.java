@@ -11,7 +11,6 @@ public enum ShopType
 	@Override
 	public String toString() 
 	{
-		Lang a = Lang.valueOf(this.name().toLowerCase());
-		return Quickshopx.ins.langConfig.get(a);
+		return Quickshopx.ins.langConfig.get(Lang.valueOf(this.name().toLowerCase()));
 	}
 }

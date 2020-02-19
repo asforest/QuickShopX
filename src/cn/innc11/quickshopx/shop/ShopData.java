@@ -44,30 +44,29 @@ public class ShopData
 		if(obj instanceof ShopData)
 		{
 			ShopData sd = ((ShopData) obj);
-			boolean ret = true;
-			ret &= serverShop == sd.serverShop;
-			ret &= owner.equals(sd.owner);
-			ret &= type == sd.type;
-			ret &= price == sd.price;
-			ret &= chestX == sd.chestX;
-			ret &= chestY == sd.chestY;
-			ret &= chestZ == sd.chestZ;
-			ret &= signX == sd.signX;
-			ret &= signZ == sd.signZ;
-			ret &= world.equals(sd.world);
-			ret &= serverShop == sd.serverShop;
-			ret &= item.equalsExact(sd.item);
-			ret &= shopRandomId == shopRandomId;
+			boolean equal = true;
+			equal &= serverShop == sd.serverShop;
+			equal &= owner.equals(sd.owner);
+			equal &= type == sd.type;
+			equal &= price == sd.price;
+			equal &= chestX == sd.chestX;
+			equal &= chestY == sd.chestY;
+			equal &= chestZ == sd.chestZ;
+			equal &= signX == sd.signX;
+			equal &= signZ == sd.signZ;
+			equal &= world.equals(sd.world);
+			equal &= serverShop == sd.serverShop;
+			equal &= item.equalsExact(sd.item);
+			equal &= shopRandomId == shopRandomId;
 
-			return ret;
+			return equal;
 		}else{
 			return false;
 		}
 	}
 
 	@Override
-	public String
-	toString()
+	public String toString()
 	{
 		return "ShopData{" + "owner='" + owner + '\'' + ", type=" + type + ", price=" + price + ", chestX=" + chestX + ", chestY=" + chestY + ", chestZ=" + chestZ + ", signX=" + signX + ", signZ=" + signZ + ", world='" + world + '\'' + ", item=" + item + ", serverShop=" + serverShop + ", shopRandomId=" + shopRandomId + '}';
 	}

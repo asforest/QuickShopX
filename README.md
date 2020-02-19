@@ -250,6 +250,13 @@
 13. "Custom Item Naming" is now turned off by default, and is no longer automatically generated, and renamed to custom-names.yml, if necessary, please manually put it in the plugin folder
 14. config.yml file has been refactored and language options have been added
 
+#### 1.5.1
+1. 支持用权限节点来限制商店个数(格式: quickshopx.create.<数量>),不使用则不限制数量
+2. 修复在创建商店时,如果手上为空会创建一个空牌子的问题
+---
+1. Support the use of permission nodes to limit the number of shops (format: quickshopx.create.<Number>), if not used, there is no limit to the number of shops
+2. Fixed the problem of creating an empty sign if the hand is empty when creating a shop
+
 ## 指令 Commands
 
 | 指令commands                | 描述description        | 权限permission   |
