@@ -157,7 +157,7 @@ public class PluginConfig extends BaseConfig
 						{
 							InteractionWay object = (InteractionWay) v;
 
-							if(configText.equals(object.text))
+							if(configText.equals(object.toString()))
 							{
 								field.set(this, object);
 								found = true;
@@ -200,22 +200,20 @@ public class PluginConfig extends BaseConfig
 
 	public enum InteractionWay
 	{
-		NEVER("chat_bar", "Chat Bar"),
-		DOUBLE_CLICK("double_click", "Both"),
-		ALWAYS("interface", "Interface");
+		NEVER("ChatBar"),
+		DOUBLE_CLICK("Both"),
+		ALWAYS("Interface");
 		
-		public String text;
-		public String prettyText;
+		private String text;
 		
-		InteractionWay(String text, String prettyText)
+		InteractionWay(String prettyText)
 		{
-			this.text = text;
-			this.prettyText = prettyText;
+			this.text = prettyText;
 		}
 
 		@Override
 		public String toString() {
-			return prettyText;
+			return text;
 		}
 	}
 

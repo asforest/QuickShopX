@@ -117,7 +117,7 @@ public class Quickshopx extends PluginBase
 
 		pluginConfig = new PluginConfig(new File(getDataFolder(), "config.yml"));
 		multiShopsConfig = new MultiShopsConfig(shopsDir);
-		itemNamesConfig = new ItemNamesConfig(itemNamesFile, pluginConfig.useCustomItemNames);
+		itemNamesConfig = new ItemNamesConfig(itemNamesFile);
 		signTextConfig = new SignTextConfig(new File(getDataFolder(), String.format("lang/signTexts-%s.yml", pluginConfig.language)));
 		langConfig = new LangConfig(new File(getDataFolder(), String.format("lang/languages-%s.yml", pluginConfig.language)));
 		enchantmentNamesConfig = new EnchantmentNamesConfig(new File(getDataFolder(), String.format("lang/enchantments-%s.yml", pluginConfig.language)));

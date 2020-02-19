@@ -4,50 +4,6 @@
 
  A plugin for Nukkit, QuickShopX,original author [WetABQ](https://github.com/WetABQ)
 
-## 相对于QuickShop的变化
-
-#### - 创建商店的变化
-
-创建商店由自己放置牌子和右键交互事件改为只有左键交互事件（就是和Bukkit上的QuickShop一样,左键点击一下,就是轻微的破坏一点点,在创造模式下也能很好的工作
-
-#### - 商店保护机制的变化
-
-增加了商店的保护机制,包括爆炸、活塞、燃烧做了相应的处理,不会在出现箱子消失的情况了
-
-#### - 商店配置文件的变化
-
-商店的商店配置文件沿用了QuickShop的设计,并作出了一些小小的更改,其中common字段是方便调试用的,插件不会读取它
-
-#### - 全息物品的变化
-
-完善全息物品（商店箱子上方的悬浮物品）显示的问题,在有多个世界的情况下也能很好的工作,并将发包操作放到了异步线程里进行
-
-#### - 商店牌子文字的变化
-
-商店的牌子上的文字可以自由修改了（通过signText.yml文件）,同样支持彩色代码
-
-#### - 商店牌子的变化
-
-增加了商店牌子实时显示商店库存等信息（包括往箱子里面放物品的时候也会实时更新牌子数据）,对使用漏斗机械来作为自动补货机制的商店同样有效,牌子会实时更新
-
-#### - 自定义物品名称的变化
-
-插件现在自带了中文物品名的config文件（插件自带的是Java版的物品命名,目前只提供了JE命名,如果觉得不满意还烦请手动修调）,找不到自定义物品名的情况下才会使用Nukkit自带的英文物品名称
-
-#### - 插件API的变化
-
-比如QuickShop的PlayerBuyEvent可以获取到Player对象和ShopData对象,但QuickShopX的PlayerBuyEvent是可以获取Player对象和BuyShop对象,由BuyShop对象可以获取到ShopData对象,这一点在PlayerBuyEvent上同理,需要注意
-
-#### - 语言文件的变化
-
-由QuickShop的{}占位符变化成${ITEM_NAME}、${TARGET_COUNT}占位符,现在可以自由调整占位符的前后顺序了,几乎所有能见到的文字都可以自定义
-
-#### - 工作机制的变化
-
-1. 对商店的操作增加了FORM界面的支持,当然如果愿意可以使用chat进行操作,这个可以由配置文件控制触发方式,或是一直使用chat操作,或者一直使用form操作,或是单击牌子使用chat操作,双击使用form操作
-2. 对插件本身的配置也由form接管,使用/qs cp可以打开插件的控制面板(默认OP)具体内容可以看图片（包括针对Residence插件的交互,对全息物品的控制,对op的权限控制等）
-3. 当Residence插件存在的时候并启用了与Residence插件交互时,领地内有build权限和container权限的人可以破坏商店和打开商店箱子但无法修改商店的信息（商店信息只能由商店主人来修改,且主人如果没有build权限是无法破坏商店的,但一般不会出现这个情况）
-
 ## 尚未完善的地方 Not perfect
 1. ~~语言文件目前只提供了中文,因为工作量太大没能顾及英文语言~~(1.2.5版本修复)
 2. ~~每个商店箱子的角落方向上的4个位置上不能出现另一个商店的箱子,下个版本会修复~~(1.2.3版本修复)
@@ -225,7 +181,7 @@
 1. 修正英文语言中4个单词问题和语法问题
 2. 调整控制面板布局
 3. 所有的语言相关配置文件大幅重构(shops.yml除外),不与以前版本兼容
-4. 删除所有语言相关配置文件占位符中$符号,直接使用{var}形式
+4. 删除所有语言相关配置文件占位符中$符号,直接使用{placeholder}形式
 5. 调整商店文件(shops.yml),根据世界进行拆分由文件夹进行分类(插件启动时会自动转换)
 7. 默认不再附带物品命名文件(itemNames.yml)如有需要可手动下载
 8. 需要手动删除enchantments.yml/language.yml/signTexts.yml三个文件
@@ -239,7 +195,7 @@
 1. Fixed 4 words and grammar problems in English language
 2. Adjust the control panel layout
 3. All language-related configuration files are significantly refactored (except shops.yml), which is not compatible with previous versions
-4. Remove the $ sign from the placeholders of all language-related configuration files, and use the {var} form directly
+4. Remove the $ sign from the placeholders of all language-related configuration files, and use the {placeholder} form directly
 5. Adjust the store file (shops.yml), split according to the world, and categorize by folder (the plugin will automatically convert when the plugin starts)
 7. Item name files (itemNames.yml) are no longer attached by default and can be manually downloaded if necessary
 8. You need to manually delete the three files: invitations.yml / language.yml / signTexts.yml

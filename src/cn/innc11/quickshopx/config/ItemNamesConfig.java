@@ -11,15 +11,14 @@ public class ItemNamesConfig extends BaseConfig
 {
 	HashMap<String, String> itemNameMap = new HashMap<>();
 	
-	public ItemNamesConfig(File file, boolean useCustomItemNames)
+	public ItemNamesConfig(File file)
 	{
-		super(file, file.exists() && useCustomItemNames, false);
+		super(file, file.exists(), false);
 
-		if(file.exists() && useCustomItemNames)
+		if(file.exists())
 		{
+			Quickshopx.logger.info(TextFormat.colorize("&6The custom item naming file found"));
 			reload();
-		}else {
-			Quickshopx.logger.info(TextFormat.colorize("&6Custom item naming is not enabled"));
 		}
 	}
 
