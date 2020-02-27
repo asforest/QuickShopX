@@ -15,11 +15,7 @@ public class ItemNamesConfig extends BaseConfig
 	{
 		super(file, file.exists(), false);
 
-		if(file.exists())
-		{
-			Quickshopx.logger.info(TextFormat.colorize("&6The custom item naming file found"));
-			reload();
-		}
+		reload();
 	}
 
 	@Override
@@ -31,27 +27,33 @@ public class ItemNamesConfig extends BaseConfig
 	@Override
 	public void reload() 
 	{
-		config.reload();
 		itemNameMap.clear();
-		
-		Object configMap = config.get("mapping");
-		
-		if(configMap!=null)
+
+		if(file.exists())
 		{
-			HashMap<String, String> cMap = (HashMap<String, String>) configMap;
-			for(String key : cMap.keySet())
+			Quickshopx.logger.info(TextFormat.colorize("&eThe custom-item-name file is found"));
+
+			if(!initConfig()) config.reload();
+
+			Object configMap = config.get("mapping");
+
+			if(configMap!=null)
 			{
-				Item item = Item.fromString(key);
-				
-				if(item.getId()!=0)
+				HashMap<String, String> cMap = (HashMap<String, String>) configMap;
+				for(String key : cMap.keySet())
 				{
-					itemNameMap.put(item.getId()+":"+item.getDamage(), cMap.get(key));
+					Item item = Item.fromString(key);
+
+					if(item.getId()!=0)
+					{
+						itemNameMap.put(item.getId()+":"+item.getDamage(), cMap.get(key));
+					}
 				}
+
 			}
-			
+
+			Quickshopx.logger.info(TextFormat.colorize(String.format("Loaded &6%d&r item names", itemNameMap.size())));
 		}
-		
-		Quickshopx.logger.info(TextFormat.colorize(String.format("Loaded &6%d&r item names", itemNameMap.size())));
 	}
 
 	

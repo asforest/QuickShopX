@@ -25,7 +25,7 @@ public class TradingPanel extends FormWindowCustom implements FormResponse
 	{
 		super(L.get(Lang.trading_title, "{OWNER}", (shop.shopData.serverShop? L.get(Lang.server_shop_nickname):shop.shopData.owner)));
 		
-		this.shopKey = shop.getShopKey();
+		this.shopKey = shop.parseShopKey();
 		this.playerName = playerName;
 		
 		addElement(new ElementLabel(L.get(Lang.trading_shop_info,
@@ -51,7 +51,7 @@ public class TradingPanel extends FormWindowCustom implements FormResponse
 		
 		if(tv!=0)
 		{
-			Shop shop = Shop.getShopInstance(shopKey);
+			Shop shop = Shop.getShopByKey(shopKey);
 			Player player = Quickshopx.ins.getServer().getPlayerExact(playerName);
 			
 			if(shop instanceof BuyShop)

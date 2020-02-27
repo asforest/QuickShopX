@@ -44,7 +44,7 @@ public class LangConfig extends BaseConfig
 				config.set(key.name().replace("_", "-"), key.getDefaultLangText());
 				lang.put(key, key.getDefaultLangText());
 				supplement = true;
-				Quickshopx.ins.getLogger().info(TextFormat.colorize("&cSet default language text for "+getFullFileName() +"("+key.name()+")"));
+				Quickshopx.ins.getLogger().info(TextFormat.colorize("&cSet default language text for "+ getWholeFileName() +"("+key.name()+")"));
 			}
 
 			if(v instanceof String)
@@ -75,7 +75,7 @@ public class LangConfig extends BaseConfig
 		if(supplement)
 			save();
 		
-		Quickshopx.logger.info(TextFormat.colorize("Loaded &6"+ct+"&r languages"));
+		Quickshopx.logger.info(TextFormat.colorize("Loaded &6"+ct+"&r languages from &b"+getWholeFileName()));
 	}
 	
 	public String get(Lang l, String... argsPair)

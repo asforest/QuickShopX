@@ -56,6 +56,7 @@ public class ShopsConfig extends BaseConfig
 
 		if(!event.isCancelled())
 		{
+			shopDataMapping.get(sd.getShopKey()).getShop().destroyShopSign();
 			shopDataMapping.remove(sd.getShopKey());
 			save();
 
@@ -108,7 +109,7 @@ public class ShopsConfig extends BaseConfig
 			count++;
 		}
 
-		Quickshopx.ins.getLogger().info(TextFormat.colorize(String.format("Loaded &6%d&r shops(%s)", count, getWorldName())));
+		Quickshopx.ins.getLogger().info(TextFormat.colorize(String.format("Loaded &6%d&r shops from &b%s", count, getWorldName())));
 	}
 
 	@Override

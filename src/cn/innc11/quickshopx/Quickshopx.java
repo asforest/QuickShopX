@@ -4,12 +4,11 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.regex.Pattern;
 
-import cn.innc11.quickshopx.command.QuickShopXCommand;
+import cn.innc11.quickshopx.command.PluginCommand;
 import cn.innc11.quickshopx.config.*;
 import cn.innc11.quickshopx.crossVersion.Shops_v0;
 import cn.innc11.quickshopx.crossVersion.Shops_v1;
 import cn.innc11.quickshopx.listener.*;
-import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.scheduler.ServerScheduler;
@@ -98,7 +97,7 @@ public class Quickshopx extends PluginBase
 
 	void registerCommands()
 	{
-		getServer().getCommandMap().register("", new QuickShopXCommand());
+		getServer().getCommandMap().register("", new PluginCommand());
 	}
 	
 	public void loadConfig() throws FileNotFoundException

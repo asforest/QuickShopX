@@ -2,6 +2,7 @@ package cn.innc11.quickshopx.shop;
 
 import cn.innc11.quickshopx.config.ShopsConfig;
 import cn.innc11.quickshopx.utils.Lang;
+import cn.nukkit.utils.Faceable;
 import com.bekvon.bukkit.residence.Residence;
 import com.bekvon.bukkit.residence.protection.ClaimedResidence;
 
@@ -160,7 +161,6 @@ public abstract class Shop
 		}
 	}
 
-	@Deprecated
 	public void destroyShopSign()
 	{
 		Block signBlock = getShopEntitySign().getBlock();
@@ -187,8 +187,7 @@ public abstract class Shop
 		Quickshopx.ins.multiShopsConfig.getShopsConfig(shopData, false).removeShop(shopData);
 	}
 
-
-	public String getShopKey()
+	public String parseShopKey()
 	{
 		return String.format("%d:%d:%d:%s", shopData.chestX, shopData.chestY, shopData.chestZ, shopData.world);
 	}
@@ -263,7 +262,6 @@ public abstract class Shop
 					signInstance.level = chestBlock.level;
 					signInstance.place(Block.get(Block.WALL_SIGN).toItem(), signBlock, null, BlockFace.fromIndex(chestBlock.getDamage()), 0d, 0d, 0d, player);
 
-
 					ShopData sd = new ShopData();
 
 					sd.owner = player.getName();
@@ -306,16 +304,11 @@ public abstract class Shop
 		return shopKey.substring(shopKey.lastIndexOf(":")+1);
 	}
 	
-	private static String getShopKey(Position pos)
+	private static String parseShopKey(Position pos)
 	{
 		return String.format("%.0f:%.0f:%.0f:%s", pos.x, pos.y, pos.z, pos.level.getFolderName());
 	}
 	
-	public static Shop getShopInstance(Position chest)
-	{
-		return getShopInstance(Shop.getShopKey(chest));
-	}
-
 	public static Shop getShopByRandomId(long randomId)
 	{
 		for (ShopsConfig sc : Quickshopx.ins.multiShopsConfig.getAllShops())
@@ -331,8 +324,8 @@ public abstract class Shop
 
 		return null;
 	}
-	
-	public static Shop getShopInstance(String shopKey)
+
+	public static Shop getShopByKey(String shopKey)
 	{
 		ShopsConfig sc = Quickshopx.ins.multiShopsConfig.getShopsConfig(shopKeyToWorld(shopKey), false);
 		ShopData shopData = null;
@@ -359,17 +352,20 @@ public abstract class Shop
 
 		return null;
 	}
-	
-	public static Shop findShopBySignPos(Block signBlock)
+
+	public static Shop findShopByChestPos(Position chestPos)
 	{
-		if(!(signBlock instanceof BlockWallSign)) return null;
+		return Shop.getShopByKey(Shop.parseShopKey(chestPos));
+	}
 
-		BlockWallSign blockSign = (BlockWallSign) signBlock;
-		Shop shop = null;
+	public static Shop findShopBySignPos(Position signPos)
+	{
+		if(!(signPos instanceof Faceable)) return null;
 
+		Faceable sign = (Faceable) signPos.getLevelBlock();
 		BlockFace chestFace = BlockFace.SOUTH;
 
-		switch (blockSign.getBlockFace())
+		switch (sign.getBlockFace())
 		{
 			case SOUTH: chestFace = BlockFace.NORTH; break;
 			case NORTH: chestFace = BlockFace.SOUTH; break;
@@ -378,10 +374,22 @@ public abstract class Shop
 			default: break;
 		}
 
-		Position chestPos = blockSign.getSide(chestFace);
-		shop = Shop.getShopInstance(Shop.getShopKey(chestPos));
+		Position chestPos = signPos.getSide(chestFace);
+		return Shop.getShopByKey(Shop.parseShopKey(chestPos));
+	}
 
-		return shop;
+	public static Shop findShopByChest(Block chestBlock)
+	{
+		if(!(chestBlock instanceof BlockChest)) return null;
+
+		return findShopByChestPos(chestBlock);
+	}
+	
+	public static Shop findShopBySign(Block signBlock)
+	{
+		if(!(signBlock instanceof BlockWallSign)) return null;
+
+		return findShopBySignPos(signBlock);
 	}
 
 

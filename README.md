@@ -213,6 +213,15 @@
 1. Support the use of permission nodes to limit the number of shops (format: quickshopx.create.<Number>), if not used, there is no limit to the number of shops
 2. Fixed the problem of creating an empty sign if the hand is empty when creating a shop
 
+#### 1.5.2
+1. 现在同时支持打掉箱子和打掉牌子来破坏商店
+2. item-names.yml可以被/qs r重新加载,不用再重启插件就可以直接加载
+3. 优化一些代码逻辑
+---
+1. Now supports both break the chest and break the sign to destroy the shop
+2. The item-names.yml can be reload by /qs r, it does not need to reload the plugin itself
+2. Optimize some code logic
+
 ## 指令 Commands
 
 | 指令commands                | 描述description        | 权限permission   |

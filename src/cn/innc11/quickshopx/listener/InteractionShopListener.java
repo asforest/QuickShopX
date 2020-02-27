@@ -39,7 +39,7 @@ public class InteractionShopListener implements Listener, ShopInteractionTimer
 			Player player = e.getPlayer();
 			String playerName = player.getName();
 			
-			Shop shop = Shop.findShopBySignPos(block);
+			Shop shop = Shop.findShopBySign(block);
 			
 			if(shop!=null)
 			{
@@ -145,33 +145,13 @@ public class InteractionShopListener implements Listener, ShopInteractionTimer
 	@EventHandler(ignoreCancelled = true)
 	public void onPlayerBrokeBlockEvent(BlockBreakEvent e)
 	{
-		if(e.getBlock() instanceof BlockChest)
-		{
-			Block block = e.getBlock();
-			Player player = e.getPlayer();
-			Shop shop = Shop.getShopInstance(block);
-			
-			if(shop!=null)
-			{
-				if(player.getName().equals(shop.shopData.owner) || player.isOp())
-				{
-					player.sendMessage(L.get(Lang.im_not_allow_remove_shop_exists_sign));
-				} else {
-					player.sendMessage(L.get(Lang.im_not_allow_remove_shop_not_owner));
-				}
-				
-				e.setCancelled();
-				
-			}
-			
-		}
-		
-		if(e.getBlock() instanceof BlockWallSign)
+		if(e.getBlock() instanceof BlockWallSign || e.getBlock() instanceof BlockChest)
 		{
 			Player player = e.getPlayer();
-			
-			Shop shop = Shop.findShopBySignPos(e.getBlock());
-			
+
+			boolean isSign = e.getBlock() instanceof BlockWallSign;
+			Shop shop = isSign? Shop.findShopBySign(e.getBlock()):Shop.findShopByChest(e.getBlock());
+
 			if(shop!=null)
 			{
 				boolean allow = true;
@@ -213,7 +193,7 @@ public class InteractionShopListener implements Listener, ShopInteractionTimer
 					if(Quickshopx.ins.multiShopsConfig.getShopsConfig(shop, false).destroyShop(shop.shopData, player))
 					{
 						Quickshopx.ins.hologramListener.removeItemEntity(Server.getInstance().getOnlinePlayers().values(), shop.shopData);
-						e.setDrops(new Item[0]);
+						if(isSign) e.setDrops(new Item[0]);
 						player.sendMessage(L.get(Lang.im_successfully_removed_shop));
 					}
 				} else {

@@ -34,7 +34,8 @@ public class CreateShopListener implements Listener, ShopInteractionTimer
 	private void createShop(Player player, Block block)
 	{
 		boolean allowCreateShop = false;
-		
+
+		// check permission for residence plugin
 		if(Quickshopx.ins.residencePluginLoaded && Quickshopx.ins.pluginConfig.linkWithResidencePlugin)
 		{
 			ClaimedResidence res = Residence.getResidenceManager().getByLoc(block);
@@ -73,7 +74,9 @@ public class CreateShopListener implements Listener, ShopInteractionTimer
 		}
 
 
+		// check for quickshopx.create.<Number>
 		PermissibleBase pb = null;
+
 		try {
 			Field perm = player.getClass().getDeclaredField("perm");
 			perm.setAccessible(true);
@@ -97,15 +100,12 @@ public class CreateShopListener implements Listener, ShopInteractionTimer
 		if(countLimit!=-1)
 		{
 			int currCount = 0;
+
 			for (ShopsConfig sc : Quickshopx.ins.multiShopsConfig.getAllShops())
+			for (ShopData shopData : sc.shopDataMapping.values())
 			{
-				for (ShopData shopData : sc.shopDataMapping.values())
-				{
-					if(shopData.owner.equals(player.getName()))
-					{
-						currCount++;
-					}
-				}
+				if(shopData.owner.equals(player.getName()))
+					currCount++;
 			}
 
 			if(currCount>=countLimit)
@@ -115,18 +115,17 @@ public class CreateShopListener implements Listener, ShopInteractionTimer
 			}
 		}
 
-		
 		if(allowCreateShop)
 		{
 			int interval = Quickshopx.ins.pluginConfig.interactionTime;
 			
 			creatingShopPlayers.put(player.getName(), new Pair<Long,Block>(Long.valueOf(System.currentTimeMillis()+interval), block));
-			
 			player.sendMessage(L.get(Lang.im_creating_shop_enter_price, "{TIMEOUT}", String.format("%.1f", interval/1000f)));
-			
+
 		}
 	}
-	
+
+	// for Creative Mode
 	@EventHandler
 	public void onPlayerBrokeBlock(BlockBreakEvent e)
 	{
@@ -135,7 +134,7 @@ public class CreateShopListener implements Listener, ShopInteractionTimer
 		if(player.getGamemode()==1
 				&& e.getBlock().getId()==Block.CHEST 
 				&&player.isSneaking()
-				&& (Shop.getShopInstance(e.getBlock())==null))
+				&& (Shop.findShopByChest(e.getBlock())==null))
 		{
 			createShop(player, e.getBlock());
 			
@@ -151,8 +150,7 @@ public class CreateShopListener implements Listener, ShopInteractionTimer
 		
 		if(e.getAction()==Action.LEFT_CLICK_BLOCK
 				&& block.getId()==Block.CHEST 
-				//&& player.isSneaking() 
-				&& (Shop.getShopInstance(block)==null))
+				&& (Shop.findShopByChest(block)==null))
 		{
 			createShop(player, block);
 			

@@ -31,7 +31,7 @@ public class ShopData
 
 	public Shop getShop()
 	{
-		return Shop.getShopInstance(getShopKey());
+		return Shop.getShopByKey(getShopKey());
 	}
 	
 	public String getShopKey()

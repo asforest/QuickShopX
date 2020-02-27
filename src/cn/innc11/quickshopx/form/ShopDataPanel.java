@@ -23,7 +23,7 @@ public class ShopDataPanel extends FormWindowCustom implements FormResponse
 	{
 		super(L.get(Lang.shopdata_title));
 		
-		this.shopKey = shop.getShopKey();
+		this.shopKey = shop.parseShopKey();
 		this.playerName = playerName;
 		
 		Player player = Quickshopx.server.getPlayerExact(playerName);
@@ -43,7 +43,7 @@ public class ShopDataPanel extends FormWindowCustom implements FormResponse
 	@Override
 	public void onFormResponse(PlayerFormRespondedEvent e) 
 	{
-		Shop shop = Shop.getShopInstance(shopKey);
+		Shop shop = Shop.getShopByKey(shopKey);
 		Player player = Quickshopx.server.getPlayerExact(playerName);
 
 		if(!player.isOp() && !shop.shopData.owner.equals(player.getName()))

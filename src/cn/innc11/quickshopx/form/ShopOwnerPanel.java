@@ -18,7 +18,7 @@ public class ShopOwnerPanel extends FormWindowSimple implements FormResponse
 		super(L.get(Lang.owner_title,
 				"{OWNER}", (shop.shopData.serverShop? L.get(Lang.server_shop_nickname):shop.shopData.owner)), "");
 		
-		this.shopKey = shop.getShopKey();
+		this.shopKey = shop.parseShopKey();
 		this.playerName = playerName;
 
 		setContent(L.get(Lang.owner_content,
@@ -36,7 +36,7 @@ public class ShopOwnerPanel extends FormWindowSimple implements FormResponse
 	@Override
 	public void onFormResponse(PlayerFormRespondedEvent e) 
 	{
-		Shop shop = Shop.getShopInstance(shopKey);
+		Shop shop = Shop.getShopByKey(shopKey);
 
 		if(!e.getPlayer().isOp() && !e.getPlayer().getName().equals(shop.shopData.owner))
 		{

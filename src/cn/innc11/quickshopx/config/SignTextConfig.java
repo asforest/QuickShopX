@@ -64,7 +64,7 @@ public class SignTextConfig extends BaseConfig
 		return st;
 	}
 	
-	private String variableReplace(String str, Shop shop)
+	private String fillPlaceholder(String str, Shop shop)
 	{
 		ItemNamesConfig inc = Quickshopx.ins.itemNamesConfig;
 		
@@ -82,10 +82,10 @@ public class SignTextConfig extends BaseConfig
 		String[] text = new String[4];
 		boolean isBuy = shop.shopData.type==ShopType.BUY;
 		
-		text[0] = TextFormat.colorize(variableReplace((isBuy ? buyText1 : sellText1), shop));
-		text[1] = TextFormat.colorize(variableReplace((isBuy ? buyText2 : sellText2), shop));
-		text[2] = TextFormat.colorize(variableReplace((isBuy ? buyText3 : sellText3), shop));
-		text[3] = TextFormat.colorize(variableReplace((isBuy ? buyText4 : sellText4), shop));
+		text[0] = TextFormat.colorize(fillPlaceholder((isBuy ? buyText1 : sellText1), shop));
+		text[1] = TextFormat.colorize(fillPlaceholder((isBuy ? buyText2 : sellText2), shop));
+		text[2] = TextFormat.colorize(fillPlaceholder((isBuy ? buyText3 : sellText3), shop));
+		text[3] = TextFormat.colorize(fillPlaceholder((isBuy ? buyText4 : sellText4), shop));
 		
 		return text;
 	}

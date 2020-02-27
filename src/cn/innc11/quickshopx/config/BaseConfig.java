@@ -29,7 +29,7 @@ public abstract class BaseConfig
 
 		if(autoLoad)
 		{
-			config = new Config(file, Config.YAML);
+			initConfig();
 
 			if(saveable)
 			{
@@ -52,6 +52,17 @@ public abstract class BaseConfig
 		}
 	}
 
+	protected boolean initConfig()
+	{
+		if(config==null)
+		{
+			config = new Config(file, Config.YAML);
+			return true;
+		}
+
+		return false;
+	}
+
 	protected static File checkFile(File file) throws FileNotFoundException
 	{
 		if(!file.exists()) throw new FileNotFoundException(String.format("File %s not found!", file.getAbsolutePath()));
@@ -59,14 +70,14 @@ public abstract class BaseConfig
 		return file;
 	}
 
-	public String getFullFileName()
+	public String getWholeFileName()
 	{
 		return file.getName();
 	}
 
-	public String getFileName()
+	public String getFileNameWithoutSuffix()
 	{
-		return getFullFileName().replaceAll("\\.\\w+$", "");
+		return getWholeFileName().replaceAll("\\.\\w+$", "");
 	}
 
 	public final void save()

@@ -17,10 +17,10 @@ import cn.nukkit.command.data.CommandParamType;
 import cn.nukkit.command.data.CommandParameter;
 import cn.nukkit.utils.TextFormat;
 
-public class QuickShopXCommand extends Command
+public class PluginCommand extends Command
 {
 
-	public QuickShopXCommand()
+	public PluginCommand()
 	{
 		super("quickshopx");
 		
@@ -61,7 +61,7 @@ public class QuickShopXCommand extends Command
 			case "buy":
 			case "b":
 			case "sell":
-			case "s":{
+			case "s": {
 				if (sender instanceof Player)
 				{
 					Pair<Boolean, Shop> vi = Quickshopx.ins.interactionShopListenerInstance.isVaildInteraction(sender.getName());

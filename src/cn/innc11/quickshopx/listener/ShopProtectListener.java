@@ -29,7 +29,7 @@ public class ShopProtectListener implements Listener
 		 {
 			 if(block instanceof BlockChest)
 			 {
-				 Shop shop = Shop.getShopInstance(block);
+				 Shop shop = Shop.findShopByChest(block);
 				 
 				 if(shop!=null)
 					 preserve.add(block);
@@ -37,7 +37,7 @@ public class ShopProtectListener implements Listener
 			 
 			 if(block instanceof BlockWallSign)
 			 {
-				 Shop shop = Shop.findShopBySignPos(block);
+				 Shop shop = Shop.findShopBySign(block);
 				 
 				 if(shop!=null)
 					 preserve.add(block);
@@ -58,7 +58,7 @@ public class ShopProtectListener implements Listener
 		
 		if(block instanceof BlockChest)
 		 {
-			 Shop shop = Shop.getShopInstance(block);
+			 Shop shop = Shop.findShopByChest(block);
 			 
 			 if(shop!=null)
 				 event.setCancelled();
@@ -66,7 +66,7 @@ public class ShopProtectListener implements Listener
 		 
 		 if(block instanceof BlockWallSign)
 		 {
-			 Shop shop = Shop.findShopBySignPos(block);
+			 Shop shop = Shop.findShopBySign(block);
 			 
 			 if(shop!=null)
 				 event.setCancelled();
@@ -80,7 +80,7 @@ public class ShopProtectListener implements Listener
 		
 		if(block instanceof BlockChest)
 		 {
-			 Shop shop = Shop.getShopInstance(block);
+			 Shop shop = Shop.findShopByChest(block);
 			 
 			 if(shop!=null)
 				 e.setCancelled();
@@ -88,7 +88,7 @@ public class ShopProtectListener implements Listener
 		 
 		 if(block instanceof BlockWallSign)
 		 {
-			 Shop shop = Shop.findShopBySignPos(block);
+			 Shop shop = Shop.findShopBySign(block);
 			 
 			 if(shop!=null)
 				 e.setCancelled();
@@ -113,7 +113,7 @@ public class ShopProtectListener implements Listener
 				&& e.getAction() == InventoryMoveItemEvent.Action.SLOT_CHANGE)
 		{
 			ChestInventory chestInventory = (ChestInventory) sourceInventory;
-			Shop shop = Shop.getShopInstance(chestInventory.getHolder());
+			Shop shop = Shop.findShopByChestPos(chestInventory.getHolder());
 			ClaimedResidence claimedResidence = Residence.getResidenceManager().getByLoc(chestInventory.getHolder());
 
 			if(shop!=null && claimedResidence==null)
@@ -127,7 +127,7 @@ public class ShopProtectListener implements Listener
 				&& e.getAction() == InventoryMoveItemEvent.Action.SLOT_CHANGE)
 		{
 			ChestInventory chestInventory = (ChestInventory) targetInventory;
-			Shop shop = Shop.getShopInstance(chestInventory.getHolder());
+			Shop shop = Shop.findShopByChestPos(chestInventory.getHolder());
 			ClaimedResidence claimedResidence = Residence.getResidenceManager().getByLoc(chestInventory.getHolder());
 
 			if(shop!=null && claimedResidence==null)

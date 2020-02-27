@@ -27,7 +27,7 @@ public class ItemAndInventoryListener implements Listener
 		if(sourceInventory instanceof ChestInventory && e.getAction() == InventoryMoveItemEvent.Action.SLOT_CHANGE)
 		{
 			ChestInventory chestInventory = (ChestInventory) sourceInventory;
-			Shop shop = Shop.getShopInstance(chestInventory.getHolder());
+			Shop shop = Shop.findShopByChestPos(chestInventory.getHolder());
 
 			if(shop!=null)
 			{
@@ -39,7 +39,7 @@ public class ItemAndInventoryListener implements Listener
 		if(targetInventory instanceof ChestInventory && e.getAction() == InventoryMoveItemEvent.Action.SLOT_CHANGE)
 		{
 			ChestInventory chestInventory = (ChestInventory) targetInventory;
-			Shop shop = Shop.getShopInstance(chestInventory.getHolder());
+			Shop shop = Shop.findShopByChestPos(chestInventory.getHolder());
 
 			if(shop!=null)
 			{
@@ -56,7 +56,7 @@ public class ItemAndInventoryListener implements Listener
 		{
 			Player player = e.getPlayer();
 			ChestInventory chestInventory = (ChestInventory) e.getInventory();
-			Shop shop = Shop.getShopInstance(chestInventory.getHolder());
+			Shop shop = Shop.findShopByChestPos(chestInventory.getHolder());
 			boolean residenceEnable = Quickshopx.ins.residencePluginLoaded && Quickshopx.ins.pluginConfig.linkWithResidencePlugin;
 
 			if(shop==null)
@@ -112,7 +112,7 @@ public class ItemAndInventoryListener implements Listener
 			if(inv instanceof ChestInventory)
 			{
 				ChestInventory ci = (ChestInventory) inv;
-				Shop shop = Shop.getShopInstance(ci.getHolder());
+				Shop shop = Shop.findShopByChestPos(ci.getHolder());
 				if(shop!=null)
 				{
 					shop.updateSignText(5);
