@@ -1,6 +1,7 @@
 # Important
 
 this project has been discontinued from updating. It is recommended that you click [HERE](https://github.com/innc11/PepperShop) to visit the new version that supports more features.
+
 此项目已停止更新，请点击[这里](https://github.com/innc11/PepperShop)访问其新版本
 
 # [QuickShopX](https://github.com/innc11/QuickShopX)
